@@ -2,8 +2,8 @@ name: Fetch Showtimes every 30 minutes
 
 on:
   schedule:
-    - cron: '0,30 * * * *'   # Runs at minute 0 and 30 every hour
-  workflow_dispatch:          # Allows manual trigger from GitHub UI
+    - cron: '0,30 * * * *'
+  workflow_dispatch:
 
 jobs:
   fetch-showtimes:
@@ -18,15 +18,12 @@ jobs:
         with:
           node-version: 18
 
-      
-
       - name: Run fetch script
-        uses: actions/upload-artifact@v4
-
+        run: node fetchShowtimes.js
 
       - name: Upload CSV files
         uses: actions/upload-artifact@v4
         with:
-           name: showtime-csv-files
-           path: output/*.csv
-           if-no-files-found: warn
+          name: showtime-csv-files
+          path: output/*.csv
+          if-no-files-found: warn
