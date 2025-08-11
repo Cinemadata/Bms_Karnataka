@@ -22,7 +22,8 @@ jobs:
         run: npm install
 
       - name: Run fetch script
-        run: node fetchShowtimes.js
+        uses: actions/upload-artifact@v4
+
 
       - name: Upload CSV files
         uses: actions/upload-artifact@v3
