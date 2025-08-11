@@ -26,7 +26,7 @@ jobs:
 
       - name: Upload CSV files
         uses: actions/upload-artifact@v4
-
         with:
-          name: showtime-csv-files
-          path: output/*.csv
+           name: showtime-csv-files
+           path: output/*.csv
+           if-no-files-found: warn
