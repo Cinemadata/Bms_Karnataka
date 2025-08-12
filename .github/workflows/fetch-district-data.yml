@@ -1,0 +1,22 @@
+name: Fetch District.in Movie Data
+
+on:
+  schedule:
+   - cron: '*/30 * * * *'    # runs every 6 hours
+  workflow_dispatch:      # manual trigger allowed
+
+jobs:
+  fetch-district-data:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Run district.in fetch script
+        run: node fetchDistrictData.js
