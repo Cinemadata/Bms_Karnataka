@@ -234,12 +234,12 @@ const karnatakaCities = [
 // Run fetch + save
 (async () => {
   const { showRows, venueRows, cityResults } = await fetchShowtimesForCities(
-    "ET00395817",
-    "20250814",
+    "ET00454128",
+    "20250812",
     karnatakaCities
   );
 
   saveToCSV(showRows, "show-wise");
   saveToCSV(venueRows, "venue-wise");
   saveToCSV(cityResults, "city-wise");
-})();
+})(); 
