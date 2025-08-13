@@ -1,48 +1,75 @@
+import fs from "fs";
+
+function saveToCSV(arr, filename) {
+  if (!arr.length) return;
+  const headers = Object.keys(arr[0]);
+  const rows = arr.map(obj =>
+    headers.map(h => `"${String(obj[h]).replace(/"/g, '""')}"`).join(",")
+  );
+  const csvContent = headers.join(",") + "\n" + rows.join("\n");
+
+  if (typeof document !== "undefined") {
+    // Browser download
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `${filename}.csv`;
+    link.click();
+  } else {
+    // Node.js save to disk
+    fs.writeFileSync(`${filename}.csv`, csvContent);
+    console.log(`💾 Saved ${filename}.csv`);
+  }
+}
+
 const eventCode = "MV172677";
+const frmtHindi = "ZcW3aqXSzc";
+const frmtTelugu = "rF_IgPQApY";
 
-const cities = [
-  "bengaluru"
-];
-
+const cities = ["bengaluru"];
 const allowedVenues = ["sandhya", "manasa", "balaji", "innovative"];
 
 const citySummary = [];
+const allShowDetails = [];
 
-async function fetchCityData(city) {
-  const url = `https://www.district.in/movies/f1-the-movie-movie-tickets-in-${city}-${eventCode}?frmtid=zcw3aqszc`;
+function formatTimeIST(raw) {
+  if (!raw) return "N/A";
+  const dt = new Date(raw);
+  if (isNaN(dt)) return "N/A";
+  return dt.toLocaleTimeString("en-IN", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+    timeZone: "Asia/Kolkata"
+  });
+}
+
+async function fetchCityData(city, frmtId, lang) {
+  const url = `https://www.district.in/movies/f1-the-movie-movie-tickets-in-${city}-${eventCode}?frmtid=${frmtId}`;
   try {
     const res = await fetch(url);
     const html = await res.text();
     const match = html.match(/<script id="__NEXT_DATA__" type="application\/json">(.*?)<\/script>/);
-    if (!match) throw new Error("No __NEXT_DATA__");
+    if (!match) throw new Error("No __NEXT_DATA__ found");
 
     const data = JSON.parse(match[1]);
     const sessionsObj = data?.props?.pageProps?.initialState?.movies?.movieSessions;
-    if (!sessionsObj) throw new Error("No movieSessions");
+    if (!sessionsObj) throw new Error("No movieSessions found");
 
     const entityCode = Object.keys(sessionsObj)[0];
     const arranged = sessionsObj[entityCode]?.arrangedSessions;
     if (!arranged) throw new Error("No arrangedSessions");
 
-    console.log(`Total venues arranged: ${arranged.length}`);
-
-    const showDetails = [];
-
     let shows = 0, booked = 0, max = 0, collection = 0, maxCollection = 0;
-    let fastFilling = 0, soldOut = 0;
 
     arranged.forEach(venue => {
       const venueName = venue.entityName || "Unknown Venue";
-
-      if (!allowedVenues.some(name => venueName.toLowerCase().startsWith(name))) {
-        return;
-      }
+      if (!allowedVenues.some(name => venueName.toLowerCase().startsWith(name))) return;
 
       venue.sessions.forEach(show => {
         const totalSeats = show.total || 0;
         const availSeats = show.avail || 0;
         const bookedSeats = totalSeats - availSeats;
-
         if (totalSeats === 0 || bookedSeats <= 0) return;
 
         let priceSum = 0, count = 0;
@@ -52,44 +79,27 @@ async function fetchCityData(city) {
             count++;
           }
         });
-
         const avgPrice = count > 0 ? priceSum / count : 0;
         if (avgPrice <= 30) return;
 
         const occupancy = totalSeats > 0 ? (bookedSeats / totalSeats) * 100 : 0;
-
         const bookedCollection = bookedSeats * avgPrice;
         const totalCollection = totalSeats * avgPrice;
 
-        // Format show time as IST hh:mm AM/PM only
-        let showTimeRaw = show.showTime || show.time || "N/A";
-        let formattedShowTime = "N/A";
-        if (showTimeRaw !== "N/A") {
-          const dt = new Date(showTimeRaw);
-          if (!isNaN(dt)) {
-            formattedShowTime = dt.toLocaleTimeString("en-IN", {
-              hour: "2-digit",
-              minute: "2-digit",
-              hour12: true,
-              timeZone: "Asia/Kolkata"
-            });
-          }
-        }
-
-        showDetails.push({
+        const showObj = {
           City: city,
+          Language: lang,
           Venue: venueName,
-          "Show Time": formattedShowTime,
+          "Show Time": formatTimeIST(show.showTime || show.time),
           "Total Seats": totalSeats,
           "Booked Seats": bookedSeats,
           "Occupancy (%)": occupancy.toFixed(2),
           "Booked Collection (₹)": "₹" + bookedCollection.toFixed(0),
           "Total Collection (₹)": "₹" + totalCollection.toFixed(0),
           "Avg Ticket Price (₹)": avgPrice.toFixed(2)
-        });
+        };
 
-        if (occupancy >= 60 && occupancy < 100) fastFilling++;
-        if (occupancy === 100) soldOut++;
+        allShowDetails.push(showObj);
 
         collection += bookedCollection;
         maxCollection += totalCollection;
@@ -102,24 +112,20 @@ async function fetchCityData(city) {
     if (shows > 0) {
       citySummary.push({
         City: city,
+        Language: lang,
         Shows: shows,
         BookedSeats: booked,
         MaxSeats: max,
         Collection: "₹" + collection.toFixed(0),
         MaxCollection: "₹" + maxCollection.toFixed(0),
-        Occupancy: max ? ((booked / max) * 100).toFixed(2) + "%" : "0.00%",
-        "Fast Filling": fastFilling,
-        "Sold Out": soldOut
+        Occupancy: max ? ((booked / max) * 100).toFixed(2) + "%" : "0.00%"
       });
-
-      console.log(`\nShow-wise details for ${city}:`);
-      console.table(showDetails);
     } else {
-      console.warn(`⚠️ Skipped ${city} - no valid shows`);
+      console.warn(`⚠️ Skipped ${city} (${lang}) - no valid shows`);
     }
 
   } catch (err) {
-    console.warn(`❌ ${city}: ${err.message}`);
+    console.warn(`❌ ${city} (${lang}): ${err.message}`);
   }
 }
 
@@ -127,32 +133,16 @@ async function fetchCityData(city) {
   console.log("⏳ Fetching city-wise data for Karnataka...");
 
   for (let city of cities) {
-    await fetchCityData(city);
+    await fetchCityData(city, frmtTelugu, "Telugu");
+    await fetchCityData(city, frmtHindi, "Hindi");
   }
 
-  console.log("\nCity-wise summary:");
+  console.log("\n📍 All Shows (Telugu + Hindi):");
+  console.table(allShowDetails);
+
+  console.log("\n📊 City-wise Summary:");
   console.table(citySummary);
 
-  const total = citySummary.reduce((acc, row) => {
-    const clean = n => +String(row[n]).replace(/[₹,%]/g, "");
-    acc.shows += row.Shows;
-    acc.booked += row.BookedSeats;
-    acc.max += row.MaxSeats;
-    acc.collection += clean("Collection");
-    acc.maxCollection += clean("MaxCollection");
-    acc.fast += row["Fast Filling"] || 0;
-    acc.sold += row["Sold Out"] || 0;
-    return acc;
-  }, { shows: 0, booked: 0, max: 0, collection: 0, maxCollection: 0, fast: 0, sold: 0 });
-
-  console.log(`\n📊 Karnataka Summary:
-Total Cities: ${citySummary.length}
-Total Shows: ${total.shows}
-Booked Seats: ${total.booked}
-Max Seats: ${total.max}
-Total Collection: ₹${total.collection}
-Max Collection: ₹${total.maxCollection}
-Overall Occupancy: ${total.max ? ((total.booked / total.max) * 100).toFixed(2) : "0.00"}%
-Fast Filling Shows (60-99.99%): ${total.fast}
-Sold Out Shows (100%): ${total.sold}`);
+  saveToCSV(allShowDetails, "show-wise");
+  saveToCSV(citySummary, "city-wise");
 })();
