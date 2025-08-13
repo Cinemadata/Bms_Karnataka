@@ -1,24 +1,45 @@
 import fs from "fs";
+import path from "path";
 
-function saveToCSV(arr, filename) {
-  if (!arr.length) return;
+// Ensure output folder exists
+const outputDir = path.join(process.cwd(), "output");
+if (!fs.existsSync(outputDir)) {
+  fs.mkdirSync(outputDir, { recursive: true });
+}
+
+// Function to generate timestamp like 20250813204447
+function getTimestamp() {
+  const now = new Date();
+  return (
+    now.getFullYear().toString() +
+    String(now.getMonth() + 1).padStart(2, "0") +
+    String(now.getDate()).padStart(2, "0") +
+    String(now.getHours()).padStart(2, "0") +
+    String(now.getMinutes()).padStart(2, "0") +
+    String(now.getSeconds()).padStart(2, "0")
+  );
+}
+
+function saveToCSV(arr, filenameBase) {
+  if (!arr.length) {
+    console.warn(`⚠️ No data to save for ${filenameBase}.csv`);
+    return;
+  }
+
   const headers = Object.keys(arr[0]);
   const rows = arr.map(obj =>
-    headers.map(h => `"${String(obj[h]).replace(/"/g, '""')}"`).join(",")
+    headers.map(h => `"${String(obj[h] ?? "").replace(/"/g, '""')}"`).join(",")
   );
   const csvContent = headers.join(",") + "\n" + rows.join("\n");
 
-  if (typeof document !== "undefined") {
-    // Browser download
-    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = `${filename}.csv`;
-    link.click();
-  } else {
-    // Node.js save to disk
-    fs.writeFileSync(`${filename}.csv`, csvContent);
-    console.log(`💾 Saved ${filename}.csv`);
+  const fileName = `${filenameBase}_${getTimestamp()}.csv`;
+  const filePath = path.join(outputDir, fileName);
+
+  try {
+    fs.writeFileSync(filePath, csvContent);
+    console.log(`💾 Saved ${path.relative(process.cwd(), filePath)}`);
+  } catch (err) {
+    console.error(`❌ Failed to save CSV: ${err.message}`);
   }
 }
 
@@ -30,6 +51,7 @@ const cities = ["bengaluru"];
 const allowedVenues = ["sandhya", "manasa", "balaji", "innovative"];
 
 const citySummary = [];
+const languageSummary = [];
 const allShowDetails = [];
 
 function formatTimeIST(raw) {
@@ -120,6 +142,16 @@ async function fetchCityData(city, frmtId, lang) {
         MaxCollection: "₹" + maxCollection.toFixed(0),
         Occupancy: max ? ((booked / max) * 100).toFixed(2) + "%" : "0.00%"
       });
+
+      languageSummary.push({
+        Language: lang,
+        Shows: shows,
+        BookedSeats: booked,
+        MaxSeats: max,
+        Collection: "₹" + collection.toFixed(0),
+        MaxCollection: "₹" + maxCollection.toFixed(0),
+        Occupancy: max ? ((booked / max) * 100).toFixed(2) + "%" : "0.00%"
+      });
     } else {
       console.warn(`⚠️ Skipped ${city} (${lang}) - no valid shows`);
     }
@@ -143,6 +175,10 @@ async function fetchCityData(city, frmtId, lang) {
   console.log("\n📊 City-wise Summary:");
   console.table(citySummary);
 
+  console.log("\n🌐 Language-wise Summary:");
+  console.table(languageSummary);
+
   saveToCSV(allShowDetails, "show-wise");
   saveToCSV(citySummary, "city-wise");
+  saveToCSV(languageSummary, "language-wise");
 })();
