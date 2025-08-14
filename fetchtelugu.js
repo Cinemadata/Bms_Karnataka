@@ -1,5 +1,5 @@
 import fs from "fs";
-import fetch from "node-fetch";
+
 
 // ---------------- Save to CSV ----------------
 function saveToCSV(data, filenameBase, language) {
