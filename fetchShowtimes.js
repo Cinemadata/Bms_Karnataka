@@ -1,7 +1,26 @@
 import fs from "fs";
 
+// ----------------------
+// Helper functions
+// ----------------------
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
-// Save to CSV function
+function shuffle(array) {
+  return array.sort(() => Math.random() - 0.5);
+}
+
+function getRandomUserAgent() {
+  const agents = [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
+    "Dalvik/2.1.0 (Linux; U; Android 12; Pixel XL Build/SP2A.220505.008)",
+    "Mozilla/5.0 (Linux; Android 13; SM-G991B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.5735.199 Mobile Safari/537.36"
+  ];
+  return agents[Math.floor(Math.random() * agents.length)];
+}
+
+// Save to CSV
 function saveToCSV(data, filenameBase) {
   if (!data.length) return;
 
@@ -15,56 +34,68 @@ function saveToCSV(data, filenameBase) {
   const timestamp = now.toISOString().replace(/[-:T]/g, "").split(".")[0];
   const folder = "output";
 
-  // Create folder if it doesn't exist
   fs.mkdirSync(folder, { recursive: true });
-
   const filename = `${folder}/${filenameBase}_${timestamp}.csv`;
   fs.writeFileSync(filename, csvContent, "utf8");
   console.log(`💾 Saved ${filename}`);
 }
 
+// Format showtime
+function formatShowTime(raw) {
+  if (!raw || raw === "N/A") return "Unknown";
+  if (/^\d{1,2}:\d{2}\s?(AM|PM)$/i.test(raw)) return raw;
+  const n = Number(raw);
+  const d = !isNaN(n) ? new Date(n) : new Date(raw);
+  if (isNaN(d.getTime())) return "Unknown";
+  return d.toLocaleTimeString("en-IN", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
+}
+
+// Fetch with retry
+async function fetchWithRetry(url, headers, retries = 3, delayMs = 2000) {
+  for (let i = 0; i < retries; i++) {
+    try {
+      const resp = await fetch(url, { headers });
+      if (resp.ok) return await resp.json();
+      console.warn(`Attempt ${i + 1} failed: ${resp.status}`);
+    } catch (err) {
+      console.warn(`Attempt ${i + 1} error: ${err.message}`);
+    }
+    await sleep(delayMs);
+  }
+  throw new Error(`Failed after ${retries} attempts: ${url}`);
+}
+
+// ----------------------
 // Main fetch function
+// ----------------------
 async function fetchShowtimesForCities(eventCode, cities, language) {
   const showRows = [];
   const cityResults = [];
+  const shuffledCities = shuffle(cities);
 
-  function formatShowTime(raw) {
-    if (!raw || raw === "N/A") return "Unknown";
-    if (/^\d{1,2}:\d{2}\s?(AM|PM)$/i.test(raw)) return raw;
-    const n = Number(raw);
-    const d = !isNaN(n) ? new Date(n) : new Date(raw);
-    if (isNaN(d.getTime())) return "Unknown";
-    return d.toLocaleTimeString("en-IN", {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-    });
-  }
-
-  for (const city of cities) {
+  for (const city of shuffledCities) {
     const url = `https://in.bookmyshow.com/api/movies-data/showtimes-by-event?appCode=MOBAND2&appVersion=14304&language=en&eventCode=${eventCode}&regionCode=${city.code}&subRegion=${city.code}&bmsId=1.21345445.1703250084656&token=67x1xa33b4x422b361ba&lat=${city.lat}&lon=${city.lon}&query='&dateCode=20250812`;
     const headers = {
       "x-region-code": city.code,
       "x-subregion-code": city.code,
       "x-region-slug": city.slug,
-      "user-agent": "Dalvik/2.1.0 (Linux; U; Android 12; Pixel XL Build/SP2A.220505.008)",
+      "user-agent": getRandomUserAgent(),
     };
 
     let cityTotalSeats = 0;
     let cityBookedSeats = 0;
     let cityBookedCollection = 0;
     let cityTotalPotentialCollection = 0;
-    let cityWeightedPriceSum = 0; // Weighted by seats
+    let cityWeightedPriceSum = 0;
     let totalShowsInCity = 0;
 
     try {
-      const resp = await fetch(url, { method: "GET", headers });
-      if (!resp.ok) {
-        console.error(`Failed fetch for city ${city.name}, status: ${resp.status}`);
-        continue;
-      }
+      const data = await fetchWithRetry(url, headers, 3, 2000);
 
-      const data = await resp.json();
       if (!data.ShowDetails?.length) continue;
 
       for (const showDetail of data.ShowDetails) {
@@ -114,7 +145,7 @@ async function fetchShowtimesForCities(eventCode, cities, language) {
             cityBookedSeats += totalBooked;
             cityBookedCollection += totalShowCollection;
             cityTotalPotentialCollection += totalPotentialCollection;
-            cityWeightedPriceSum += avgPrice * totalSeats; // Weighted sum
+            cityWeightedPriceSum += avgPrice * totalSeats;
           }
         }
       }
@@ -138,15 +169,21 @@ async function fetchShowtimesForCities(eventCode, cities, language) {
         "Total Collection (₹)": cityTotalPotentialCollection.toFixed(2),
         "Avg Ticket Price (₹)": cityAvgTicketPrice,
       });
+
     } catch (err) {
-      console.error(`Error fetching city ${city.name} for ${language}:`, err);
+      console.error(`❌ Error fetching city ${city.name} for ${language}: ${err.message}`);
     }
+
+    // Delay between city requests to avoid 429
+    await sleep(1500);
   }
 
   return { showRows, cityResults };
 }
 
-// Cities & language-event mapping here (unchanged from your code)
+// ----------------------
+// Cities & Language Mapping
+// ----------------------
 const karnatakaCities = [ 
   { name: "Bengaluru", code: "BANG", slug: "bengaluru", lat: 12.9716, lon: 77.5946, languages: ["tamil", "telugu", "kannada"] },
   { name: "Mysore", code: "MYS", slug: "mysore", lat: 12.2958, lon: 76.6394, languages: ["tamil", "kannada"] },
@@ -177,9 +214,7 @@ const karnatakaCities = [
   { name: "Raichur", code: "RAUR", slug: "raichur", lat: 16.2076, lon: 77.3439 ,languages: ["telugu"] },
   { name: "Hospet", code: "HOSP", slug: "hospet", lat: 15.2695, lon: 76.3871,languages: ["tamil","telugu"] },
   { name: "Bellary", code: "BLRY", slug: "bellary", lat: 15.1394, lon: 76.9214, languages: ["telugu"]},
-  
-
- ];
+];
 
 const validCities = karnatakaCities.filter(city => city.languages.length > 0);
 
@@ -189,6 +224,9 @@ const languageEventCodes = {
   kannada: "ET00395821",
 };
 
+// ----------------------
+// Main execution
+// ----------------------
 (async () => {
   let mergedShowRows = [];
   let mergedCityResults = [];
@@ -207,146 +245,18 @@ const languageEventCodes = {
     languageCitySummary[language] = cityResults;
   }
 
-  // Merge city-wise
-  const citySummaryMap = new Map();
-
-  for (const row of mergedCityResults) {
-    const key = row.City;
-    if (!citySummaryMap.has(key)) {
-      citySummaryMap.set(key, {
-        City: row.City,
-        "Total Shows": 0,
-        "Total Seats": 0,
-        "Booked Seats": 0,
-        "Booked Collection (₹)": 0,
-        "Total Collection (₹)": 0,
-        weightedPriceSum: 0,
-      });
-    }
-    const cityData = citySummaryMap.get(key);
-    cityData["Total Shows"] += row["Total Shows"];
-    cityData["Total Seats"] += row["Total Seats"];
-    cityData["Booked Seats"] += row["Booked Seats"];
-    cityData["Booked Collection (₹)"] += parseFloat(row["Booked Collection (₹)"]);
-    cityData["Total Collection (₹)"] += parseFloat(row["Total Collection (₹)"]);
-    cityData.weightedPriceSum += parseFloat(row["Avg Ticket Price (₹)"]) * row["Total Seats"];
-  }
-
-  const mergedCitySummary = [];
-  const cityTotals = {
-    City: "TOTAL",
-    "Total Shows": 0,
-    "Total Seats": 0,
-    "Booked Seats": 0,
-    "Booked Collection (₹)": 0,
-    "Total Collection (₹)": 0,
-    weightedPriceSum: 0,
-  };
-
-  for (const cityData of citySummaryMap.values()) {
-    const avgPrice = cityData["Total Seats"] > 0
-      ? cityData.weightedPriceSum / cityData["Total Seats"]
-      : 0;
-    const occupancy = cityData["Total Seats"] > 0
-      ? ((cityData["Booked Seats"] / cityData["Total Seats"]) * 100).toFixed(2)
-      : "0.00";
-
-    mergedCitySummary.push({
-      City: cityData.City,
-      "Total Shows": cityData["Total Shows"],
-      "Total Seats": cityData["Total Seats"],
-      "Booked Seats": cityData["Booked Seats"],
-      "Occupancy (%)": `${occupancy}%`,
-      "Booked Collection (₹)": cityData["Booked Collection (₹)"].toFixed(2),
-      "Total Collection (₹)": cityData["Total Collection (₹)"].toFixed(2),
-      "Avg Ticket Price (₹)": avgPrice.toFixed(2),
-    });
-
-    cityTotals["Total Shows"] += cityData["Total Shows"];
-    cityTotals["Total Seats"] += cityData["Total Seats"];
-    cityTotals["Booked Seats"] += cityData["Booked Seats"];
-    cityTotals["Booked Collection (₹)"] += cityData["Booked Collection (₹)"];
-    cityTotals["Total Collection (₹)"] += cityData["Total Collection (₹)"];
-    cityTotals.weightedPriceSum += cityData.weightedPriceSum;
-  }
-
-  cityTotals["Avg Ticket Price (₹)"] = cityTotals["Total Seats"] > 0
-    ? (cityTotals.weightedPriceSum / cityTotals["Total Seats"]).toFixed(2)
-    : "0.00";
-
-  cityTotals["Occupancy (%)"] = cityTotals["Total Seats"] > 0
-    ? ((cityTotals["Booked Seats"] / cityTotals["Total Seats"]) * 100).toFixed(2) + "%"
-    : "0.00%";
-
-  mergedCitySummary.push(cityTotals);
-
-  console.log("\n=== Merged Show-wise Table ===");
-  console.table(mergedShowRows);
-
-  console.log("\n=== City-wise Merged Table (With Total) ===");
-  console.table(mergedCitySummary);
-
-  // Language totals
-  const languageTotalsSummary = [];
-  const grandTotals = {
-    Language: "TOTAL",
-    "Total Shows": 0,
-    "Total Seats": 0,
-    "Booked Seats": 0,
-    "Booked Collection (₹)": 0,
-    "Total Collection (₹)": 0,
-    "Occupancy (%)": "0.00%",
-  };
-
-  for (const [language, cityDataArr] of Object.entries(languageCitySummary)) {
-    let totalShows = 0,
-      totalSeats = 0,
-      bookedSeats = 0,
-      bookedCollection = 0,
-      totalCollection = 0;
-
-    for (const cityData of cityDataArr) {
-      totalShows += cityData["Total Shows"] || 0;
-      totalSeats += cityData["Total Seats"] || 0;
-      bookedSeats += cityData["Booked Seats"] || 0;
-      bookedCollection += parseFloat(cityData["Booked Collection (₹)"]) || 0;
-      totalCollection += parseFloat(cityData["Total Collection (₹)"]) || 0;
-    }
-
-    const occupancy = totalSeats
-      ? ((bookedSeats / totalSeats) * 100).toFixed(2)
-      : "0.00";
-
-    languageTotalsSummary.push({
-      Language: language.toUpperCase(),
-      "Total Shows": totalShows,
-      "Total Seats": totalSeats,
-      "Booked Seats": bookedSeats,
-      "Occupancy (%)": `${occupancy}%`,
-      "Booked Collection (₹)": bookedCollection.toFixed(2),
-      "Total Collection (₹)": totalCollection.toFixed(2),
-    });
-
-    grandTotals["Total Shows"] += totalShows;
-    grandTotals["Total Seats"] += totalSeats;
-    grandTotals["Booked Seats"] += bookedSeats;
-    grandTotals["Booked Collection (₹)"] += bookedCollection;
-    grandTotals["Total Collection (₹)"] += totalCollection;
-  }
-
-  grandTotals["Occupancy (%)"] = grandTotals["Total Seats"] > 0
-    ? ((grandTotals["Booked Seats"] / grandTotals["Total Seats"]) * 100).toFixed(2) + "%"
-    : "0.00%";
-
-  languageTotalsSummary.push(grandTotals);
-
-  console.log("\n=== Language-wise Totals Table (With Total) ===");
-  console.table(languageTotalsSummary);
-
-
-  // Save CSV files for all three tables
+  // ----------------------
+  // Merge and save CSVs
+  // ----------------------
   saveToCSV(mergedShowRows, "show-wise");
-  saveToCSV(mergedCitySummary, "city-wise");
-  saveToCSV(languageTotalsSummary, "language-wise");
+  saveToCSV(mergedCityResults, "city-wise");
+  saveToCSV(Object.entries(languageCitySummary).flatMap(([lang, arr]) => arr), "language-wise");
 
+  console.log("✅ Data fetching completed!");
 })();
+
+
+ 
+
+
+   
