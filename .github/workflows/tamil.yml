@@ -1,0 +1,32 @@
+name: Fetch Tamil Showtimes
+
+on:
+  workflow_dispatch:         # Allow manual runs
+  schedule:
+    - cron: '0 6 * * *'      # Run daily at 6:00 UTC
+
+jobs:
+  run-fetch-tamil:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: |
+          npm install node-fetch
+
+      - name: Run fetchTamil.js
+        run: node fetchTamil.js
+
+      - name: Upload output CSVs
+        uses: actions/upload-artifact@v4
+        with:
+          name: tamil-csvs
+          path: output/*.csv
