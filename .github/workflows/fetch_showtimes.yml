@@ -2,7 +2,7 @@ name: Fetch Showtimes every 30 minutes
 
 on:
   schedule:
-    - cron: '0,15 * * * *'
+    - cron: '0,60 * * * *'
   workflow_dispatch:
 
 jobs:
