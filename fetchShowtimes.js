@@ -1,26 +1,7 @@
 import fs from "fs";
 
-// ----------------------
-// Helper functions
-// ----------------------
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
 
-function shuffle(array) {
-  return array.sort(() => Math.random() - 0.5);
-}
-
-function getRandomUserAgent() {
-  const agents = [
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
-    "Dalvik/2.1.0 (Linux; U; Android 12; Pixel XL Build/SP2A.220505.008)",
-    "Mozilla/5.0 (Linux; Android 13; SM-G991B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.5735.199 Mobile Safari/537.36"
-  ];
-  return agents[Math.floor(Math.random() * agents.length)];
-}
-
-// Save to CSV
+// -------------------- Save to CSV --------------------
 function saveToCSV(data, filenameBase) {
   if (!data.length) return;
 
@@ -40,50 +21,50 @@ function saveToCSV(data, filenameBase) {
   console.log(`💾 Saved ${filename}`);
 }
 
-// Format showtime
-function formatShowTime(raw) {
-  if (!raw || raw === "N/A") return "Unknown";
-  if (/^\d{1,2}:\d{2}\s?(AM|PM)$/i.test(raw)) return raw;
-  const n = Number(raw);
-  const d = !isNaN(n) ? new Date(n) : new Date(raw);
-  if (isNaN(d.getTime())) return "Unknown";
-  return d.toLocaleTimeString("en-IN", {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true,
-  });
-}
-
-// Fetch with retry
-async function fetchWithRetry(url, headers, retries = 3, delayMs = 2000) {
-  for (let i = 0; i < retries; i++) {
-    try {
-      const resp = await fetch(url, { headers });
-      if (resp.ok) return await resp.json();
-      console.warn(`Attempt ${i + 1} failed: ${resp.status}`);
-    } catch (err) {
-      console.warn(`Attempt ${i + 1} error: ${err.message}`);
-    }
-    await sleep(delayMs);
-  }
-  throw new Error(`Failed after ${retries} attempts: ${url}`);
-}
-
-// ----------------------
-// Main fetch function
-// ----------------------
+// -------------------- Main fetch function --------------------
 async function fetchShowtimesForCities(eventCode, cities, language) {
   const showRows = [];
   const cityResults = [];
-  const shuffledCities = shuffle(cities);
 
-  for (const city of shuffledCities) {
+  function formatShowTime(raw) {
+    if (!raw || raw === "N/A") return "Unknown";
+    if (/^\d{1,2}:\d{2}\s?(AM|PM)$/i.test(raw)) return raw;
+    const n = Number(raw);
+    const d = !isNaN(n) ? new Date(n) : new Date(raw);
+    if (isNaN(d.getTime())) return "Unknown";
+    return d.toLocaleTimeString("en-IN", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+  }
+
+  for (const city of cities) {
     const url = `https://in.bookmyshow.com/api/movies-data/showtimes-by-event?appCode=MOBAND2&appVersion=14304&language=en&eventCode=${eventCode}&regionCode=${city.code}&subRegion=${city.code}&bmsId=1.21345445.1703250084656&token=67x1xa33b4x422b361ba&lat=${city.lat}&lon=${city.lon}&query='&dateCode=20250812`;
+
     const headers = {
+      Host: "in.bookmyshow.com",
+      "x-bms-id": "1.21345445.1703250084656",
       "x-region-code": city.code,
       "x-subregion-code": city.code,
       "x-region-slug": city.slug,
-      "user-agent": getRandomUserAgent(),
+      "x-platform": "AND",
+      "x-platform-code": "ANDROID",
+      "x-app-code": "MOBAND2",
+      "x-device-make": "Google-Pixel XL",
+      "x-screen-height": "2392",
+      "x-screen-width": "1440",
+      "x-screen-density": "3.5",
+      "x-app-version": "14.3.4",
+      "x-app-version-code": "14304",
+      "x-network": "Android | WIFI",
+      "x-latitude": city.lat,
+      "x-longitude": city.lon,
+      "x-location-selection": "manual",
+      "x-location-shared": "false",
+      lang: "en",
+      "user-agent": "Dalvik/2.1.0 (Linux; U; Android 12; Pixel XL Build/SP2A.220505.008)",
+      Accept: "application/json",
     };
 
     let cityTotalSeats = 0;
@@ -94,8 +75,13 @@ async function fetchShowtimesForCities(eventCode, cities, language) {
     let totalShowsInCity = 0;
 
     try {
-      const data = await fetchWithRetry(url, headers, 3, 2000);
+      const resp = await fetch(url, { method: "GET", headers });
+      if (!resp.ok) {
+        console.error(`Failed fetch for city ${city.name}, status: ${resp.status}`);
+        continue;
+      }
 
+      const data = await resp.json();
       if (!data.ShowDetails?.length) continue;
 
       for (const showDetail of data.ShowDetails) {
@@ -169,21 +155,16 @@ async function fetchShowtimesForCities(eventCode, cities, language) {
         "Total Collection (₹)": cityTotalPotentialCollection.toFixed(2),
         "Avg Ticket Price (₹)": cityAvgTicketPrice,
       });
-
     } catch (err) {
-      console.error(`❌ Error fetching city ${city.name} for ${language}: ${err.message}`);
+      console.error(`Error fetching city ${city.name} for ${language}:`, err);
     }
-
-    // Delay between city requests to avoid 429
-    await sleep(1500);
   }
 
   return { showRows, cityResults };
 }
 
-// ----------------------
-// Cities & Language Mapping
-// ----------------------
+// -------------------- Your cities and language mapping --------------------
+// (Keep your karnatakaCities array and languageEventCodes mapping here as-is)
 const karnatakaCities = [ 
   { name: "Bengaluru", code: "BANG", slug: "bengaluru", lat: 12.9716, lon: 77.5946, languages: ["tamil", "telugu", "kannada"] },
   { name: "Mysore", code: "MYS", slug: "mysore", lat: 12.2958, lon: 76.6394, languages: ["tamil", "kannada"] },
@@ -214,19 +195,10 @@ const karnatakaCities = [
   { name: "Raichur", code: "RAUR", slug: "raichur", lat: 16.2076, lon: 77.3439 ,languages: ["telugu"] },
   { name: "Hospet", code: "HOSP", slug: "hospet", lat: 15.2695, lon: 76.3871,languages: ["tamil","telugu"] },
   { name: "Bellary", code: "BLRY", slug: "bellary", lat: 15.1394, lon: 76.9214, languages: ["telugu"]},
-];
+  
 
-const validCities = karnatakaCities.filter(city => city.languages.length > 0);
-
-const languageEventCodes = {
-  tamil: "ET00395817",
-  telugu: "ET00395820",
-  kannada: "ET00395821",
-};
-
-// ----------------------
-// Main execution
-// ----------------------
+ ];
+// -------------------- Main Execution --------------------
 (async () => {
   let mergedShowRows = [];
   let mergedCityResults = [];
@@ -234,7 +206,7 @@ const languageEventCodes = {
 
   for (const language of Object.keys(languageEventCodes)) {
     const eventCode = languageEventCodes[language];
-    const citiesForLang = validCities.filter(city => city.languages.includes(language));
+    const citiesForLang = karnatakaCities.filter(city => city.languages.includes(language));
 
     console.log(`\nFetching data for language: ${language} (${citiesForLang.length} cities)`);
 
@@ -245,18 +217,8 @@ const languageEventCodes = {
     languageCitySummary[language] = cityResults;
   }
 
-  // ----------------------
-  // Merge and save CSVs
-  // ----------------------
-  saveToCSV(mergedShowRows, "show-wise");
-  saveToCSV(mergedCityResults, "city-wise");
-  saveToCSV(Object.entries(languageCitySummary).flatMap(([lang, arr]) => arr), "language-wise");
-
-  console.log("✅ Data fetching completed!");
+  // Merge, calculate totals, log tables, and save CSV (keep your existing code as-is)...
+  // saveToCSV(mergedShowRows, "show-wise");
+  // saveToCSV(mergedCitySummary, "city-wise");
+  // saveToCSV(languageTotalsSummary, "language-wise");
 })();
-
-
- 
-
-
-   
