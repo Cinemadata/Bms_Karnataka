@@ -1,7 +1,8 @@
 import fs from "fs";
+import fetch from "node-fetch";
 
 // ---------------- Save to CSV ----------------
-function saveToCSV(data, filenameBase) {
+function saveToCSV(data, filenameBase, language) {
   if (!data.length) return;
 
   const headers = Object.keys(data[0]);
@@ -15,7 +16,7 @@ function saveToCSV(data, filenameBase) {
   const folder = "output";
 
   fs.mkdirSync(folder, { recursive: true });
-  const filename = `${folder}/${filenameBase}_tamil_${timestamp}.csv`;
+  const filename = `${folder}/${filenameBase}_${language}_${timestamp}.csv`;
   fs.writeFileSync(filename, csvContent, "utf8");
   console.log(`💾 Saved ${filename}`);
 }
@@ -36,7 +37,7 @@ async function fetchShowtimesForCities(eventCode, cities, language) {
 
   for (const city of cities) {
     const url = `https://in.bookmyshow.com/api/movies-data/showtimes-by-event?appCode=MOBAND2&appVersion=14304&language=en&eventCode=${eventCode}&regionCode=${city.code}&subRegion=${city.code}&bmsId=1.21345445.1703250084656&token=67x1xa33b4x422b361ba&lat=${city.lat}&lon=${city.lon}&query='&dateCode=20250814`;
-    
+
     const headers = {
       Host: "in.bookmyshow.com",
       "x-bms-id": "1.21345445.1703250084656",
@@ -135,10 +136,8 @@ async function fetchShowtimesForCities(eventCode, cities, language) {
   return { showRows, cityResults };
 }
 
-// ---------------- Cities & Event ----------------
+// ---------------- Telugu Cities ----------------
 const teluguCities = [
-  
-  const teluguCities = [
   { name: "Bengaluru", code: "BANG", slug: "bengaluru", lat: 12.9716, lon: 77.5946 },
   { name: "Hubli", code: "HUBL", slug: "hubli", lat: 15.3647, lon: 75.1237 },
   { name: "Gulbarga", code: "GULB", slug: "gulbarga", lat: 17.3297, lon: 76.8343 },
@@ -157,30 +156,15 @@ const teluguCities = [
   { name: "Bellary", code: "BLRY", slug: "bellary", lat: 15.1394, lon: 76.9214 },
 ];
 
-
-const tamilEventCode = "ET00395820"; // Tamil event code
+const teluguEventCode = "ET00446734"; // Telugu movie event code
 
 // ---------------- Main Execution ----------------
 (async () => {
-  console.log("Fetching Tamil shows...");
-  const { showRows, cityResults } = await fetchShowtimesForCities(tamilEventCode, tamilCities, "Tamil");
+  console.log("Fetching Telugu shows...");
+  const { showRows, cityResults } = await fetchShowtimesForCities(teluguEventCode, teluguCities, "Telugu");
 
-  // Save CSVs
-  saveToCSV(showRows, "show-wise");
-  saveToCSV(cityResults, "city-wise");
+  saveToCSV(showRows, "show-wise", "Telugu");
+  saveToCSV(cityResults, "city-wise", "Telugu");
 
-  // Language totals
-  let totalShows = 0, totalSeats = 0, bookedSeats = 0, bookedCollection = 0, totalCollection = 0;
-  for (const c of cityResults) {
-    totalShows += c["Total Shows"];
-    totalSeats += c["Total Seats"];
-    bookedSeats += c["Booked Seats"];
-    bookedCollection += parseFloat(c["Booked Collection (₹)"]);
-    totalCollection += parseFloat(c["Total Collection (₹)"]);
-  }
-  const occupancy = totalSeats ? ((bookedSeats / totalSeats) * 100).toFixed(2) : "0.00";
-  const languageSummary = [{ Language: "Tamil", "Total Shows": totalShows, "Total Seats": totalSeats, "Booked Seats": bookedSeats, "Occupancy (%)": `${occupancy}%`, "Booked Collection (₹)": bookedCollection.toFixed(2), "Total Collection (₹)": totalCollection.toFixed(2) }];
-  saveToCSV(languageSummary, "language-wise");
-
-  console.log("✅ Tamil data fetched and saved.");
+  console.log("✅ Telugu data fetched and saved.");
 })();
