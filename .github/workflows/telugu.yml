@@ -39,24 +39,20 @@ jobs:
       - name: List CSVs
         run: ls -lh output/
 
-      # 6️⃣ Commit and push CSVs safely
+      # 6️⃣ Commit and push CSVs safely (pull first)
       - name: Commit and push CSVs
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
 
-          # Use token to authenticate with origin
-          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/Cinemadata/Bms_Karnataka.git
-          
-          # Sync with remote branch
-          git fetch origin main
-          git reset --hard origin/main
+          # Pull latest changes from remote with rebase
+          git pull origin main --rebase
 
           # Add CSVs and commit
           git add output/*.csv
           git commit -m "Update Telugu shows CSVs [skip ci]" || echo "No changes to commit"
 
-          # Push safely
-          git push origin main --force
+          # Push updated branch
+          git push origin main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
