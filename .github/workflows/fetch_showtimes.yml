@@ -1,8 +1,8 @@
-name: Fetch Showtimes every 30 minutes
+name: Fetch Showtimes every 2 hours
 
 on:
   schedule:
-    - cron: '0,58 * * * *'
+    - cron: '0 */2 * * *'
   workflow_dispatch:
 
 jobs:
@@ -33,3 +33,4 @@ jobs:
           name: showtime-csv-files
           path: output/*.csv
           if-no-files-found: warn
+          
