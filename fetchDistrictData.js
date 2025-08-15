@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import fetch from "node-fetch";
+import fetch from "node-fetch"; // Ensure node-fetch is installed
 
 // --- Output folder ---
 const outputDir = path.join(process.cwd(), "output");
@@ -30,7 +30,7 @@ function saveToCSV(arr, filenameBase) {
     headers.map(h => `"${String(obj[h] ?? "").replace(/"/g, '""')}"`).join(",")
   );
   const csvContent = headers.join(",") + "\n" + rows.join("\n");
-  const fileName = `${filenameBase}.csv`;
+  const fileName = `${filenameBase}.csv`; 
   const filePath = path.join(outputDir, fileName);
   fs.writeFileSync(filePath, csvContent, { flag: "w" });
   console.log(`💾 Saved ${path.relative(process.cwd(), filePath)}`);
@@ -64,82 +64,74 @@ function formatTimeIST(raw) {
   });
 }
 
-// --- Recursive session finder ---
-function findSessions(obj, result = []) {
-  if (!obj || typeof obj !== "object") return result;
-  if (Array.isArray(obj.arrangedSessions) || Array.isArray(obj.sessions)) {
-    result.push(obj);
-  }
-  for (const key in obj) {
-    if (obj.hasOwnProperty(key)) findSessions(obj[key], result);
-  }
-  return result;
-}
+// --- Today's date ---
+const dateCode = "2025-08-16";
 
 // --- Fetch city shows ---
 async function fetchCityData(city, frmtId, lang) {
-  const url = `https://www.district.in/movies/f1-the-movie-movie-tickets-in-${city}-${eventCode}?frmtid=${frmtId}`;
+  const url = `https://www.district.in/movies/f1-the-movie-movie-tickets-in-${city}-${eventCode}?frmtid=${frmtId}&fromdate=${dateCode}`;
   try {
     const res = await fetch(url);
     const html = await res.text();
+
     const match = html.match(/<script id="__NEXT_DATA__" type="application\/json">(.*?)<\/script>/);
     if (!match) throw new Error("No __NEXT_DATA__ found");
 
     const data = JSON.parse(match[1]);
-    const initialState = data?.props?.pageProps?.initialState;
-    if (!initialState) throw new Error("No initialState found");
+    const movieData = data?.props?.pageProps?.initialState?.movies;
+    if (!movieData) throw new Error("No movies object found");
 
-    const foundSessions = findSessions(initialState);
-    if (!foundSessions.length) {
+    const entityCode = Object.keys(movieData.movieSessions || {})[0];
+    if (!entityCode) throw new Error("No entity code found");
+
+    const arranged = movieData.movieSessions[entityCode]?.arrangedSessions || movieData.movieSessions[entityCode]?.sessions;
+    if (!arranged || arranged.length === 0) {
       console.warn(`❌ ${city} (${lang}): No sessions found`);
-      console.log(JSON.stringify(initialState, null, 2));
+      console.log(JSON.stringify(movieData, null, 2));
       return;
     }
 
     let shows = 0, booked = 0, max = 0, collection = 0, maxCollection = 0;
 
-    foundSessions.forEach(entity => {
-      const arranged = entity.arrangedSessions || entity.sessions;
-      arranged.forEach(venue => {
-        const venueName = venue.entityName || "Unknown Venue";
-        if (!allowedVenues.some(name => venueName.toLowerCase().startsWith(name))) return;
+    arranged.forEach(venue => {
+      const venueName = venue.entityName || "Unknown Venue";
+      if (!allowedVenues.some(name => venueName.toLowerCase().startsWith(name))) return;
 
-        (venue.sessions || []).forEach(show => {
-          const totalSeats = show.total || 0;
-          const availSeats = show.avail || 0;
-          const bookedSeats = totalSeats - availSeats;
-          if (totalSeats === 0 || bookedSeats <= 0) return;
+      (venue.sessions || []).forEach(show => {
+        const totalSeats = show.total || 0;
+        const availSeats = show.avail || 0;
+        const bookedSeats = totalSeats - availSeats;
+        if (totalSeats === 0 || bookedSeats <= 0) return;
 
-          let priceSum = 0, count = 0;
-          (show.areas || []).forEach(area => {
-            if (typeof area.price === "number" && area.price > 30) {
-              priceSum += area.price;
-              count++;
-            }
-          });
-          const avgPrice = count > 0 ? priceSum / count : 0;
-          if (avgPrice <= 30) return;
-
-          const occupancy = totalSeats > 0 ? (bookedSeats / totalSeats) * 100 : 0;
-          const bookedCollection = bookedSeats * avgPrice;
-          const totalCollection = totalSeats * avgPrice;
-
-          allShowDetails.push({
-            City: city,
-            Language: lang,
-            Venue: venueName,
-            "Show Time": formatTimeIST(show.showTime || show.time),
-            "Total Seats": totalSeats,
-            "Booked Seats": bookedSeats,
-            "Occupancy (%)": occupancy.toFixed(2),
-            "Booked Collection (₹)": "₹" + bookedCollection.toFixed(0),
-            "Total Collection (₹)": "₹" + totalCollection.toFixed(0),
-            "Avg Ticket Price (₹)": avgPrice.toFixed(2)
-          });
-
-          shows++; booked += bookedSeats; max += totalSeats;
-          collection += bookedCollection; maxCollection += totalCollection;
+        let priceSum = 0, count = 0;
+        (show.areas || []).forEach(area => {
+          if (typeof area.price === "number" && area.price > 30) {
+            priceSum += area.price;
+            count++;
+          }
         });
+        const avgPrice = count > 0 ? priceSum / count : 0;
+        if (avgPrice <= 30) return;
+
+        const occupancy = totalSeats > 0 ? (bookedSeats / totalSeats) * 100 : 0;
+        const bookedCollection = bookedSeats * avgPrice;
+        const totalCollection = totalSeats * avgPrice;
+
+        allShowDetails.push({
+          City: city,
+          Language: lang,
+          Venue: venueName,
+          "Show Time": formatTimeIST(show.showTime || show.time),
+          "Total Seats": totalSeats,
+          "Booked Seats": bookedSeats,
+          "Occupancy (%)": occupancy.toFixed(2),
+          "Booked Collection (₹)": "₹" + bookedCollection.toFixed(0),
+          "Total Collection (₹)": "₹" + totalCollection.toFixed(0),
+          "Avg Ticket Price (₹)": avgPrice.toFixed(2)
+        });
+
+        shows++; booked += bookedSeats; max += totalSeats;
+        collection += bookedCollection; maxCollection += totalCollection;
       });
     });
 
@@ -175,7 +167,7 @@ async function fetchCityData(city, frmtId, lang) {
 
 // --- Main ---
 (async () => {
-  console.log("⏳ Fetching city-wise data for Karnataka...");
+  console.log(`⏳ Fetching city-wise data for Karnataka on ${dateCode}...`);
   for (let city of cities) {
     for (const [lang, frmtId] of Object.entries(formatMap)) {
       await fetchCityData(city, frmtId, lang);
