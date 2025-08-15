@@ -35,7 +35,7 @@ const formatIDs = {
   Tamil: "zcw3aqxszc",
   Kannada: "k3W3TZbHuT"
 };
-const cities = ["bengaluru"];
+const cities = ["Bengaluru"];
 const allowedVenues = ["sandhya", "manasa", "balaji", "innovative"];
 
 // Data arrays
