@@ -1,33 +1,35 @@
 name: Fetch Telugu Showtimes
 
 on:
-  workflow_dispatch:
   schedule:
-    - cron: '*/30 * * * *'
+    - cron: "*/30 * * * *"  # every 30 minutes
+  workflow_dispatch:
 
 jobs:
-  run-fetch-telugu:
+  fetch-telugu:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: "20"
 
       - name: Install dependencies
         run: npm install
 
-      - name: Run fetchTelugu.js
+      - name: Run Telugu showtime script
         run: node fetchTelugu.js
 
-
-      - name: Upload output CSVs
-        uses: actions/upload-artifact@v4
-        with:
-          name: telugu-csvs
-          path: output/*.csv
-
-          
+      - name: Commit and push CSVs
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add output/show-wise-telugu.csv output/city-wise-telugu.csv
+          git commit -m "Update Telugu showtime CSVs [skip ci]" || echo "No changes to commit"
+          git push origin main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
