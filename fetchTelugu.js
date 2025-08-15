@@ -1,24 +1,22 @@
 import fs from "fs";
 
-
 // ---------------- Save to CSV ---------------
-function saveToCSV(data, filenameBase, language) {
+function saveToCSV(data, filenameBase) {
   if (!data.length) return;
 
   const folder = "output";
   fs.mkdirSync(folder, { recursive: true });
-  const csvFilePath = `${folder}/${filenameBase}_${language}.csv`;
+  const csvFilePath = `${folder}/${filenameBase}.csv`;
 
   const headers = Object.keys(data[0]);
   const rows = data.map(obj =>
     headers.map(h => `"${obj[h] !== undefined ? obj[h] : ""}"`).join(",")
   );
-  const csvContent = rows.join("\n");
 
   if (!fs.existsSync(csvFilePath)) {
-    fs.writeFileSync(csvFilePath, headers.join(",") + "\n" + csvContent + "\n", "utf8");
+    fs.writeFileSync(csvFilePath, headers.join(",") + "\n" + rows.join("\n") + "\n", "utf8");
   } else {
-    fs.appendFileSync(csvFilePath, csvContent + "\n", "utf8");
+    fs.appendFileSync(csvFilePath, rows.join("\n") + "\n", "utf8");
   }
 
   console.log(`💾 Appended ${data.length} rows to ${csvFilePath}`);
@@ -39,7 +37,7 @@ async function fetchShowtimesForCities(eventCode, cities, language) {
   }
 
   for (const city of cities) {
-    const url = `https://in.bookmyshow.com/api/movies-data/showtimes-by-event?appCode=MOBAND2&appVersion=14304&language=en&eventCode=${eventCode}&regionCode=${city.code}&subRegion=${city.code}&bmsId=1.21345445.1703250084656&token=67x1xa33b4x422b361ba&lat=${city.lat}&lon=${city.lon}&query=&dateCode=20250816`;
+    const url = `https://in.bookmyshow.com/api/movies-data/showtimes-by-event?appCode=MOBAND2&appVersion=14304&language=en&eventCode=${eventCode}&regionCode=${city.code}&subRegion=${city.code}&bmsId=1.21345445.1703250084656&token=67x1xa33b4x422b361ba&lat=${city.lat}&lon=${city.lon}&query=&dateCode=20250815`;
 
     const headers = {
       Host: "in.bookmyshow.com",
@@ -161,8 +159,8 @@ const teluguEventCode = "ET00446734";
   console.log("Fetching Telugu shows...");
   const { showRows, cityResults } = await fetchShowtimesForCities(teluguEventCode, teluguCities, "Telugu");
 
-  saveToCSV(showRows, "show-wise", "Telugu");
-  saveToCSV(cityResults, "city-wise", "Telugu");
+  saveToCSV(showRows, "show-wise-telugu");
+  saveToCSV(cityResults, "city-wise-telugu");
 
-  console.log("✅ Telugu data fetched and saved.");
+  console.log("✅ Telugu data fetched and appended.");
 })();
