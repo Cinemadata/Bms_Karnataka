@@ -1,29 +1,44 @@
-name: Fetch District.in Movie Data
+name: Fetch District shows
 
+# Trigger every 30 minutes
 on:
   schedule:
-   - cron: '*/30 * * * *'    # runs every 6 hours
-  workflow_dispatch:      # manual trigger allowed
+    - cron: '*/30 * * * *'
+  workflow_dispatch: # manual trigger
+
+# Give write permissions to push CSVs
+permissions:
+  contents: write
 
 jobs:
-  fetch-district-data:
+  fetch-and-push:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
+      # Checkout the repo
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Setup Node.js 18
+      # Setup Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: 20
+
+      # Install dependencies
+      - name: Install dependencies
+        run: npm install
 
       - name: Run district.in fetch script
         run: node fetchDistrictData.js
 
-      - name: Upload CSV files
-        uses: actions/upload-artifact@v4
-        with:
-          name: showtime-csv-files
-          path: output/*.csv
-          if-no-files-found: warn
+      
+      # Commit and push generated CSVs
+      - name: Commit and push CSVs
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add output/*.csv
+          git commit -m "Update District shows CSVs [skip ci]" || echo "No changes to commit"
+          git push origin main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
