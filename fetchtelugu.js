@@ -5,20 +5,23 @@ import fs from "fs";
 function saveToCSV(data, filenameBase, language) {
   if (!data.length) return;
 
+  const folder = "output";
+  fs.mkdirSync(folder, { recursive: true });
+  const csvFilePath = `${folder}/${filenameBase}_${language}.csv`;
+
   const headers = Object.keys(data[0]);
   const rows = data.map(obj =>
     headers.map(h => `"${obj[h] !== undefined ? obj[h] : ""}"`).join(",")
   );
-  const csvContent = [headers.join(","), ...rows].join("\n");
+  const csvContent = rows.join("\n");
 
-  const now = new Date();
-  const timestamp = now.toISOString().replace(/[-:T]/g, "").split(".")[0];
-  const folder = "output";
+  if (!fs.existsSync(csvFilePath)) {
+    fs.writeFileSync(csvFilePath, headers.join(",") + "\n" + csvContent + "\n", "utf8");
+  } else {
+    fs.appendFileSync(csvFilePath, csvContent + "\n", "utf8");
+  }
 
-  fs.mkdirSync(folder, { recursive: true });
-  const filename = `${folder}/${filenameBase}_${language}_${timestamp}.csv`;
-  fs.writeFileSync(filename, csvContent, "utf8");
-  console.log(`💾 Saved ${filename}`);
+  console.log(`💾 Appended ${data.length} rows to ${csvFilePath}`);
 }
 
 // ---------------- Fetch Showtimes ----------------
@@ -36,7 +39,7 @@ async function fetchShowtimesForCities(eventCode, cities, language) {
   }
 
   for (const city of cities) {
-    const url = `https://in.bookmyshow.com/api/movies-data/showtimes-by-event?appCode=MOBAND2&appVersion=14304&language=en&eventCode=${eventCode}&regionCode=${city.code}&subRegion=${city.code}&bmsId=1.21345445.1703250084656&token=67x1xa33b4x422b361ba&lat=${city.lat}&lon=${city.lon}&query='&dateCode=20250814`;
+    const url = `https://in.bookmyshow.com/api/movies-data/showtimes-by-event?appCode=MOBAND2&appVersion=14304&language=en&eventCode=${eventCode}&regionCode=${city.code}&subRegion=${city.code}&bmsId=1.21345445.1703250084656&token=67x1xa33b4x422b361ba&lat=${city.lat}&lon=${city.lon}&query=&dateCode=20250816`;
 
     const headers = {
       Host: "in.bookmyshow.com",
@@ -62,13 +65,13 @@ async function fetchShowtimesForCities(eventCode, cities, language) {
       "user-agent": "Dalvik/2.1.0 (Linux; U; Android 12; Pixel XL Build/SP2A.220505.008)",
     };
 
-    let cityTotalSeats = 0, cityBookedSeats = 0, cityBookedCollection = 0, cityTotalPotentialCollection = 0, cityWeightedPriceSum = 0, totalShowsInCity = 0;
-
     try {
       const resp = await fetch(url, { method: "GET", headers });
       if (!resp.ok) { console.error(`Failed fetch for ${city.name}`); continue; }
       const data = await resp.json();
       if (!data.ShowDetails?.length) continue;
+
+      let cityTotalSeats = 0, cityBookedSeats = 0, cityBookedCollection = 0, cityTotalPotentialCollection = 0, cityWeightedPriceSum = 0, totalShowsInCity = 0;
 
       for (const showDetail of data.ShowDetails) {
         for (const venue of showDetail.Venues) {
@@ -149,10 +152,9 @@ const teluguCities = [
   { name: "Tiptur", code: "TIPT", slug: "tiptur", lat: 13.3153, lon: 76.4537 },
   { name: "Raichur", code: "RAUR", slug: "raichur", lat: 16.2076, lon: 77.3439 },
   { name: "Hospet", code: "HOSP", slug: "hospet", lat: 15.2695, lon: 76.3871 },
-  
 ];
 
-const teluguEventCode = "ET00446734"; // Telugu movie event code
+const teluguEventCode = "ET00446734";
 
 // ---------------- Main Execution ----------------
 (async () => {
