@@ -1,43 +1,50 @@
-name: Fetch Telugu shows
+name: Fetch Telugu Shows
 
-# Trigger every 30 minutes
+# Trigger every 30 minutes or manually
 on:
   schedule:
     - cron: '*/30 * * * *'
-  workflow_dispatch: # manual trigger
+  workflow_dispatch:
 
-# Give write permissions to push CSVs
+# Permissions for pushing CSVs
 permissions:
   contents: write
 
 jobs:
   fetch-and-push:
     runs-on: ubuntu-latest
+
     steps:
-      # Checkout the repo
+      # 1️⃣ Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # full history to allow push
 
-      # Setup Node.js
+      # 2️⃣ Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 20
 
-      # Install dependencies
+      # 3️⃣ Install dependencies
       - name: Install dependencies
         run: npm install
 
-      # Run Telugu script
+      # 4️⃣ Run Telugu show fetch script
       - name: Run fetchTelugu.js
         run: node fetchTelugu.js
 
-      
-      # Commit and push generated CSVs
+      # 5️⃣ List generated CSVs for debugging
+      - name: List CSVs
+        run: ls -lh output/
+
+      # 6️⃣ Commit and push CSVs safely
       - name: Commit and push CSVs
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
+          git pull --rebase origin main
           git add output/*.csv
           git commit -m "Update Telugu shows CSVs [skip ci]" || echo "No changes to commit"
           git push origin main
