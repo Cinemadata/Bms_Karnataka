@@ -3,7 +3,7 @@ name: Fetch Tamil Showtimes
 on:
   workflow_dispatch:         # Allow manual runs
   schedule:
-    - cron: '0 6 * * *'      # Run daily at 6:00 UTC
+    - cron: '*/30 * * * *'   # Run every 30 minutes
 
 jobs:
   run-fetch-tamil:
