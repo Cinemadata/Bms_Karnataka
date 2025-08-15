@@ -1,58 +1,44 @@
-name: Fetch Telugu Shows
+name: Update Telugu Shows CSVs
 
-# Trigger every 30 minutes or manually
 on:
+  push:
+    branches:
+      - main
   schedule:
-    - cron: '*/30 * * * *'
-  workflow_dispatch:
-
-# Permissions for pushing CSVs
-permissions:
-  contents: write
+    - cron: '*/30 * * * *'  # Runs every 30 minutes
 
 jobs:
-  fetch-and-push:
+  update-telugu-csv:
     runs-on: ubuntu-latest
-
     steps:
-      # 1️⃣ Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # Full history to allow push
 
-      # 2️⃣ Setup Node.js
-      - name: Setup Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 20
 
-      # 3️⃣ Install dependencies
+      - name: Set up Git
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+
+      - name: Pull latest changes from remote
+        run: |
+          git fetch origin main
+          git reset --hard origin/main
+
       - name: Install dependencies
         run: npm install
 
-      # 4️⃣ Run Telugu show fetch script
-      - name: Run fetchTelugu.js
-        run: node fetchTelugu.js
+      - name: Run Telugu.js
+        run: node Telugu.js
 
-      # 5️⃣ List generated CSVs for debugging
-      - name: List CSVs
-        run: ls -lh output/
-
-      # 6️⃣ Commit and push CSVs safely (pull first)
-      - name: Commit and push CSVs
+      - name: Commit changes
         run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-
-          # Pull latest changes from remote with rebase
-          git pull origin main --rebase
-
-          # Add CSVs and commit
-          git add output/*.csv
+          git add .
           git commit -m "Update Telugu shows CSVs [skip ci]" || echo "No changes to commit"
 
-          # Push updated branch
-          git push origin main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Push changes
+        run: git push origin main
