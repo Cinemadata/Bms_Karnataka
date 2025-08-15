@@ -1,31 +1,32 @@
-name: Fetch Telugu Shows
+name: Fetch Telugu Showtimes
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '*/30 * * * *' # Runs every 30 minutes
+    - cron: '*/30 * * * *'
 
 jobs:
-  fetch-telugu-shows:
+  run-fetch-telugu:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20' # or your preferred version
+          node-version: '20'
 
       - name: Install dependencies
-        run: npm install node-fetch
+        run: npm install
 
-      - name: Run fetchtelugu.js
-        run: node fetchtelugu.js
+      - name: Run fetchTelugu.js
+        run: node fetchTelugu.js
 
-      - name: Archive output files
+      - name: Upload output CSVs
         uses: actions/upload-artifact@v4
         with:
-          name: telugu-show-output
+          name: telugu-csvs
           path: output/*.csv
+
+          
