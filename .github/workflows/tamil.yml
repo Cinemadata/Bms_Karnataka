@@ -1,32 +1,35 @@
 name: Fetch Tamil Showtimes
 
 on:
-  workflow_dispatch:         # Allow manual runs
   schedule:
-    - cron: '*/30 * * * *'   # Run every 30 minutes
+    - cron: '*/30 * * * *'   # Runs every 30 minutes
+  workflow_dispatch:          # Allows manual trigger from GitHub Actions UI
 
 jobs:
-  run-fetch-tamil:
+  fetch-tamil:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: 20
 
       - name: Install dependencies
-        run: |
-          npm install node-fetch
+        run: npm install
 
-      - name: Run fetchTamil.js
+      - name: Fetch Tamil Showtimes
         run: node fetchTamil.js
 
-      - name: Upload output CSVs
-        uses: actions/upload-artifact@v4
-        with:
-          name: tamil-csvs
-          path: output/*.csv
+      - name: Commit and push CSVs
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add output/*.csv
+          git commit -m "Update Tamil showtime CSVs [skip ci]" || echo "No changes to commit"
+          git push origin main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
