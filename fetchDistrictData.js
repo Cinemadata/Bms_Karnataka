@@ -30,7 +30,7 @@ function saveToCSV(arr, filenameBase) {
     headers.map(h => `"${String(obj[h] ?? "").replace(/"/g, '""')}"`).join(",")
   );
   const csvContent = headers.join(",") + "\n" + rows.join("\n");
-  const fileName = `${filenameBase}.csv`; 
+  const fileName = `${filenameBase}.csv`;
   const filePath = path.join(outputDir, fileName);
   fs.writeFileSync(filePath, csvContent, { flag: "w" });
   console.log(`💾 Saved ${path.relative(process.cwd(), filePath)}`);
@@ -66,7 +66,7 @@ function formatTimeIST(raw) {
 
 // --- Fetch city shows ---
 async function fetchCityData(city, frmtId, lang) {
-  const url = `https://www.district.in/movies/f1-the-movie-movie-tickets-in-${city}-${eventCode}?frmtid=${frmtId}`;
+  const url = `https://www.district.in/movies/f1-the-movie-movie-tickets-in-${city.toLowerCase()}-${eventCode}?frmtid=${frmtId}`;
   try {
     const res = await fetch(url);
     const html = await res.text();
@@ -75,63 +75,66 @@ async function fetchCityData(city, frmtId, lang) {
     if (!match) throw new Error("No __NEXT_DATA__ found");
 
     const data = JSON.parse(match[1]);
-    const movieData = data?.props?.pageProps?.initialState?.movies;
+    const moviesState = data?.props?.pageProps?.initialState?.movies;
+    if (!moviesState) throw new Error("No movies object found");
 
-    if (!movieData) throw new Error("No movies object found");
-
-    const entityCode = Object.keys(movieData.movieSessions || {})[0];
-    if (!entityCode) throw new Error("No entity code found");
-
-    const arranged = movieData.movieSessions[entityCode]?.arrangedSessions || movieData.movieSessions[entityCode]?.sessions;
-    if (!arranged || arranged.length === 0) {
-      console.warn(`❌ ${city} (${lang}): No arrangedSessions found. Logging raw JSON...`);
-      console.log(JSON.stringify(movieData, null, 2)); // Inspect for updated key
+    const movieSessions = moviesState.movieSessions || {};
+    const sessionKeys = Object.keys(movieSessions);
+    if (sessionKeys.length === 0) {
+      console.warn(`❌ ${city} (${lang}): No movieSessions keys found`);
+      console.log(JSON.stringify(moviesState, null, 2));
       return;
     }
 
     let shows = 0, booked = 0, max = 0, collection = 0, maxCollection = 0;
 
-    arranged.forEach(venue => {
-      const venueName = venue.entityName || "Unknown Venue";
-      if (!allowedVenues.some(name => venueName.toLowerCase().startsWith(name))) return;
+    for (const key of sessionKeys) {
+      const entity = movieSessions[key];
+      const arranged = entity.arrangedSessions || entity.sessions;
+      if (!arranged || arranged.length === 0) continue;
 
-      (venue.sessions || []).forEach(show => {
-        const totalSeats = show.total || 0;
-        const availSeats = show.avail || 0;
-        const bookedSeats = totalSeats - availSeats;
-        if (totalSeats === 0 || bookedSeats <= 0) return;
+      arranged.forEach(venue => {
+        const venueName = venue.entityName || "Unknown Venue";
+        if (!allowedVenues.some(name => venueName.toLowerCase().startsWith(name))) return;
 
-        let priceSum = 0, count = 0;
-        (show.areas || []).forEach(area => {
-          if (typeof area.price === "number" && area.price > 30) {
-            priceSum += area.price;
-            count++;
-          }
+        (venue.sessions || []).forEach(show => {
+          const totalSeats = show.total || 0;
+          const availSeats = show.avail || 0;
+          const bookedSeats = totalSeats - availSeats;
+          if (totalSeats === 0 || bookedSeats <= 0) return;
+
+          let priceSum = 0, count = 0;
+          (show.areas || []).forEach(area => {
+            if (typeof area.price === "number" && area.price > 30) {
+              priceSum += area.price;
+              count++;
+            }
+          });
+          const avgPrice = count > 0 ? priceSum / count : 0;
+          if (avgPrice <= 30) return;
+
+          const occupancy = totalSeats > 0 ? (bookedSeats / totalSeats) * 100 : 0;
+          const bookedCollection = bookedSeats * avgPrice;
+          const totalCollection = totalSeats * avgPrice;
+
+          allShowDetails.push({
+            City: city,
+            Language: lang,
+            Venue: venueName,
+            "Show Time": formatTimeIST(show.showTime || show.time),
+            "Total Seats": totalSeats,
+            "Booked Seats": bookedSeats,
+            "Occupancy (%)": occupancy.toFixed(2),
+            "Booked Collection (₹)": "₹" + bookedCollection.toFixed(0),
+            "Total Collection (₹)": "₹" + totalCollection.toFixed(0),
+            "Avg Ticket Price (₹)": avgPrice.toFixed(2)
+          });
+
+          shows++; booked += bookedSeats; max += totalSeats;
+          collection += bookedCollection; maxCollection += totalCollection;
         });
-        const avgPrice = count > 0 ? priceSum / count : 0;
-        if (avgPrice <= 30) return;
-
-        const occupancy = totalSeats > 0 ? (bookedSeats / totalSeats) * 100 : 0;
-        const bookedCollection = bookedSeats * avgPrice;
-        const totalCollection = totalSeats * avgPrice;
-
-        allShowDetails.push({
-          City: city,
-          Language: lang,
-          Venue: venueName,
-          "Show Time": formatTimeIST(show.showTime || show.time),
-          "Total Seats": totalSeats,
-          "Booked Seats": bookedSeats,
-          "Occupancy (%)": occupancy.toFixed(2),
-          "Booked Collection (₹)": "₹" + bookedCollection.toFixed(0),
-          "Total Collection (₹)": "₹" + totalCollection.toFixed(0),
-          "Avg Ticket Price (₹)": avgPrice.toFixed(2)
-        });
-
-        shows++; booked += bookedSeats; max += totalSeats;
-        collection += bookedCollection; maxCollection += totalCollection;
       });
-    });
+    }
 
     if (shows > 0) {
       citySummary.push({
@@ -185,3 +188,4 @@ async function fetchCityData(city, frmtId, lang) {
   saveToCSV(citySummary, "city-wise");
   saveToCSV(languageSummary, "language-wise");
 })();
+
