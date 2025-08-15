@@ -34,9 +34,14 @@ async function fetchShowtimesForCities(eventCode, cities, language) {
     return d.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true });
   }
 
+  const today = new Date();
+  const dateCode = `${today.getFullYear()}${(today.getMonth() + 1)
+    .toString()
+    .padStart(2, "0")}${today.getDate().toString().padStart(2, "0")}`;
+
   for (const city of cities) {
-    const url = `https://in.bookmyshow.com/api/movies-data/showtimes-by-event?appCode=MOBAND2&appVersion=14304&language=en&eventCode=${eventCode}&regionCode=${city.code}&subRegion=${city.code}&bmsId=1.21345445.1703250084656&token=67x1xa33b4x422b361ba&lat=${city.lat}&lon=${city.lon}&query='&dateCode=20250814`;
-    
+    const url = `https://in.bookmyshow.com/api/movies-data/showtimes-by-event?appCode=MOBAND2&appVersion=14304&language=en&eventCode=${eventCode}&regionCode=${city.code}&subRegion=${city.code}&bmsId=1.21345445.1703250084656&token=67x1xa33b4x422b361ba&lat=${city.lat}&lon=${city.lon}&query=&dateCode=${dateCode}`;
+
     const headers = {
       Host: "in.bookmyshow.com",
       "x-bms-id": "1.21345445.1703250084656",
@@ -61,11 +66,19 @@ async function fetchShowtimesForCities(eventCode, cities, language) {
       "user-agent": "Dalvik/2.1.0 (Linux; U; Android 12; Pixel XL Build/SP2A.220505.008)",
     };
 
-    let cityTotalSeats = 0, cityBookedSeats = 0, cityBookedCollection = 0, cityTotalPotentialCollection = 0, cityWeightedPriceSum = 0, totalShowsInCity = 0;
+    let cityTotalSeats = 0,
+      cityBookedSeats = 0,
+      cityBookedCollection = 0,
+      cityTotalPotentialCollection = 0,
+      cityWeightedPriceSum = 0,
+      totalShowsInCity = 0;
 
     try {
       const resp = await fetch(url, { method: "GET", headers });
-      if (!resp.ok) { console.error(`Failed fetch for ${city.name}`); continue; }
+      if (!resp.ok) {
+        console.error(`Failed fetch for ${city.name}`);
+        continue;
+      }
       const data = await resp.json();
       if (!data.ShowDetails?.length) continue;
 
@@ -75,7 +88,12 @@ async function fetchShowtimesForCities(eventCode, cities, language) {
             totalShowsInCity++;
             const formattedTime = formatShowTime(showTime.ShowTime);
 
-            let totalSeats = 0, totalBooked = 0, totalShowCollection = 0, sumCategoryPrices = 0, catCount = 0;
+            let totalSeats = 0,
+              totalBooked = 0,
+              totalShowCollection = 0,
+              sumCategoryPrices = 0,
+              catCount = 0;
+
             for (const cat of showTime.Categories) {
               const maxSeats = parseInt(cat.MaxSeats) || 0;
               const seatsAvail = parseInt(cat.SeatsAvail) || 0;
@@ -115,8 +133,12 @@ async function fetchShowtimesForCities(eventCode, cities, language) {
         }
       }
 
-      const cityOccupancy = cityTotalSeats ? ((cityBookedSeats / cityTotalSeats) * 100).toFixed(2) : "0.00";
-      const cityAvgTicketPrice = cityTotalSeats ? (cityWeightedPriceSum / cityTotalSeats).toFixed(2) : "0.00";
+      const cityOccupancy = cityTotalSeats
+        ? ((cityBookedSeats / cityTotalSeats) * 100).toFixed(2)
+        : "0.00";
+      const cityAvgTicketPrice = cityTotalSeats
+        ? (cityWeightedPriceSum / cityTotalSeats).toFixed(2)
+        : "0.00";
 
       cityResults.push({
         Language: language,
@@ -129,7 +151,9 @@ async function fetchShowtimesForCities(eventCode, cities, language) {
         "Total Collection (₹)": cityTotalPotentialCollection.toFixed(2),
         "Avg Ticket Price (₹)": cityAvgTicketPrice,
       });
-    } catch (err) { console.error(`Error ${city.name}:`, err); }
+    } catch (err) {
+      console.error(`Error ${city.name}:`, err);
+    }
   }
 
   return { showRows, cityResults };
@@ -137,7 +161,6 @@ async function fetchShowtimesForCities(eventCode, cities, language) {
 
 // ---------------- Cities & Event ----------------
 const tamilCities = [
-  
   { name: "Bengaluru", code: "BANG", slug: "bengaluru", lat: 12.9716, lon: 77.5946 },
   { name: "Mysore", code: "MYS", slug: "mysore", lat: 12.2958, lon: 76.6394 },
   { name: "Hubli", code: "HUBL", slug: "hubli", lat: 15.3647, lon: 75.1237 },
@@ -156,29 +179,48 @@ const tamilCities = [
   { name: "Hospet", code: "HOSP", slug: "hospet", lat: 15.2695, lon: 76.3871 },
 ];
 
-
-const tamilEventCode = "ET00395817"; // Tamil event code
+const tamilEventCode = "ET00395817";
 
 // ---------------- Main Execution ----------------
 (async () => {
   console.log("Fetching Tamil shows...");
   const { showRows, cityResults } = await fetchShowtimesForCities(tamilEventCode, tamilCities, "Tamil");
 
-  // Save CSVs
   saveToCSV(showRows, "show-wise");
   saveToCSV(cityResults, "city-wise");
 
   // Language totals
-  let totalShows = 0, totalSeats = 0, bookedSeats = 0, bookedCollection = 0, totalCollection = 0;
+  let totalShows = 0,
+    totalSeats = 0,
+    bookedSeats = 0,
+    bookedCollection = 0,
+    totalCollection = 0,
+    weightedPriceSum = 0;
+
   for (const c of cityResults) {
     totalShows += c["Total Shows"];
     totalSeats += c["Total Seats"];
     bookedSeats += c["Booked Seats"];
     bookedCollection += parseFloat(c["Booked Collection (₹)"]);
     totalCollection += parseFloat(c["Total Collection (₹)"]);
+    weightedPriceSum += parseFloat(c["Avg Ticket Price (₹)"]) * c["Total Seats"];
   }
+
   const occupancy = totalSeats ? ((bookedSeats / totalSeats) * 100).toFixed(2) : "0.00";
-  const languageSummary = [{ Language: "Tamil", "Total Shows": totalShows, "Total Seats": totalSeats, "Booked Seats": bookedSeats, "Occupancy (%)": `${occupancy}%`, "Booked Collection (₹)": bookedCollection.toFixed(2), "Total Collection (₹)": totalCollection.toFixed(2) }];
+  const avgTicketPrice = totalSeats ? (weightedPriceSum / totalSeats).toFixed(2) : "0.00";
+
+  const languageSummary = [
+    {
+      Language: "Tamil",
+      "Total Shows": totalShows,
+      "Total Seats": totalSeats,
+      "Booked Seats": bookedSeats,
+      "Occupancy (%)": `${occupancy}%`,
+      "Booked Collection (₹)": bookedCollection.toFixed(2),
+      "Total Collection (₹)": totalCollection.toFixed(2),
+      "Avg Ticket Price (₹)": avgTicketPrice,
+    },
+  ];
   saveToCSV(languageSummary, "language-wise");
 
   console.log("✅ Tamil data fetched and saved.");
