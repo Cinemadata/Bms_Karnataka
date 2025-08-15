@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-
+import fetch from "node-fetch";
 
 // --- Output folder ---
 const outputDir = path.join(process.cwd(), "output");
@@ -64,35 +64,42 @@ function formatTimeIST(raw) {
   });
 }
 
+// --- Recursive session finder ---
+function findSessions(obj, result = []) {
+  if (!obj || typeof obj !== "object") return result;
+  if (Array.isArray(obj.arrangedSessions) || Array.isArray(obj.sessions)) {
+    result.push(obj);
+  }
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key)) findSessions(obj[key], result);
+  }
+  return result;
+}
+
 // --- Fetch city shows ---
 async function fetchCityData(city, frmtId, lang) {
-  const url = `https://www.district.in/movies/f1-the-movie-movie-tickets-in-${city.toLowerCase()}-${eventCode}?frmtid=${frmtId}`;
+  const url = `https://www.district.in/movies/f1-the-movie-movie-tickets-in-${city}-${eventCode}?frmtid=${frmtId}`;
   try {
     const res = await fetch(url);
     const html = await res.text();
-
     const match = html.match(/<script id="__NEXT_DATA__" type="application\/json">(.*?)<\/script>/);
     if (!match) throw new Error("No __NEXT_DATA__ found");
 
     const data = JSON.parse(match[1]);
-    const moviesState = data?.props?.pageProps?.initialState?.movies;
-    if (!moviesState) throw new Error("No movies object found");
+    const initialState = data?.props?.pageProps?.initialState;
+    if (!initialState) throw new Error("No initialState found");
 
-    const movieSessions = moviesState.movieSessions || {};
-    const sessionKeys = Object.keys(movieSessions);
-    if (sessionKeys.length === 0) {
-      console.warn(`❌ ${city} (${lang}): No movieSessions keys found`);
-      console.log(JSON.stringify(moviesState, null, 2));
+    const foundSessions = findSessions(initialState);
+    if (!foundSessions.length) {
+      console.warn(`❌ ${city} (${lang}): No sessions found`);
+      console.log(JSON.stringify(initialState, null, 2));
       return;
     }
 
     let shows = 0, booked = 0, max = 0, collection = 0, maxCollection = 0;
 
-    for (const key of sessionKeys) {
-      const entity = movieSessions[key];
+    foundSessions.forEach(entity => {
       const arranged = entity.arrangedSessions || entity.sessions;
-      if (!arranged || arranged.length === 0) continue;
-
       arranged.forEach(venue => {
         const venueName = venue.entityName || "Unknown Venue";
         if (!allowedVenues.some(name => venueName.toLowerCase().startsWith(name))) return;
@@ -134,7 +141,7 @@ async function fetchCityData(city, frmtId, lang) {
           collection += bookedCollection; maxCollection += totalCollection;
         });
       });
-    }
+    });
 
     if (shows > 0) {
       citySummary.push({
@@ -188,4 +195,3 @@ async function fetchCityData(city, frmtId, lang) {
   saveToCSV(citySummary, "city-wise");
   saveToCSV(languageSummary, "language-wise");
 })();
-
