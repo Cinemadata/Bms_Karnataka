@@ -11,21 +11,19 @@ const formats = {
   Tamil: "zcw3aqxszc",
   Kannada: "k3W3TZbHuT"
 };
-const cities = [
-  "bengaluru", "mysuru", "hubli", "kalaburagi", "shivamogga", "belagavi", "tumakuru",
-  "manipal", "mangalore", "davanagere", "chikkaballapura", "bhadravati", "kolar", "sidlaghatta",
-  "tiptur", "magadi", "belur", "gadag", "bijapur", "mudhol", "gundlupet", "bhatkal", "channarayapatna",
-  "bagalkot", "shahpur", "chitradurga", "ranebennur", "chamarajanagara", "karwar", "bagepalli",
-  "gokak", "kushalnagar"
-];
 
-const citySummary = [];
-const showWiseSummary = [];
+const cities = ["bengaluru"];
+const allowedVenues = ["sandhya", "manasa", "balaji", "innovative"];
 const targetDate = "2025-08-16";
+
+// --- Data arrays ---
+const allShowDetails = [];
+const citySummary = [];
+const languageSummary = {};
 
 // --- Fetch city data ---
 async function fetchCityData(city, formatId = "", language = "") {
-  const url = `https://www.district.in/movies/f1-the-movie-movie-tickets-in-${city}-${eventCode}${formatId ? `?frmtid=${formatId}&fromdate=${targetDate}` : `?fromdate=${targetDate}`}`;
+  const url = `https://www.district.in/movies/f1-the-movie-movie-tickets-in-${city}-${eventCode}?frmtid=${formatId}&fromdate=${targetDate}`;
   try {
     const res = await fetch(url);
     const html = await res.text();
@@ -40,10 +38,12 @@ async function fetchCityData(city, formatId = "", language = "") {
     const arranged = sessionsObj[entityCode]?.arrangedSessions;
     if (!arranged || arranged.length === 0) throw new Error("No arrangedSessions");
 
-    let shows = 0, booked = 0, max = 0, collection = 0, maxCollection = 0;
+    let cityShows = 0, cityBooked = 0, cityMax = 0, cityCollection = 0, cityMaxCollection = 0;
     let fastFilling = 0, soldOut = 0;
 
     arranged.forEach(venue => {
+      if (!allowedVenues.includes(venue.venueName.toLowerCase())) return;
+
       (venue.sessions || []).forEach(show => {
         const totalSeats = show.total || 0;
         const availSeats = show.avail || 0;
@@ -63,22 +63,21 @@ async function fetchCityData(city, formatId = "", language = "") {
         if (avgPrice <= 30) return;
 
         const occupancy = totalSeats > 0 ? (bookedSeats / totalSeats) * 100 : 0;
-
         if (occupancy >= 60 && occupancy < 100) fastFilling++;
         if (occupancy === 100) soldOut++;
 
-        collection += bookedSeats * avgPrice;
-        maxCollection += totalSeats * avgPrice;
-        booked += bookedSeats;
-        max += totalSeats;
-        shows++;
+        cityCollection += bookedSeats * avgPrice;
+        cityMaxCollection += totalSeats * avgPrice;
+        cityBooked += bookedSeats;
+        cityMax += totalSeats;
+        cityShows++;
 
-        // Add to show-wise CSV array
-        showWiseSummary.push({
+        // Save individual show
+        allShowDetails.push({
           Date: targetDate,
           City: city,
           Language: language,
-          Venue: venue.venueName || "Unknown",
+          Venue: venue.venueName,
           ShowTime: show.time || "",
           TotalSeats: totalSeats,
           BookedSeats: bookedSeats,
@@ -86,23 +85,30 @@ async function fetchCityData(city, formatId = "", language = "") {
           Collection: (bookedSeats * avgPrice).toFixed(0),
           Occupancy: occupancy.toFixed(2) + "%"
         });
+
+        // Add to language summary
+        if (!languageSummary[language]) languageSummary[language] = { shows: 0, booked: 0, max: 0, collection: 0 };
+        languageSummary[language].shows += 1;
+        languageSummary[language].booked += bookedSeats;
+        languageSummary[language].max += totalSeats;
+        languageSummary[language].collection += bookedSeats * avgPrice;
       });
     });
 
-    if (shows > 0) {
+    if (cityShows > 0) {
       citySummary.push({
         City: city,
-        Shows: shows,
-        BookedSeats: booked,
-        MaxSeats: max,
-        Collection: "₹" + collection.toFixed(0),
-        MaxCollection: "₹" + maxCollection.toFixed(0),
-        Occupancy: max ? ((booked / max) * 100).toFixed(2) + "%" : "0.00%",
+        Shows: cityShows,
+        BookedSeats: cityBooked,
+        MaxSeats: cityMax,
+        Collection: "₹" + cityCollection.toFixed(0),
+        MaxCollection: "₹" + cityMaxCollection.toFixed(0),
+        Occupancy: cityMax ? ((cityBooked / cityMax) * 100).toFixed(2) + "%" : "0.00%",
         "Fast Filling": fastFilling,
         "Sold Out": soldOut
       });
     } else {
-      console.warn(`⚠️ Skipped ${city} - no valid shows`);
+      console.warn(`⚠️ Skipped ${city} (${language}) - no valid shows`);
     }
 
   } catch (err) {
@@ -129,7 +135,7 @@ function saveCSV(filename, data) {
 
 // --- Main ---
 (async () => {
-  console.log(`⏳ Fetching Karnataka show data for ${targetDate}...`);
+  console.log(`⏳ Fetching Bengaluru shows for ${targetDate}...`);
 
   for (let city of cities) {
     for (const [lang, formatId] of Object.entries(formats)) {
@@ -139,32 +145,18 @@ function saveCSV(filename, data) {
 
   console.table(citySummary);
 
-  // --- Save CSV ---
-  saveCSV("show-wise.csv", showWiseSummary);
+  // Save CSVs
+  saveCSV("show-wise.csv", allShowDetails);
   saveCSV("city-wise.csv", citySummary);
 
-  // --- Summary ---
-  const total = citySummary.reduce((acc, row) => {
-    const clean = n => +String(row[n]).replace(/[₹,%]/g, "");
-    acc.shows += row.Shows;
-    acc.booked += row.BookedSeats;
-    acc.max += row.MaxSeats;
-    acc.collection += clean("Collection");
-    acc.maxCollection += clean("MaxCollection");
-    acc.fast += row["Fast Filling"] || 0;
-    acc.sold += row["Sold Out"] || 0;
-    return acc;
-  }, { shows: 0, booked: 0, max: 0, collection: 0, maxCollection: 0, fast: 0, sold: 0 });
-
-  console.log(`📊 Karnataka Summary (${targetDate}):
-Total Cities: ${citySummary.length}
-Total Shows: ${total.shows}
-Booked Seats: ${total.booked}
-Max Seats: ${total.max}
-Total Collection: ₹${total.collection}
-Max Collection: ₹${total.maxCollection}
-Overall Occupancy: ${total.max ? ((total.booked / total.max) * 100).toFixed(2) : "0.00"}%
-Fast Filling Shows (60-99.99%): ${total.fast}
-Sold Out Shows (100%): ${total.sold}`);
+  // Language-wise CSV
+  const langCSV = Object.entries(languageSummary).map(([lang, val]) => ({
+    Language: lang,
+    Shows: val.shows,
+    BookedSeats: val.booked,
+    MaxSeats: val.max,
+    Collection: "₹" + val.collection.toFixed(0),
+    Occupancy: val.max ? ((val.booked / val.max) * 100).toFixed(2) + "%" : "0.00%"
+  }));
+  saveCSV("language-wise.csv", langCSV);
 })();
-
