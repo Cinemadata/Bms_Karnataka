@@ -15,11 +15,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout the repository
+      # 1️⃣ Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # full history to allow push
+          fetch-depth: 0  # Full history to allow push
 
       # 2️⃣ Setup Node.js
       - name: Setup Node.js
@@ -44,9 +44,19 @@ jobs:
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git pull --rebase origin main
+
+          # Use token to authenticate with origin
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/Cinemadata/Bms_Karnataka.git
+          
+          # Sync with remote branch
+          git fetch origin main
+          git reset --hard origin/main
+
+          # Add CSVs and commit
           git add output/*.csv
           git commit -m "Update Telugu shows CSVs [skip ci]" || echo "No changes to commit"
-          git push origin main
+
+          # Push safely
+          git push origin main --force
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
