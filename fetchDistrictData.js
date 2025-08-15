@@ -12,7 +12,7 @@ const formats = {
   Kannada: "k3W3TZbHuT"
 };
 
-const cities = ["bengaluru"];
+const cities = ["Bengaluru"];
 const allowedVenues = ["sandhya", "manasa", "balaji", "innovative"];
 const targetDate = "2025-08-16";
 
