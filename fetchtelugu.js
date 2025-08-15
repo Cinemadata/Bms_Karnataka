@@ -1,7 +1,7 @@
 import fs from "fs";
 
 
-// ---------------- Save to CSV ----------------
+// ---------------- Save to CSV ---------------
 function saveToCSV(data, filenameBase, language) {
   if (!data.length) return;
 
