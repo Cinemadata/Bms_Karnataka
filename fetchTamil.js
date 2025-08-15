@@ -1,6 +1,6 @@
 import fs from "fs";
 
-// ---------------- Save to CSV ---------------
+// ---------------- Save to CsV ---------------///
 function saveToCSV(data, filenameBase) {
   if (!data.length) return;
 
