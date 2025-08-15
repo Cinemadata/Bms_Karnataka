@@ -1,5 +1,5 @@
 import fs from "fs";
-import fetch from "node-fetch"; // ensure node-fetch is installed for Node.js
+
 
 // ---------------- Save to CSV ----------------
 function saveToCSV(data, filenameBase, language) {
