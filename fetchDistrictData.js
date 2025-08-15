@@ -1,31 +1,61 @@
 import fs from "fs";
 import path from "path";
 
-// ---------------- Output folder ----------------
+// Ensure output folder exists
 const outputDir = path.join(process.cwd(), "output");
-if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
+if (!fs.existsSync(outputDir)) {
+  fs.mkdirSync(outputDir, { recursive: true });
+}
 
-// ---------------- CSV Save ----------------
+// Function to generate timestamp like 20250813204447
+function getTimestamp() {
+  const now = new Date();
+  return (
+    now.getFullYear().toString() +
+    String(now.getMonth() + 1).padStart(2, "0") +
+    String(now.getDate()).padStart(2, "0") +
+    String(now.getHours()).padStart(2, "0") +
+    String(now.getMinutes()).padStart(2, "0") +
+    String(now.getSeconds()).padStart(2, "0")
+  );
+}
+
 function saveToCSV(arr, filenameBase) {
-  if (!arr.length) return console.warn(`⚠️ No data to save for ${filenameBase}.csv`);
+  if (!arr.length) {
+    console.warn(`⚠️ No data to save for ${filenameBase}.csv`);
+    return;
+  }
+
   const headers = Object.keys(arr[0]);
   const rows = arr.map(obj =>
     headers.map(h => `"${String(obj[h] ?? "").replace(/"/g, '""')}"`).join(",")
   );
   const csvContent = headers.join(",") + "\n" + rows.join("\n");
-  const filePath = path.join(outputDir, `${filenameBase}.csv`);
 
-  // Append if exists, otherwise create new
+  const fileName = `${filenameBase}.csv`; // single CSV per type
+  const filePath = path.join(outputDir, fileName);
+
   try {
-    if (fs.existsSync(filePath)) fs.appendFileSync(filePath, "\n" + rows.join("\n"), "utf8");
-    else fs.writeFileSync(filePath, csvContent, "utf8");
+    fs.writeFileSync(filePath, csvContent, { flag: "w" }); // overwrite existing file
     console.log(`💾 Saved ${path.relative(process.cwd(), filePath)}`);
   } catch (err) {
     console.error(`❌ Failed to save CSV: ${err.message}`);
   }
 }
 
-// ---------------- Time Formatter ----------------
+// === Event and Format IDs ===
+const eventCode = "MV172677";   // Keep your original event code
+const frmtTelugu = "rF_IgPQApY"; // Telugu format ID
+const frmtTamil = "ET00395817";  // Tamil format ID (replace with actual)
+const cities = ["bengaluru"];
+const allowedVenues = ["sandhya", "manasa", "balaji", "innovative"];
+
+// === Data arrays ===
+const citySummary = [];
+const languageSummary = [];
+const allShowDetails = [];
+
+// === Helper to format IST time ===
 function formatTimeIST(raw) {
   if (!raw) return "N/A";
   const dt = new Date(raw);
@@ -38,14 +68,15 @@ function formatTimeIST(raw) {
   });
 }
 
-// ---------------- Fetch City Data ----------------
-async function fetchCityData(city, frmtId, lang, allShowDetails, citySummary, languageSummary, allowedVenues) {
-  const url = `https://www.district.in/movies/f1-the-movie-movie-tickets-in-${city}-${frmtId}`;
+// === Fetch city-wise show data ===
+async function fetchCityData(city, frmtId, lang) {
+  const url = `https://www.district.in/movies/f1-the-movie-movie-tickets-in-${city}-${eventCode}?frmtid=${frmtId}`;
   try {
     const res = await fetch(url);
     const html = await res.text();
     const match = html.match(/<script id="__NEXT_DATA__" type="application\/json">(.*?)<\/script>/);
     if (!match) throw new Error("No __NEXT_DATA__ found");
+
     const data = JSON.parse(match[1]);
     const sessionsObj = data?.props?.pageProps?.initialState?.movies?.movieSessions;
     if (!sessionsObj) throw new Error("No movieSessions found");
@@ -76,7 +107,7 @@ async function fetchCityData(city, frmtId, lang, allShowDetails, citySummary, la
         const avgPrice = count > 0 ? priceSum / count : 0;
         if (avgPrice <= 30) return;
 
-        const occupancy = totalSeats ? (bookedSeats / totalSeats) * 100 : 0;
+        const occupancy = totalSeats > 0 ? (bookedSeats / totalSeats) * 100 : 0;
         const bookedCollection = bookedSeats * avgPrice;
         const totalCollection = totalSeats * avgPrice;
 
@@ -94,6 +125,7 @@ async function fetchCityData(city, frmtId, lang, allShowDetails, citySummary, la
         };
 
         allShowDetails.push(showObj);
+
         collection += bookedCollection;
         maxCollection += totalCollection;
         booked += bookedSeats;
@@ -123,36 +155,25 @@ async function fetchCityData(city, frmtId, lang, allShowDetails, citySummary, la
         MaxCollection: "₹" + maxCollection.toFixed(0),
         Occupancy: max ? ((booked / max) * 100).toFixed(2) + "%" : "0.00%"
       });
+    } else {
+      console.warn(`⚠️ Skipped ${city} (${lang}) - no valid shows`);
     }
+
   } catch (err) {
     console.warn(`❌ ${city} (${lang}): ${err.message}`);
   }
 }
 
-// ---------------- Main ----------------
+// === Main Execution ===
 (async () => {
-  const cities = ["bengaluru"];
-  const allowedVenues = ["sandhya", "manasa", "balaji", "innovative"];
-  
-  const frmtTelugu = "rF_IgPQApY";
-  const frmtTamil = "ET00395817"; // Replace with actual Tamil format ID
-  
-  const allShowDetails = [];
-  const citySummary = [];
-  const languageSummary = [];
+  console.log("⏳ Fetching city-wise data for Karnataka...");
 
-  console.log("⏳ Fetching Telugu shows...");
   for (let city of cities) {
-    await fetchCityData(city, frmtTelugu, "Telugu", allShowDetails, citySummary, languageSummary, allowedVenues);
+    await fetchCityData(city, frmtTelugu, "Telugu");
+    await fetchCityData(city, frmtTamil, "Tamil"); // fetch Tamil
   }
 
-  console.log("⏳ Fetching Tamil shows...");
-  for (let city of cities) {
-    await fetchCityData(city, frmtTamil, "Tamil", allShowDetails, citySummary, languageSummary, allowedVenues);
-  }
-
-  // ---------------- Output ----------------
-  console.log("\n📍 All Shows:");
+  console.log("\n📍 All Shows (Telugu + Tamil):");
   console.table(allShowDetails);
 
   console.log("\n📊 City-wise Summary:");
@@ -165,4 +186,3 @@ async function fetchCityData(city, frmtId, lang, allShowDetails, citySummary, la
   saveToCSV(citySummary, "city-wise");
   saveToCSV(languageSummary, "language-wise");
 })();
-
