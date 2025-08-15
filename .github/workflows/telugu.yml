@@ -2,41 +2,26 @@ name: Update Telugu Shows CSVs
 
 on:
   schedule:
-    - cron: '*/30 * * * *'  # Runs every 30 minutes
+    - cron: '*/30 * * * *' # Runs every 30 minutes
 
 jobs:
-  update-telugu-csv:
+  fetch-telugu-shows:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          persist-credentials: true
-
+      - uses: actions/checkout@v3
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 20
-
-      - name: Set up Git
-        run: |
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
-
-      - name: Clean any local changes before pulling
-        run: git reset --hard
-
-      - name: Pull latest changes from remote
-        run: git pull origin main --rebase
-
+          node-version: '18'
       - name: Install dependencies
         run: npm install
-
-      - name: Run Telugu.js
-        run: node Telugu.js
-
-      - name: Commit and push changes
+      - name: Run fetchTelugu.js and save output
         run: |
-          git add .
-          git commit -m "Update Telugu shows CSVs [skip ci]" || echo "No changes to commit"
-          git push origin main
+          node fetchTelugu.js
+      - name: Commit & push changes
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git add output/
+          git commit -m "Update Telugu output files [skip ci]" || echo "No changes to commit"
+          git push
