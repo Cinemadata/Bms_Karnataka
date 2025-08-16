@@ -1,59 +1,93 @@
-import fetch from "node-fetch";
 import fs from "fs";
 import path from "path";
+import fetch from "node-fetch";
 
-// --- Configurations ---
-const eventCode = "MV172677"; // "Coolie" movie event code
-const formats = {
-  Tamil: "zcw3aqxszc",
-  Telugu: "rF_IgPQApY"
-};
-const cities = ["Bengaluru"];
-const allowedVenues = ["sandhya", "manasa", "balaji", "innovative"]; // Empty array [] disables venue filtering
-const targetDate = "2025-08-16";
+// Ensure output folder exists
+const outputDir = path.join(process.cwd(), "output");
+if (!fs.existsSync(outputDir)) {
+  fs.mkdirSync(outputDir, { recursive: true });
+}
 
-// --- Data storage ---
-const allShowDetails = [];
-const citySummary = [];
-const languageSummary = {};
+// Function to generate timestamp like 20250813204447
+function getTimestamp() {
+  const now = new Date();
+  return (
+    now.getFullYear().toString() +
+    String(now.getMonth() + 1).padStart(2, "0") +
+    String(now.getDate()).padStart(2, "0") +
+    String(now.getHours()).padStart(2, "0") +
+    String(now.getMinutes()).padStart(2, "0") +
+    String(now.getSeconds()).padStart(2, "0")
+  );
+}
 
-// --- Helper: safe JSON extraction from HTML ---
-function extractNextData(html) {
-  const nextDataRegex = /<script id="__NEXT_DATA__" type="application\/json">(.*?)<\/script>/s;
-  const match = html.match(nextDataRegex);
-  if (!match) return null;
+// CSV saving helper
+function saveToCSV(arr, filenameBase) {
+  if (!arr.length) {
+    console.warn(`⚠️ No data to save for ${filenameBase}.csv`);
+    return;
+  }
+  const headers = Object.keys(arr[0]);
+  const rows = arr.map(obj =>
+    headers.map(h => `"${String(obj[h] ?? "").replace(/"/g, '""')}"`).join(",")
+  );
+  const csvContent = headers.join(",") + "\n" + rows.join("\n");
+  const fileName = `${filenameBase}_${getTimestamp()}.csv`;
+  const filePath = path.join(outputDir, fileName);
   try {
-    return JSON.parse(match[1]);
-  } catch {
-    return null;
+    fs.writeFileSync(filePath, csvContent);
+    console.log(`💾 Saved ${path.relative(process.cwd(), filePath)}`);
+  } catch (err) {
+    console.error(`❌ Failed to save CSV: ${err.message}`);
   }
 }
 
-// --- Main fetch function ---
-async function fetchCityData(city, formatId = "", language = "") {
-  const url = `https://www.district.in/movies/coolie-movie-tickets-in-${city.toLowerCase()}-${eventCode}?frmtid=${formatId}&fromdate=${targetDate}`;
+// Configurations
+const eventCode = "MV172677";
+const frmtTelugu = "rF_IgPQApY";
+const frmtHindi = "ZcW3aqXSzc";
+const cities = ["bengaluru"];
+const allowedVenues = ["sandhya", "manasa", "balaji", "innovative"];
+
+const citySummary = [];
+const languageSummary = [];
+const allShowDetails = [];
+
+function formatTimeIST(raw) {
+  if (!raw) return "N/A";
+  const dt = new Date(raw);
+  if (isNaN(dt)) return "N/A";
+  return dt.toLocaleTimeString("en-IN", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+    timeZone: "Asia/Kolkata"
+  });
+}
+
+async function fetchCityData(city, frmtId, lang) {
+  const url = `https://www.district.in/movies/f1-the-movie-movie-tickets-in-${city}-${eventCode}?frmtid=${frmtId}`;
   try {
     const res = await fetch(url);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const html = await res.text();
 
-    const data = extractNextData(html);
-    if (!data) throw new Error("No __NEXT_DATA__ JSON found in page");
+    // Fix regex to extract __NEXT_DATA__ JSON correctly
+    const match = html.match(/<script id="__NEXT_DATA__" type="application\/json">(.*?)<\/script>/s);
+    if (!match) throw new Error("No __NEXT_DATA__ found");
+    const data = JSON.parse(match[1]);
 
     const sessionsObj = data?.props?.pageProps?.initialState?.movies?.movieSessions;
-    if (!sessionsObj || Object.keys(sessionsObj).length === 0) throw new Error("No sessions found");
-
+    if (!sessionsObj) throw new Error("No movieSessions found");
     const entityCode = Object.keys(sessionsObj)[0];
     const arranged = sessionsObj[entityCode]?.arrangedSessions;
-    if (!arranged || arranged.length === 0) throw new Error("No arrangedSessions found");
+    if (!arranged) throw new Error("No arrangedSessions");
 
-    let cityShows = 0, cityBooked = 0, cityMax = 0, cityCollection = 0, cityMaxCollection = 0;
-    let fastFilling = 0, soldOut = 0;
+    let shows = 0, booked = 0, max = 0, collection = 0, maxCollection = 0;
 
     arranged.forEach(venue => {
-      if (!venue.venueName) return; // Skip entries with missing venueName
-      const venueNameLower = venue.venueName.toLowerCase();
-      if (allowedVenues.length > 0 && !allowedVenues.includes(venueNameLower)) return;
+      const venueName = venue.entityName || venue.venueName || "Unknown Venue";
+      if (!allowedVenues.some(name => venueName.toLowerCase().startsWith(name))) return;
 
       (venue.sessions || []).forEach(show => {
         const totalSeats = show.total || 0;
@@ -68,96 +102,80 @@ async function fetchCityData(city, formatId = "", language = "") {
             count++;
           }
         });
+
         const avgPrice = count > 0 ? priceSum / count : 0;
         if (avgPrice <= 30) return;
 
         const occupancy = totalSeats > 0 ? (bookedSeats / totalSeats) * 100 : 0;
-        if (occupancy >= 60 && occupancy < 100) fastFilling++;
-        if (occupancy === 100) soldOut++;
+        const bookedCollection = bookedSeats * avgPrice;
+        const totalCollection = totalSeats * avgPrice;
 
-        cityCollection += bookedSeats * avgPrice;
-        cityMaxCollection += totalSeats * avgPrice;
-        cityBooked += bookedSeats;
-        cityMax += totalSeats;
-        cityShows++;
-
-        allShowDetails.push({
-          Date: targetDate,
+        const showObj = {
           City: city,
-          Language: language,
-          Venue: venue.venueName,
-          ShowTime: show.time || "",
-          TotalSeats: totalSeats,
-          BookedSeats: bookedSeats,
-          AvgPrice: avgPrice.toFixed(2),
-          Collection: (bookedSeats * avgPrice).toFixed(0),
-          Occupancy: occupancy.toFixed(2) + "%"
-        });
+          Language: lang,
+          Venue: venueName,
+          "Show Time": formatTimeIST(show.showTime || show.time),
+          "Total Seats": totalSeats,
+          "Booked Seats": bookedSeats,
+          "Occupancy (%)": occupancy.toFixed(2),
+          "Booked Collection (₹)": "₹" + bookedCollection.toFixed(0),
+          "Total Collection (₹)": "₹" + totalCollection.toFixed(0),
+          "Avg Ticket Price (₹)": avgPrice.toFixed(2)
+        };
 
-        if (!languageSummary[language]) languageSummary[language] = { shows: 0, booked: 0, max: 0, collection: 0 };
-        languageSummary[language].shows++;
-        languageSummary[language].booked += bookedSeats;
-        languageSummary[language].max += totalSeats;
-        languageSummary[language].collection += bookedSeats * avgPrice;
+        allShowDetails.push(showObj);
+        collection += bookedCollection;
+        maxCollection += totalCollection;
+        booked += bookedSeats;
+        max += totalSeats;
+        shows++;
       });
     });
 
-    if (cityShows > 0) {
+    if (shows > 0) {
       citySummary.push({
         City: city,
-        Shows: cityShows,
-        BookedSeats: cityBooked,
-        MaxSeats: cityMax,
-        Collection: "₹" + cityCollection.toFixed(0),
-        MaxCollection: "₹" + cityMaxCollection.toFixed(0),
-        Occupancy: cityMax ? ((cityBooked / cityMax) * 100).toFixed(2) + "%" : "0.00%",
-        "Fast Filling": fastFilling,
-        "Sold Out": soldOut
+        Language: lang,
+        Shows: shows,
+        BookedSeats: booked,
+        MaxSeats: max,
+        Collection: "₹" + collection.toFixed(0),
+        MaxCollection: "₹" + maxCollection.toFixed(0),
+        Occupancy: max ? ((booked / max) * 100).toFixed(2) + "%" : "0.00%"
+      });
+      languageSummary.push({
+        Language: lang,
+        Shows: shows,
+        BookedSeats: booked,
+        MaxSeats: max,
+        Collection: "₹" + collection.toFixed(0),
+        MaxCollection: "₹" + maxCollection.toFixed(0),
+        Occupancy: max ? ((booked / max) * 100).toFixed(2) + "%" : "0.00%"
       });
     } else {
-      console.warn(`⚠️ Skipped ${city} (${language}) - no valid shows`);
+      console.warn(`⚠️ Skipped ${city} (${lang}) - no valid shows`);
     }
   } catch (err) {
-    console.warn(`❌ ${city} (${language}): ${err.message}`);
+    console.warn(`❌ ${city} (${lang}): ${err.message}`);
   }
 }
 
-// --- CSV Save Helper ---
-function saveCSV(filename, data) {
-  if (!data || data.length === 0) {
-    console.warn(`⚠️ No data to save for ${filename}`);
-    return;
-  }
-  const headers = Object.keys(data[0]);
-  const csv = [
-    headers.join(","),
-    ...data.map(row => headers.map(h => `"${row[h]}"`).join(","))
-  ].join("\n");
-  const filePath = path.join(process.cwd(), filename);
-  fs.writeFileSync(filePath, csv, "utf8");
-  console.log(`✅ Saved CSV: ${filename}`);
-}
-
-// --- Main Execution ---
 (async () => {
-  console.log(`⏳ Fetching Bengaluru shows for ${targetDate}...`);
+  console.log("⏳ Fetching city-wise data for Karnataka...");
   for (const city of cities) {
-    for (const [lang, formatId] of Object.entries(formats)) {
-      await fetchCityData(city, formatId, lang);
-    }
+    await fetchCityData(city, frmtTelugu, "Telugu");
+    await fetchCityData(city, frmtHindi, "Hindi");
   }
+
+  console.log("\n📍 All Shows (Telugu + Hindi):");
+  console.table(allShowDetails);
+  console.log("\n📊 City-wise Summary:");
   console.table(citySummary);
+  console.log("\n🌐 Language-wise Summary:");
+  console.table(languageSummary);
 
-  saveCSV("show-wise.csv", allShowDetails);
-  saveCSV("city-wise.csv", citySummary);
-
-  const langCSV = Object.entries(languageSummary).map(([lang, val]) => ({
-    Language: lang,
-    Shows: val.shows,
-    BookedSeats: val.booked,
-    MaxSeats: val.max,
-    Collection: "₹" + val.collection.toFixed(0),
-    Occupancy: val.max ? ((val.booked / val.max) * 100).toFixed(2) + "%" : "0.00%"
-  }));
-  saveCSV("language-wise.csv", langCSV);
+  saveToCSV(allShowDetails, "show-wise");
+  saveToCSV(citySummary, "city-wise");
+  saveToCSV(languageSummary, "language-wise");
 })();
+
