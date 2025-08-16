@@ -1,4 +1,4 @@
-
+import fetch from "node-fetch";
 import fs from "fs";
 import path from "path";
 
@@ -9,7 +9,7 @@ const formats = {
   Telugu: "rF_IgPQApY"
 };
 const cities = ["Bengaluru"];
-const allowedVenues = ["sandhya", "manasa", "balaji", "innovative"]; // Change empty array [] to ignore venue filtering
+const allowedVenues = ["sandhya", "manasa", "balaji", "innovative"]; // Empty array [] disables venue filtering
 const targetDate = "2025-08-16";
 
 // --- Data storage ---
@@ -51,6 +51,7 @@ async function fetchCityData(city, formatId = "", language = "") {
     let fastFilling = 0, soldOut = 0;
 
     arranged.forEach(venue => {
+      if (!venue.venueName) return; // Skip entries with missing venueName
       const venueNameLower = venue.venueName.toLowerCase();
       if (allowedVenues.length > 0 && !allowedVenues.includes(venueNameLower)) return;
 
@@ -80,7 +81,6 @@ async function fetchCityData(city, formatId = "", language = "") {
         cityMax += totalSeats;
         cityShows++;
 
-        // Save individual show data
         allShowDetails.push({
           Date: targetDate,
           City: city,
@@ -94,7 +94,6 @@ async function fetchCityData(city, formatId = "", language = "") {
           Occupancy: occupancy.toFixed(2) + "%"
         });
 
-        // Aggregate per language
         if (!languageSummary[language]) languageSummary[language] = { shows: 0, booked: 0, max: 0, collection: 0 };
         languageSummary[language].shows++;
         languageSummary[language].booked += bookedSeats;
@@ -123,7 +122,7 @@ async function fetchCityData(city, formatId = "", language = "") {
   }
 }
 
-// --- CSV Save Helpers ---
+// --- CSV Save Helper ---
 function saveCSV(filename, data) {
   if (!data || data.length === 0) {
     console.warn(`⚠️ No data to save for ${filename}`);
@@ -139,7 +138,7 @@ function saveCSV(filename, data) {
   console.log(`✅ Saved CSV: ${filename}`);
 }
 
-// --- Main runner ---
+// --- Main Execution ---
 (async () => {
   console.log(`⏳ Fetching Bengaluru shows for ${targetDate}...`);
   for (const city of cities) {
@@ -149,7 +148,6 @@ function saveCSV(filename, data) {
   }
   console.table(citySummary);
 
-  // Save outputs
   saveCSV("show-wise.csv", allShowDetails);
   saveCSV("city-wise.csv", citySummary);
 
