@@ -12,34 +12,35 @@ jobs:
   fetch-and-push:
     runs-on: ubuntu-latest
     steps:
-      # Step 1: Checkout the repository
+      # Use the latest checkout and DO NOT persist credentials (you'll add them in push)
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
-      # Step 2: Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 20
 
-      # Step 3: Install dependencies
       - name: Install dependencies
         run: npm install
 
-      # Step 4: Run your fetchTamil.js script
       - name: Run fetchTamil.js
         run: node fetchTamil.js
 
-      # Step 5: Commit and push CSVs with conflict handling
+      # Set up git credentials using the token
       - name: Commit and push CSVs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/Cinemadata/Bms_Karnataka.git
+          # Fetch latest so our push is fast-forward OR merge
+          git fetch origin main
+          git checkout main
           git pull origin main --rebase
           git add output/*.csv
           git commit -m "Update Tamil shows CSVs [skip ci]" || echo "No changes to commit"
           git push origin main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-        
