@@ -8,9 +8,14 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: bms-karnataka-update
+  cancel-in-progress: true
+
 jobs:
   fetch-and-push:
     runs-on: ubuntu-latest
+
     steps:
       # Checkout the repository without persisting credentials
       - name: Checkout repository
@@ -32,20 +37,22 @@ jobs:
       - name: Run fetchTelugu.js
         run: node fetchTelugu.js
 
-      # Commit and push updated CSVs with proper authentication and conflict handling
+      # Commit and push updated CSVs with retry logic and proper authentication
       - name: Commit and push CSVs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          set -e
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
           git add output/*.csv
           if ! git diff --cached --quiet; then
             git commit -m "Update Telugu shows CSVs [skip ci]"
           fi
-          # Set remote URL to use the GitHub token for authentication
           git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/Cinemadata/Bms_Karnataka.git
-          
-          # Pull latest changes with rebase and push commits
-          git pull --rebase origin main
-          git push origin main
+
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push origin main && break
+            echo "Push failed, retrying in 10 seconds..."
+            sleep 10
+          done
