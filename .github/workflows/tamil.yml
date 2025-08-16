@@ -2,7 +2,7 @@ name: Fetch Tamil shows
 
 on:
   schedule:
-    - cron: '*/30 * * * *'  # Every 30 minutes
+    - cron: '*/30 * * * *'  # Runs every 30 minutes
   workflow_dispatch:
 
 permissions:
@@ -12,27 +12,27 @@ jobs:
   fetch-and-push:
     runs-on: ubuntu-latest
     steps:
-      # 1. Checkout repository (use default credentials)
+      # Checkout the repository without persisting credentials
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           persist-credentials: false
 
-      # 2. Setup Node.js
+      # Setup Node.js environment
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 20
 
-      # 3. Install dependencies
+      # Install dependencies
       - name: Install dependencies
         run: npm install
 
-      # 4. Run your fetch script
+      # Run the script to fetch Tamil shows and append CSVs
       - name: Run fetchTamil.js
         run: node fetchTamil.js
 
-      # 5. Commit and push ONLY the CSVs
+      # Commit and push updated CSVs with proper authentication and conflict handling
       - name: Commit and push CSVs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -41,10 +41,13 @@ jobs:
           git config --global user.email "github-actions@github.com"
           git add output/*.csv
 
-          # Only commit if there are changes
           if ! git diff --cached --quiet; then
             git commit -m "Update Tamil shows CSVs [skip ci]"
           fi
 
+          # Set remote URL to use the GitHub token for authentication
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/Cinemadata/Bms_Karnataka.git
+          
+          # Pull latest changes with rebase and push commits
           git pull --rebase origin main
           git push origin main
