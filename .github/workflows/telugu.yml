@@ -1,4 +1,4 @@
-name: Fetch Telugu shows
+name: Fetch Telugu Shows
 
 on:
   schedule:
@@ -8,16 +8,12 @@ on:
 permissions:
   contents: write
 
-concurrency:
-  group: bms-karnataka-update
-  cancel-in-progress: true
-
 jobs:
   fetch-and-push:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the repository without persisting credentials
+      # Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
@@ -33,26 +29,33 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # Run the script to fetch Telugu shows and append CSVs
+      # Get current date for output folder (YYYYMMDD)
+      - name: Set date variable
+        run: echo "DATE=$(date +%Y%m%d)" >> $GITHUB_ENV
+
+      # Run the script to fetch Telugu shows
       - name: Run fetchTelugu.js
         run: node fetchTelugu.js
 
-      # Commit and push updated CSVs with retry logic and proper authentication
+      # Commit and push updated CSVs
       - name: Commit and push CSVs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          set -e
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
-          git add output/*.csv
+
+          # Add today's output folder only
+          git add output_${{ env.DATE }}
+
+          # Commit if there are changes
           if ! git diff --cached --quiet; then
-            git commit -m "Update Telugu shows CSVs [skip ci]"
+            git commit -m "Update Telugu shows CSVs for ${{ env.DATE }} [skip ci]"
           fi
+
+          # Set remote URL to use the GitHub token for authentication
           git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/Cinemadata/Bms_Karnataka.git
 
-          for i in 1 2 3; do
-            git pull --rebase origin main && git push origin main && break
-            echo "Push failed, retrying in 10 seconds..."
-            sleep 10
-          done
+          # Pull latest changes with rebase and push commits
+          git pull --rebase origin main || true
+          git push origin main
