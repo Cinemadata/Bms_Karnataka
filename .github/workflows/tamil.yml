@@ -11,6 +11,7 @@ permissions:
 jobs:
   fetch-and-push:
     runs-on: ubuntu-latest
+
     steps:
       # Checkout the repository without persisting credentials
       - name: Checkout repository
@@ -28,9 +29,13 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # Run the script to fetch Tamil shows and append CSVs
+      # Get current date for output file
+      - name: Set date variable
+        run: echo "DATE=$(date +%F)" >> $GITHUB_ENV
+
+      # Run the script to fetch Tamil shows and append to daily CSV
       - name: Run fetchTamil.js
-        run: node fetchTamil.js
+        run: node fetchTamil.js ${{ env.DATE }}
 
       # Commit and push updated CSVs with proper authentication and conflict handling
       - name: Commit and push CSVs
@@ -39,15 +44,18 @@ jobs:
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
-          git add output -17_aug/*.csv
 
+          # Add only today's output file
+          git add output/output_${{ env.DATE }}.csv
+
+          # Commit if there are changes
           if ! git diff --cached --quiet; then
-            git commit -m "Update Tamil shows CSVs [skip ci]"
+            git commit -m "Update Tamil shows CSV for ${{ env.DATE }} [skip ci]"
           fi
 
           # Set remote URL to use the GitHub token for authentication
           git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/Cinemadata/Bms_Karnataka.git
-          
+
           # Pull latest changes with rebase and push commits
           git pull --rebase origin main
           git push origin main
