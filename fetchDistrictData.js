@@ -1,54 +1,63 @@
-import fetch from "node-fetch";
+
 import fs from "fs";
 import path from "path";
 
-// --- Config ---
-const eventCode = "MV175956";
+// --- Configurations ---
+const eventCode = "MV172677"; // "Coolie" movie event code
 const formats = {
-  English: "d0cx21twur",
-  Hindi: "K9lw0pKV2~",
-  Telugu: "rF_IgPQApY",
   Tamil: "zcw3aqxszc",
-  Kannada: "k3W3TZbHuT"
+  Telugu: "rF_IgPQApY"
 };
-
 const cities = ["Bengaluru"];
-const allowedVenues = ["sandhya", "manasa", "balaji", "innovative"];
+const allowedVenues = ["sandhya", "manasa", "balaji", "innovative"]; // Change empty array [] to ignore venue filtering
 const targetDate = "2025-08-16";
 
-// --- Data arrays ---
+// --- Data storage ---
 const allShowDetails = [];
 const citySummary = [];
 const languageSummary = {};
 
-// --- Fetch city data ---
+// --- Helper: safe JSON extraction from HTML ---
+function extractNextData(html) {
+  const nextDataRegex = /<script id="__NEXT_DATA__" type="application\/json">(.*?)<\/script>/s;
+  const match = html.match(nextDataRegex);
+  if (!match) return null;
+  try {
+    return JSON.parse(match[1]);
+  } catch {
+    return null;
+  }
+}
+
+// --- Main fetch function ---
 async function fetchCityData(city, formatId = "", language = "") {
-  const url = `https://www.district.in/movies/f1-the-movie-movie-tickets-in-${city}-${eventCode}?frmtid=${formatId}&fromdate=${targetDate}`;
+  const url = `https://www.district.in/movies/coolie-movie-tickets-in-${city.toLowerCase()}-${eventCode}?frmtid=${formatId}&fromdate=${targetDate}`;
   try {
     const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const html = await res.text();
-    const match = html.match(/<script id="__NEXT_DATA__" type="application\/json">(.*?)<\/script>/);
-    if (!match) throw new Error("No __NEXT_DATA__");
 
-    const data = JSON.parse(match[1]);
+    const data = extractNextData(html);
+    if (!data) throw new Error("No __NEXT_DATA__ JSON found in page");
+
     const sessionsObj = data?.props?.pageProps?.initialState?.movies?.movieSessions;
     if (!sessionsObj || Object.keys(sessionsObj).length === 0) throw new Error("No sessions found");
 
     const entityCode = Object.keys(sessionsObj)[0];
     const arranged = sessionsObj[entityCode]?.arrangedSessions;
-    if (!arranged || arranged.length === 0) throw new Error("No arrangedSessions");
+    if (!arranged || arranged.length === 0) throw new Error("No arrangedSessions found");
 
     let cityShows = 0, cityBooked = 0, cityMax = 0, cityCollection = 0, cityMaxCollection = 0;
     let fastFilling = 0, soldOut = 0;
 
     arranged.forEach(venue => {
-      if (!allowedVenues.includes(venue.venueName.toLowerCase())) return;
+      const venueNameLower = venue.venueName.toLowerCase();
+      if (allowedVenues.length > 0 && !allowedVenues.includes(venueNameLower)) return;
 
       (venue.sessions || []).forEach(show => {
         const totalSeats = show.total || 0;
         const availSeats = show.avail || 0;
         const bookedSeats = totalSeats - availSeats;
-
         if (totalSeats === 0 || bookedSeats <= 0) return;
 
         let priceSum = 0, count = 0;
@@ -58,7 +67,6 @@ async function fetchCityData(city, formatId = "", language = "") {
             count++;
           }
         });
-
         const avgPrice = count > 0 ? priceSum / count : 0;
         if (avgPrice <= 30) return;
 
@@ -72,7 +80,7 @@ async function fetchCityData(city, formatId = "", language = "") {
         cityMax += totalSeats;
         cityShows++;
 
-        // Save individual show
+        // Save individual show data
         allShowDetails.push({
           Date: targetDate,
           City: city,
@@ -86,9 +94,9 @@ async function fetchCityData(city, formatId = "", language = "") {
           Occupancy: occupancy.toFixed(2) + "%"
         });
 
-        // Add to language summary
+        // Aggregate per language
         if (!languageSummary[language]) languageSummary[language] = { shows: 0, booked: 0, max: 0, collection: 0 };
-        languageSummary[language].shows += 1;
+        languageSummary[language].shows++;
         languageSummary[language].booked += bookedSeats;
         languageSummary[language].max += totalSeats;
         languageSummary[language].collection += bookedSeats * avgPrice;
@@ -110,7 +118,6 @@ async function fetchCityData(city, formatId = "", language = "") {
     } else {
       console.warn(`⚠️ Skipped ${city} (${language}) - no valid shows`);
     }
-
   } catch (err) {
     console.warn(`❌ ${city} (${language}): ${err.message}`);
   }
@@ -127,29 +134,25 @@ function saveCSV(filename, data) {
     headers.join(","),
     ...data.map(row => headers.map(h => `"${row[h]}"`).join(","))
   ].join("\n");
-
   const filePath = path.join(process.cwd(), filename);
   fs.writeFileSync(filePath, csv, "utf8");
   console.log(`✅ Saved CSV: ${filename}`);
 }
 
-// --- Main ---
+// --- Main runner ---
 (async () => {
   console.log(`⏳ Fetching Bengaluru shows for ${targetDate}...`);
-
-  for (let city of cities) {
+  for (const city of cities) {
     for (const [lang, formatId] of Object.entries(formats)) {
       await fetchCityData(city, formatId, lang);
     }
   }
-
   console.table(citySummary);
 
-  // Save CSVs
+  // Save outputs
   saveCSV("show-wise.csv", allShowDetails);
   saveCSV("city-wise.csv", citySummary);
 
-  // Language-wise CSV
   const langCSV = Object.entries(languageSummary).map(([lang, val]) => ({
     Language: lang,
     Shows: val.shows,
