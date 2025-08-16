@@ -1,11 +1,14 @@
 import fs from "fs";
 
-// ---------------- Save to CsV ---------------///
+// ---------------- Save to CSV into daily folder ---------------///
 function saveToCSV(data, filenameBase) {
   if (!data.length) return;
 
-  const folder = "output";
+  // Daily folder
+  const today = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
+  const folder = `output_${today}`;
   fs.mkdirSync(folder, { recursive: true });
+
   const csvFilePath = `${folder}/${filenameBase}.csv`;
 
   const headers = Object.keys(data[0]);
@@ -167,5 +170,5 @@ const tamilEventCode = "ET00395817";
   saveToCSV(showRows, "show-wise-tamil");
   saveToCSV(cityResults, "city-wise-tamil");
 
-  console.log("✅ Tamil data fetched and appended.");
+  console.log("✅ Tamil data fetched and saved.");
 })();
