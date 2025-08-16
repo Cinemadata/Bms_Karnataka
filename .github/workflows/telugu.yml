@@ -1,12 +1,10 @@
-name: Fetch Telugu shows
+name: Fetch Tamil shows
 
-# Trigger every 30 minutes
 on:
   schedule:
-    - cron: '*/30 * * * *'
-  workflow_dispatch: # manual trigger
+    - cron: '*/30 * * * *'  # Runs every 30 minutes
+  workflow_dispatch:
 
-# Give write permissions to push CSVs
 permissions:
   contents: write
 
@@ -14,11 +12,13 @@ jobs:
   fetch-and-push:
     runs-on: ubuntu-latest
     steps:
-      # Checkout the repo
+      # Checkout the repository without persisting credentials
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
-      # Setup Node.js
+      # Setup Node.js environment
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
@@ -28,18 +28,24 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      #Run Tamil script
-      - name: Run fetchTelugu.js
-        run: node fetchTelugu.js
-      
-      # Commit and push generated CSVs
+      # Run the script to fetch Tamil shows and append CSVs
+      - name: Run fetchTamil.js
+        run: node fetchTamil.js
+
+      # Commit and push updated CSVs with proper authentication and conflict handling
       - name: Commit and push CSVs
-        run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git add output/*.csv
-          git commit -m "Update Telugu shows CSVs [skip ci]" || echo "No changes to commit"
-          git push origin main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add output/*.csv
+          if ! git diff --cached --quiet; then
+            git commit -m "Update Tamil shows CSVs [skip ci]"
+          fi
+          # Set remote URL to use the GitHub token for authentication
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/Cinemadata/Bms_Karnataka.git
           
+          # Pull latest changes with rebase and push commits
+          git pull --rebase origin main
+          git push origin main
