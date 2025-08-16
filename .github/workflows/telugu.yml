@@ -1,4 +1,4 @@
-name: Fetch Tamil shows
+name: Fetch Telugu shows
 
 on:
   schedule:
@@ -28,9 +28,9 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # Run the script to fetch Tamil shows and append CSVs
-      - name: Run fetchTamil.js
-        run: node fetchTamil.js
+      # Run the script to fetch Telugu shows and append CSVs
+      - name: Run fetchTelugu.js
+        run: node fetchTelugu.js
 
       # Commit and push updated CSVs with proper authentication and conflict handling
       - name: Commit and push CSVs
@@ -41,7 +41,7 @@ jobs:
           git config --global user.email "github-actions@github.com"
           git add output/*.csv
           if ! git diff --cached --quiet; then
-            git commit -m "Update Tamil shows CSVs [skip ci]"
+            git commit -m "Update Telugu shows CSVs [skip ci]"
           fi
           # Set remote URL to use the GitHub token for authentication
           git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/Cinemadata/Bms_Karnataka.git
