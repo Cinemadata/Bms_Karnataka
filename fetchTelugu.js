@@ -1,11 +1,13 @@
 import fs from "fs";
 
-// ---------------- Save to CSV ---------------
-function saveToCSV(data, filenameBase) {
+// ---------------- Save to CSV ---------------///
+function saveToCSV(data, folderBase, filenameBase) {
   if (!data.length) return;
 
-  const folder = "output";
+  // Create folder for today
+  const folder = `output_${folderBase}`;
   fs.mkdirSync(folder, { recursive: true });
+
   const csvFilePath = `${folder}/${filenameBase}.csv`;
 
   const headers = Object.keys(data[0]);
@@ -23,7 +25,7 @@ function saveToCSV(data, filenameBase) {
 }
 
 // ---------------- Fetch Showtimes ----------------
-async function fetchShowtimesForCities(eventCode, cities, language) {
+async function fetchShowtimesForCities(eventCode, cities, language, dateCode) {
   const showRows = [];
   const cityResults = [];
 
@@ -37,7 +39,7 @@ async function fetchShowtimesForCities(eventCode, cities, language) {
   }
 
   for (const city of cities) {
-    const url = `https://in.bookmyshow.com/api/movies-data/showtimes-by-event?appCode=MOBAND2&appVersion=14304&language=en&eventCode=${eventCode}&regionCode=${city.code}&subRegion=${city.code}&bmsId=1.21345445.1703250084656&token=67x1xa33b4x422b361ba&lat=${city.lat}&lon=${city.lon}&query=&dateCode=20250815`;
+    const url = `https://in.bookmyshow.com/api/movies-data/showtimes-by-event?appCode=MOBAND2&appVersion=14304&language=en&eventCode=${eventCode}&regionCode=${city.code}&subRegion=${city.code}&bmsId=1.21345445.1703250084656&token=67x1xa33b4x422b361ba&lat=${city.lat}&lon=${city.lon}&query=&dateCode=${dateCode}`;
 
     const headers = {
       Host: "in.bookmyshow.com",
@@ -156,11 +158,14 @@ const teluguEventCode = "ET00446734";
 
 // ---------------- Main Execution ----------------
 (async () => {
-  console.log("Fetching Telugu shows...");
-  const { showRows, cityResults } = await fetchShowtimesForCities(teluguEventCode, teluguCities, "Telugu");
+  const today = new Date();
+  const dateCode = today.toISOString().split("T")[0].replace(/-/g, ""); // YYYYMMDD
+  console.log(`Fetching Telugu shows for ${dateCode}...`);
 
-  saveToCSV(showRows, "show-wise-telugu");
-  saveToCSV(cityResults, "city-wise-telugu");
+  const { showRows, cityResults } = await fetchShowtimesForCities(teluguEventCode, teluguCities, "Telugu", dateCode);
 
-  console.log("✅ Telugu data fetched and appended.");
+  saveToCSV(showRows, dateCode, "show-wise-telugu");
+  saveToCSV(cityResults, dateCode, "city-wise-telugu");
+
+  console.log("✅ Telugu data fetched and saved to daily folder.");
 })();
