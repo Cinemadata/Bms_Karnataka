@@ -13,13 +13,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the repository without persisting credentials
+      # Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           persist-credentials: false
 
-      # Setup Node.js environment
+      # Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
@@ -29,15 +29,15 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # Get current date for output file
+      # Get today's date for folder
       - name: Set date variable
         run: echo "DATE=$(date +%F)" >> $GITHUB_ENV
 
-      # Run the script to fetch Tamil shows and append to daily CSV
+      # Run fetchTamil.js
       - name: Run fetchTamil.js
-        run: node fetchTamil.js ${{ env.DATE }}
+        run: node fetchTamil.js
 
-      # Commit and push updated CSVs with proper authentication and conflict handling
+      # Commit and push CSVs
       - name: Commit and push CSVs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -45,17 +45,18 @@ jobs:
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
 
-          # Add only today's output file
-          git add output/output_${{ env.DATE }}.csv
+          # Add daily folder CSVs
+          git add output_${{ env.DATE }}/show-wise-tamil.csv
+          git add output_${{ env.DATE }}/city-wise-tamil.csv
 
-          # Commit if there are changes
+          # Commit if changes exist
           if ! git diff --cached --quiet; then
-            git commit -m "Update Tamil shows CSV for ${{ env.DATE }} [skip ci]"
+            git commit -m "Update Tamil shows CSVs for ${{ env.DATE }} [skip ci]"
           fi
 
-          # Set remote URL to use the GitHub token for authentication
+          # Set remote URL for authentication
           git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/Cinemadata/Bms_Karnataka.git
 
-          # Pull latest changes with rebase and push commits
+          # Pull and push
           git pull --rebase origin main
           git push origin main
