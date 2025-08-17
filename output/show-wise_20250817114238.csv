@@ -1,0 +1,13 @@
+City,Language,Venue,Show Time,Total Seats,Booked Seats,Occupancy (%),Booked Collection (₹),Total Collection (₹),Avg Ticket Price (₹)
+"bengaluru","Telugu","Innovative Multiplex Marathahalli, Near Marathalli Junction, Bengaluru","06:30 pm","350","303","86.57","₹113625","₹131250","375.00"
+"bengaluru","Telugu","Innovative Multiplex Marathahalli, Near Marathalli Junction, Bengaluru","09:30 pm","89","66","74.16","₹19800","₹26700","300.00"
+"bengaluru","Telugu","Innovative Multiplex Marathahalli, Near Marathalli Junction, Bengaluru","10:30 pm","352","164","46.59","₹61500","₹132000","375.00"
+"bengaluru","Hindi","Innovative Multiplex Marathahalli, Near Marathalli Junction, Bengaluru","06:00 pm","36","24","66.67","₹7200","₹10800","300.00"
+"bengaluru","Hindi","Innovative Multiplex Marathahalli, Near Marathalli Junction, Bengaluru","07:15 pm","352","126","35.80","₹47250","₹132000","375.00"
+"bengaluru","Hindi","Innovative Multiplex Marathahalli, Near Marathalli Junction, Bengaluru","09:15 pm","36","14","38.89","₹4200","₹10800","300.00"
+"bengaluru","Hindi","Innovative Multiplex Marathahalli, Near Marathalli Junction, Bengaluru","10:00 pm","352","90","25.57","₹33750","₹132000","375.00"
+"bengaluru","Hindi","Sandhya Theatre RGB Laser Atmos, Madivala, Bengaluru","07:10 pm","756","136","17.99","₹37400","₹207900","275.00"
+"bengaluru","Hindi","Balaji 4K Atmos 3D Cinema, Chikkalasandra Uttarahalli Main Road, Bengaluru","07:15 pm","329","112","34.04","₹33600","₹98700","300.00"
+"bengaluru","Hindi","Balaji 4K Atmos 3D Cinema, Chikkalasandra Uttarahalli Main Road, Bengaluru","10:30 pm","329","21","6.38","₹6300","₹98700","300.00"
+"bengaluru","Hindi","Manasa RGB Laser Atmos Cinemas, Konankunte, Bengaluru","07:05 pm","524","172","32.82","₹51600","₹157200","300.00"
+"bengaluru","Hindi","Manasa RGB Laser Atmos Cinemas, Konankunte, Bengaluru","10:20 pm","524","18","3.44","₹5400","₹157200","300.00"
