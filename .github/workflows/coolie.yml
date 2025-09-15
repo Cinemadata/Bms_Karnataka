@@ -2,7 +2,7 @@ name: Fetch Shows Daily
 
 on:
   schedule:
-    - cron: '*/30 * * * *'
+    - cron: '*/30 * * * *'  # every 30 minutes
   workflow_dispatch:
 
 permissions:
@@ -15,8 +15,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          persist-credentials: false
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -24,10 +22,7 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        run: npm install
-
-      - name: Set date variable
-        run: echo "DATE=$(date +%F)" >> $GITHUB_ENV
+        run: npm install node-fetch@2
 
       - name: Run fetchShows.js
         run: node fetchShows.js
@@ -39,10 +34,10 @@ jobs:
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
 
-          git add output_${{ env.DATE }}
+          git add karnataka_show_wise_*.csv
 
           if ! git diff --cached --quiet; then
-            git commit -m "Update shows CSVs for ${{ env.DATE }} [skip ci]"
+            git commit -m "Update Karnataka show CSVs [skip ci]"
           fi
 
           git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/Cinemadata/Bms_Karnataka.git
