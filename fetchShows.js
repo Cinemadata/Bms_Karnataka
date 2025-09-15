@@ -1,8 +1,8 @@
 import fs from "fs";
 
-// ==========================
-// ⚙ Karnataka Cities
-// ==========================
+
+
+// ---------------- Karnataka Cities ----------------
 const karnatakaCities = [
   { name: "Bengaluru", code: "BANG", slug: "bengaluru", lat: 12.9716, lon: 77.5946 },
   { name: "Mysuru", code: "MYS", slug: "mysuru", lat: 12.2958, lon: 76.6394 },
@@ -38,18 +38,32 @@ const karnatakaCities = [
   { name: "Kushalnagar", code: "KSN", slug: "kushalnagar", lat: 12.4578, lon: 75.9603 },
 ];
 
-// ==========================
-// 📌 Event & Date
-// ==========================
-const eventCode = "ET00395402";
-const dateCode = new Date().toISOString().split("T")[0].replace(/-/g, ""); // YYYYMMDD
+// ---------------- CSV Saver ----------------
+function saveToCSV(data, filenameBase) {
+  if (!data.length) return;
+  const today = new Date().toISOString().split("T")[0];
+  const folder = `output_${today}`;
+  fs.mkdirSync(folder, { recursive: true });
+  const filePath = path.join(folder, `${filenameBase}.csv`);
 
-// ==========================
-// ⚙ Helper Functions
-// ==========================
-function getHeaders(city) {
-  return {
-    "x-bms-id": "1.3158053074.1724928349489",
+  const headers = Object.keys(data[0]);
+  const rows = data.map(r => headers.map(h => `${r[h] !== undefined ? r[h] : ""}`).join(","));
+
+  if (!fs.existsSync(filePath)) {
+    fs.writeFileSync(filePath, headers.join(",") + "\n" + rows.join("\n") + "\n", "utf8");
+  } else {
+    fs.appendFileSync(filePath, rows.join("\n") + "\n", "utf8");
+  }
+
+  console.log(`💾 Appended ${data.length} rows to ${filePath}`);
+}
+
+// ---------------- Fetch Logic ----------------
+async function fetchCityData(city, eventCode, dateCode) {
+  const url = `https://in.bookmyshow.com/api/movies-data/showtimes-by-event?appCode=MOBAND2&appVersion=14304&language=en&eventCode=${eventCode}&regionCode=${city.code}&subRegion=${city.code}&bmsId=1.21345445.1703250084656&token=67x1xa33b4x422b361ba&lat=${city.lat}&lon=${city.lon}&query=&dateCode=${dateCode}`;
+
+  const headers = {
+    "x-bms-id": "1.21345445.1703250084656",
     "x-region-code": city.code,
     "x-subregion-code": city.code,
     "x-region-slug": city.slug,
@@ -63,110 +77,83 @@ function getHeaders(city) {
     "x-app-version": "14.3.4",
     "x-app-version-code": "14304",
     "x-network": "Android | WIFI",
-    "x-latitude": city.lat.toString(),
-    "x-longitude": city.lon.toString(),
+    "x-latitude": city.lat,
+    "x-longitude": city.lon,
     "x-location-selection": "manual",
     "x-location-shared": "false",
     lang: "en",
-    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/140.0.0.0 Safari/537.36",
+    "user-agent": "Dalvik/2.1.0 (Linux; U; Android 12; Pixel XL Build/SP2A.220505.008)",
   };
-}
 
-function chunkArray(arr, size) {
-  const chunks = [];
-  for (let i = 0; i < arr.length; i += size) {
-    chunks.push(arr.slice(i, i + size));
-  }
-  return chunks;
-}
-
-function saveCSV(data, filePath) {
-  if (!data.length) return;
-
-  const headers = Object.keys(data[0]);
-  const rows = data.map((row) => headers.map((h) => `"${row[h] !== undefined ? row[h] : ""}"`).join(","));
-  const csv = [headers.join(","), ...rows].join("\n");
-  fs.writeFileSync(filePath, csv, "utf-8");
-  console.log(`💾 CSV saved: ${filePath}`);
-}
-
-// ==========================
-// 📥 Fetch Shows per City
-// ==========================
-async function fetchCityShows(city) {
-  const url = `https://in.bookmyshow.com/api/movies-data/showtimes-by-event?appCode=WEB&appVersion=1.0&language=en&eventCode=${eventCode}&regionCode=${city.code}&subRegion=${city.code}&dateCode=${dateCode}`;
   try {
-    const resp = await fetch(url, { headers: getHeaders(city) });
+    const resp = await fetch(url, { method: "GET", headers });
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
     const data = await resp.json();
-    if (!data.ShowDetails) return [];
+    if (!data.ShowDetails?.length) return [];
 
-    const shows = [];
-    data.ShowDetails.forEach((showDetail) => {
-      showDetail.Venues.forEach((venue) => {
-        venue.ShowTimes.forEach((showTime) => {
-          let totalSeats = 0, totalBooked = 0, totalCollection = 0, weightedPriceSum = 0;
-
-          showTime.Categories.forEach((cat) => {
+    const showRows = [];
+    data.ShowDetails.forEach(showDetail => {
+      showDetail.Venues.forEach(venue => {
+        venue.ShowTimes.forEach(showTime => {
+          let totalSeats = 0, bookedSeats = 0, totalCollection = 0, avgPrice = 0;
+          showTime.Categories.forEach(cat => {
             const maxSeats = parseInt(cat.MaxSeats) || 0;
-            const booked = maxSeats - (parseInt(cat.SeatsAvail) || 0);
+            const seatsAvail = parseInt(cat.SeatsAvail) || 0;
+            const booked = maxSeats - seatsAvail;
             const price = parseFloat(cat.CurPrice) || 0;
             totalSeats += maxSeats;
-            totalBooked += booked;
+            bookedSeats += booked;
             totalCollection += booked * price;
-            weightedPriceSum += booked * price;
+            avgPrice += price;
           });
-
-          const avgPrice = totalBooked ? (weightedPriceSum / totalBooked).toFixed(2) : 0;
-
-          shows.push({
+          avgPrice = showTime.Categories.length ? avgPrice / showTime.Categories.length : 0;
+          showRows.push({
             City: city.name,
             Venue: venue.VenueName,
             ShowTime: showTime.ShowTime,
-            MaxSeats: totalSeats,
-            Booked: totalBooked,
-            Collection: totalCollection.toFixed(0),
-            AvgPrice: avgPrice,
-            Occupancy: totalSeats ? ((totalBooked / totalSeats) * 100).toFixed(2) + "%" : "0%",
+            "Total Seats": totalSeats,
+            "Booked Seats": bookedSeats,
+            "Booked Collection (₹)": totalCollection.toFixed(2),
+            "Total Collection (₹)": (totalSeats * avgPrice).toFixed(2),
+            "Avg Ticket Price (₹)": avgPrice.toFixed(2),
           });
         });
       });
     });
 
-    return shows;
+    return showRows;
   } catch (err) {
     console.error(`❌ Error fetching ${city.name}:`, err.message);
     return [];
   }
 }
 
-// ==========================
-// 🚀 Main Runner
-// ==========================
-(async function run() {
-  const fileName = `karnataka_show_wise_${new Date().toISOString().split("T")[0]}.csv`;
-  const filePath = path.join(process.cwd(), fileName);
+// ---------------- Main Runner with Chunks ----------------
+async function fetchAllChunks() {
+  const eventCode = "ET00395402"; // replace with your actual eventCode
+  const dateCode = new Date().toISOString().split("T")[0].replace(/-/g, ""); // YYYYMMDD
 
-  // Load existing CSV if exists
-  let existingData = [];
-  if (fs.existsSync(filePath)) {
-    const content = fs.readFileSync(filePath, "utf-8");
-    const lines = content.split("\n").slice(1);
-    existingData = lines.map((line) => {
-      const [City, Venue, ShowTime, MaxSeats, Booked, Collection, AvgPrice, Occupancy] = line.split(",");
-      return { City, Venue, ShowTime, MaxSeats, Booked, Collection, AvgPrice, Occupancy };
-    });
+  const chunkSize = Math.ceil(karnatakaCities.length / 4);
+  const chunks = [];
+  for (let i = 0; i < 4; i++) {
+    chunks.push(karnatakaCities.slice(i * chunkSize, (i + 1) * chunkSize));
   }
 
-  const chunks = chunkArray(karnatakaCities, Math.ceil(karnatakaCities.length / 4)); // 4 chunks
-  const allShows = [...existingData];
+  for (let i = 0; i < chunks.length; i++) {
+    console.log(`\n⏳ Processing chunk ${i + 1} / 4 ...`);
+    for (const city of chunks[i]) {
+      const data = await fetchCityData(city, eventCode, dateCode);
+      if (data.length) saveToCSV(data, "karnataka_show_wise");
+    }
 
-  for (const chunk of chunks) {
-    const chunkResults = await Promise.all(chunk.map(fetchCityShows));
-    chunkResults.forEach((res) => allShows.push(...res));
-    console.log(`⏳ Finished a chunk, waiting 10s before next...`);
-    await new Promise((r) => setTimeout(r, 10000)); // 10s delay between chunks
+    if (i < chunks.length - 1) {
+      console.log(`🕒 Waiting 10 minutes before next chunk...`);
+      await new Promise(r => setTimeout(r, 10 * 60 * 1000));
+    }
   }
 
-  saveCSV(allShows, filePath);
-})();
+  console.log("✅ All chunks processed!");
+}
+
+// ---------------- Run ----------------
+fetchAllChunks();
