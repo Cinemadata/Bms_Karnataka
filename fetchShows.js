@@ -1,184 +1,172 @@
 import fs from "fs";
 
-// ---------------- Save to CSV ----------------
-function saveToCSV(data, folderName, filenameBase) {
+// ==========================
+// ⚙ Karnataka Cities
+// ==========================
+const karnatakaCities = [
+  { name: "Bengaluru", code: "BANG", slug: "bengaluru", lat: 12.9716, lon: 77.5946 },
+  { name: "Mysuru", code: "MYS", slug: "mysuru", lat: 12.2958, lon: 76.6394 },
+  { name: "Hubli", code: "HUBL", slug: "hubli", lat: 15.3647, lon: 75.1240 },
+  { name: "Kalaburagi", code: "GLB", slug: "kalaburagi", lat: 17.3297, lon: 76.8343 },
+  { name: "Shivamogga", code: "SMG", slug: "shivamogga", lat: 13.9299, lon: 75.5681 },
+  { name: "Belagavi", code: "BLG", slug: "belagavi", lat: 15.8497, lon: 74.4977 },
+  { name: "Tumakuru", code: "TMK", slug: "tumakuru", lat: 13.3422, lon: 77.1010 },
+  { name: "Manipal", code: "MPL", slug: "manipal", lat: 13.3522, lon: 74.7929 },
+  { name: "Mangalore", code: "MNG", slug: "mangalore", lat: 12.9141, lon: 74.8560 },
+  { name: "Davangere", code: "DVG", slug: "davangere", lat: 14.4661, lon: 75.9200 },
+  { name: "Chikkaballapura", code: "CBP", slug: "chikkaballapura", lat: 13.4355, lon: 77.7315 },
+  { name: "Bhadravati", code: "BVD", slug: "bhadravati", lat: 13.8485, lon: 75.7050 },
+  { name: "Kolar", code: "KLR", slug: "kolar", lat: 13.1365, lon: 78.1291 },
+  { name: "Sidlaghatta", code: "SDG", slug: "sidlaghatta", lat: 13.3883, lon: 77.8641 },
+  { name: "Tiptur", code: "TTP", slug: "tiptur", lat: 13.2586, lon: 76.4777 },
+  { name: "Magadi", code: "MGD", slug: "magadi", lat: 12.9572, lon: 77.2235 },
+  { name: "Belur", code: "BLR", slug: "belur", lat: 13.1656, lon: 75.8652 },
+  { name: "Gadag", code: "GDG", slug: "gadag", lat: 15.4298, lon: 75.6297 },
+  { name: "Bijapur", code: "BJP", slug: "bijapur", lat: 16.8302, lon: 75.7100 },
+  { name: "Mudhol", code: "MDH", slug: "mudhol", lat: 16.3336, lon: 75.2835 },
+  { name: "Gundlupet", code: "GDP", slug: "gundlupet", lat: 11.8101, lon: 76.6909 },
+  { name: "Bhatkal", code: "BTL", slug: "bhatkal", lat: 13.9855, lon: 74.5552 },
+  { name: "Channarayapatna", code: "CRP", slug: "channarayapatna", lat: 12.9020, lon: 76.3903 },
+  { name: "Bagalkot", code: "BKT", slug: "bagalkot", lat: 16.1725, lon: 75.6557 },
+  { name: "Shahpur", code: "SHP", slug: "shahpur", lat: 16.6967, lon: 76.8416 },
+  { name: "Chitradurga", code: "CTD", slug: "chitradurga", lat: 14.2251, lon: 76.3980 },
+  { name: "Ranebennur", code: "RNR", slug: "ranebennur", lat: 14.6220, lon: 75.6220 },
+  { name: "Chamarajanagara", code: "CMR", slug: "chamarajanagara", lat: 11.9230, lon: 76.9437 },
+  { name: "Karwar", code: "KWR", slug: "karwar", lat: 14.8014, lon: 74.1240 },
+  { name: "Bagepalli", code: "BGP", slug: "bagepalli", lat: 13.7839, lon: 77.7961 },
+  { name: "Gokak", code: "GKK", slug: "gokak", lat: 16.1753, lon: 74.8231 },
+  { name: "Kushalnagar", code: "KSN", slug: "kushalnagar", lat: 12.4578, lon: 75.9603 },
+];
+
+// ==========================
+// 📌 Event & Date
+// ==========================
+const eventCode = "ET00395402";
+const dateCode = new Date().toISOString().split("T")[0].replace(/-/g, ""); // YYYYMMDD
+
+// ==========================
+// ⚙ Helper Functions
+// ==========================
+function getHeaders(city) {
+  return {
+    "x-bms-id": "1.3158053074.1724928349489",
+    "x-region-code": city.code,
+    "x-subregion-code": city.code,
+    "x-region-slug": city.slug,
+    "x-platform": "AND",
+    "x-platform-code": "ANDROID",
+    "x-app-code": "MOBAND2",
+    "x-device-make": "Google-Pixel XL",
+    "x-screen-height": "2392",
+    "x-screen-width": "1440",
+    "x-screen-density": "3.5",
+    "x-app-version": "14.3.4",
+    "x-app-version-code": "14304",
+    "x-network": "Android | WIFI",
+    "x-latitude": city.lat.toString(),
+    "x-longitude": city.lon.toString(),
+    "x-location-selection": "manual",
+    "x-location-shared": "false",
+    lang: "en",
+    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/140.0.0.0 Safari/537.36",
+  };
+}
+
+function chunkArray(arr, size) {
+  const chunks = [];
+  for (let i = 0; i < arr.length; i += size) {
+    chunks.push(arr.slice(i, i + size));
+  }
+  return chunks;
+}
+
+function saveCSV(data, filePath) {
   if (!data.length) return;
 
-  const folder = `output_${folderName}`;
-  fs.mkdirSync(folder, { recursive: true });
-  const csvFilePath = `${folder}/${filenameBase}.csv`;
-
   const headers = Object.keys(data[0]);
-  const rows = data.map(obj =>
-    headers.map(h => `"${obj[h] !== undefined ? obj[h] : ""}"`).join(",")
-  );
-
-  fs.writeFileSync(csvFilePath, headers.join(",") + "\n" + rows.join("\n") + "\n", "utf8");
-  console.log(`💾 Saved ${data.length} rows to ${csvFilePath}`);
+  const rows = data.map((row) => headers.map((h) => `"${row[h] !== undefined ? row[h] : ""}"`).join(","));
+  const csv = [headers.join(","), ...rows].join("\n");
+  fs.writeFileSync(filePath, csv, "utf-8");
+  console.log(`💾 CSV saved: ${filePath}`);
 }
 
-// ---------------- Delay to avoid rate-limiting ----------------
-function delay(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+// ==========================
+// 📥 Fetch Shows per City
+// ==========================
+async function fetchCityShows(city) {
+  const url = `https://in.bookmyshow.com/api/movies-data/showtimes-by-event?appCode=WEB&appVersion=1.0&language=en&eventCode=${eventCode}&regionCode=${city.code}&subRegion=${city.code}&dateCode=${dateCode}`;
+  try {
+    const resp = await fetch(url, { headers: getHeaders(city) });
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const data = await resp.json();
+    if (!data.ShowDetails) return [];
+
+    const shows = [];
+    data.ShowDetails.forEach((showDetail) => {
+      showDetail.Venues.forEach((venue) => {
+        venue.ShowTimes.forEach((showTime) => {
+          let totalSeats = 0, totalBooked = 0, totalCollection = 0, weightedPriceSum = 0;
+
+          showTime.Categories.forEach((cat) => {
+            const maxSeats = parseInt(cat.MaxSeats) || 0;
+            const booked = maxSeats - (parseInt(cat.SeatsAvail) || 0);
+            const price = parseFloat(cat.CurPrice) || 0;
+            totalSeats += maxSeats;
+            totalBooked += booked;
+            totalCollection += booked * price;
+            weightedPriceSum += booked * price;
+          });
+
+          const avgPrice = totalBooked ? (weightedPriceSum / totalBooked).toFixed(2) : 0;
+
+          shows.push({
+            City: city.name,
+            Venue: venue.VenueName,
+            ShowTime: showTime.ShowTime,
+            MaxSeats: totalSeats,
+            Booked: totalBooked,
+            Collection: totalCollection.toFixed(0),
+            AvgPrice: avgPrice,
+            Occupancy: totalSeats ? ((totalBooked / totalSeats) * 100).toFixed(2) + "%" : "0%",
+          });
+        });
+      });
+    });
+
+    return shows;
+  } catch (err) {
+    console.error(`❌ Error fetching ${city.name}:`, err.message);
+    return [];
+  }
 }
 
-// ---------------- Fetch Showtimes ----------------
-async function fetchShowtimesForCities(eventCode, cities, language) {
-  const showRows = [];
-  const cityResults = [];
+// ==========================
+// 🚀 Main Runner
+// ==========================
+(async function run() {
+  const fileName = `karnataka_show_wise_${new Date().toISOString().split("T")[0]}.csv`;
+  const filePath = path.join(process.cwd(), fileName);
 
-  function formatShowTime(raw) {
-    if (!raw || raw === "N/A") return "Unknown";
-    if (/^\d{1,2}:\d{2}\s?(AM|PM)$/i.test(raw)) return raw;
-    const n = Number(raw);
-    const d = !isNaN(n) ? new Date(n) : new Date(raw);
-    return isNaN(d.getTime()) ? "Unknown" : d.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true });
+  // Load existing CSV if exists
+  let existingData = [];
+  if (fs.existsSync(filePath)) {
+    const content = fs.readFileSync(filePath, "utf-8");
+    const lines = content.split("\n").slice(1);
+    existingData = lines.map((line) => {
+      const [City, Venue, ShowTime, MaxSeats, Booked, Collection, AvgPrice, Occupancy] = line.split(",");
+      return { City, Venue, ShowTime, MaxSeats, Booked, Collection, AvgPrice, Occupancy };
+    });
   }
 
-  for (const city of cities) {
-    const url = `https://in.bookmyshow.com/api/movies-data/showtimes-by-event?appCode=MOBAND2&appVersion=14304&language=en&eventCode=${eventCode}&regionCode=${city.code}&subRegion=${city.code}&bmsId=1.3158053074.1724928349489&lat=${city.lat}&lon=${city.lon}&query=&dateCode=${new Date().toISOString().split("T")[0].replace(/-/g,'')}`;
+  const chunks = chunkArray(karnatakaCities, Math.ceil(karnatakaCities.length / 4)); // 4 chunks
+  const allShows = [...existingData];
 
-    try {
-      const res = await fetch(url, {
-        headers: {
-          "x-bms-id": "1.3158053074.1724928349489",
-          "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
-          "cookie": ""
-        }
-      });
-      const data = await res.json();
-      if (!data?.ShowDetails) {
-        console.warn(`⚠️ No show data for ${city.name}`);
-        continue;
-      }
-
-      let cityTotalSeats = 0, cityBookedSeats = 0, cityBookedCollection = 0, cityTotalPotentialCollection = 0, cityWeightedPriceSum = 0, totalShowsInCity = 0;
-
-      for (const showDetail of data.ShowDetails) {
-        for (const venue of showDetail.Venues) {
-          for (const showTime of venue.ShowTimes) {
-            totalShowsInCity++;
-            const formattedTime = formatShowTime(showTime.ShowTime);
-
-            let totalSeats = 0, totalBooked = 0, totalShowCollection = 0, sumCategoryPrices = 0, catCount = 0;
-            for (const cat of showTime.Categories) {
-              const maxSeats = parseInt(cat.MaxSeats) || 0;
-              const seatsAvail = parseInt(cat.SeatsAvail) || 0;
-              const booked = maxSeats - seatsAvail;
-              const price = parseFloat(cat.CurPrice) || 0;
-
-              totalSeats += maxSeats;
-              totalBooked += booked;
-              totalShowCollection += booked * price;
-              sumCategoryPrices += price;
-              catCount++;
-            }
-
-            const avgPrice = catCount > 0 ? sumCategoryPrices / catCount : 0;
-            const totalPotentialCollection = totalSeats * avgPrice;
-            const occupancy = totalSeats ? ((totalBooked / totalSeats) * 100).toFixed(2) : "0.00";
-
-            showRows.push({
-              Language: language,
-              City: city.name,
-              Venue: venue.VenueName,
-              "Show Time": formattedTime,
-              "Total Seats": totalSeats,
-              "Booked Seats": totalBooked,
-              "Occupancy (%)": `${occupancy}%`,
-              "Booked Collection (₹)": totalShowCollection.toFixed(2),
-              "Total Collection (₹)": totalPotentialCollection.toFixed(2),
-              "Avg Ticket Price (₹)": avgPrice.toFixed(2),
-            });
-
-            cityTotalSeats += totalSeats;
-            cityBookedSeats += totalBooked;
-            cityBookedCollection += totalShowCollection;
-            cityTotalPotentialCollection += totalPotentialCollection;
-            cityWeightedPriceSum += avgPrice * totalSeats;
-          }
-        }
-      }
-
-      const cityOccupancy = cityTotalSeats ? ((cityBookedSeats / cityTotalSeats) * 100).toFixed(2) : "0.00";
-      const cityAvgTicketPrice = cityTotalSeats ? (cityWeightedPriceSum / cityTotalSeats).toFixed(2) : "0.00";
-
-      cityResults.push({
-        Language: language,
-        City: city.name,
-        "Total Shows": totalShowsInCity,
-        "Total Seats": cityTotalSeats,
-        "Booked Seats": cityBookedSeats,
-        "Occupancy (%)": `${cityOccupancy}%`,
-        "Booked Collection (₹)": cityBookedCollection.toFixed(2),
-        "Total Collection (₹)": cityTotalPotentialCollection.toFixed(2),
-        "Avg Ticket Price (₹)": cityAvgTicketPrice,
-      });
-
-      await delay(1500); // 1.5s delay per city to reduce rate-limiting
-    } catch (err) {
-      console.error(`❌ Failed fetch for ${city.name}:`, err);
-    }
+  for (const chunk of chunks) {
+    const chunkResults = await Promise.all(chunk.map(fetchCityShows));
+    chunkResults.forEach((res) => allShows.push(...res));
+    console.log(`⏳ Finished a chunk, waiting 10s before next...`);
+    await new Promise((r) => setTimeout(r, 10000)); // 10s delay between chunks
   }
 
-  return { showRows, cityResults };
-}
-
-// ---------------- Cities ----------------
-const tamilCities = [
-  { name: "Bengaluru", code: "BANG", slug: "bengaluru", lat: 12.9716, lon: 77.5946 },
-  { name: "Mysore", code: "MYS", slug: "mysore", lat: 12.2958, lon: 76.6394 },
-  { name: "Hubli", code: "HUBL", slug: "hubli", lat: 15.3647, lon: 75.1237 },
-  { name: "Mangalore", code: "MALE", slug: "mangalore", lat: 12.9141, lon: 74.8560 },
-  { name: "Belagavi", code: "BELG", slug: "belagavi", lat: 15.8497, lon: 74.4977 },
-  { name: "Kalaburagi", code: "KALB", slug: "kalaburagi", lat: 17.3297, lon: 76.8343 },
-  { name: "Shivamogga", code: "SHIV", slug: "shivamogga", lat: 13.9299, lon: 75.5681 },
-  { name: "Tumkur", code: "TUMK", slug: "tumkur", lat: 13.3392, lon: 77.1135 },
-  { name: "Davangere", code: "DAVA", slug: "davangere", lat: 14.4646, lon: 75.921 },
-  { name: "Raichur", code: "RAUR", slug: "raichur", lat: 16.2076, lon: 77.3439 },
-  { name: "Hospet", code: "HOSP", slug: "hospet", lat: 15.2695, lon: 76.3871 },
-  { name: "Bellary", code: "BLRY", slug: "bellary", lat: 15.1394, lon: 76.9214 },
-  { name: "Kolar", code: "OLAR", slug: "kolar", lat: 13.1364, lon: 78.1298 },
-  { name: "Chikballapur", code: "CHIK", slug: "chikballapur", lat: 13.435, lon: 77.7317 },
-  { name: "Tiptur", code: "TIPT", slug: "tiptur", lat: 13.3153, lon: 76.4537 },
-  { name: "Malur", code: "MLLR", slug: "malur", lat: 13.2817, lon: 78.2062 },
-  { name: "Vijayapura", code: "VIJP", slug: "bijapur", lat: 16.8307, lon: 75.710 },
-  { name: "Karwar", code: "KRWR", slug: "karwar", lat: 14.8026, lon: 74.1326 }
-];
-
-const teluguCities = [
-  { name: "Bengaluru", code: "BANG", slug: "bengaluru", lat: 12.9716, lon: 77.5946 },
-  { name: "Bellary", code: "BLRY", slug: "bellary", lat: 15.1394, lon: 76.9214 },
-  { name: "Tumkur", code: "TUMK", slug: "tumkur", lat: 13.3392, lon: 77.1135 },
-  { name: "Davangere", code: "DAVA", slug: "davangere", lat: 14.4646, lon: 75.921 },
-  { name: "Chikballapur", code: "CHIK", slug: "chikballapur", lat: 13.435, lon: 77.7317 },
-  { name: "Raichur", code: "RAUR", slug: "raichur", lat: 16.2076, lon: 77.3439 },
-  { name: "Hospet", code: "HOSP", slug: "hospet", lat: 15.2695, lon: 76.3871 },
-  { name: "Kalaburagi", code: "KALB", slug: "kalaburagi", lat: 17.3297, lon: 76.8343 },
-  { name: "Mysore", code: "MYS", slug: "mysore", lat: 12.2958, lon: 76.6394 },
-  { name: "Shivamogga", code: "SHIV", slug: "shivamogga", lat: 13.9299, lon: 75.5681 },
-  { name: "Belagavi", code: "BELG", slug: "belagavi", lat: 15.8497, lon: 74.4977 },
-  { name: "Mangalore", code: "MALE", slug: "mangalore", lat: 12.9141, lon: 74.8560 }
-];
-
-const tamilEventCode = "ET00395817";
-const teluguEventCode = "ET00446734";
-
-// ---------------- Main Execution ----------------
-(async () => {
-  const today = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
-
-  console.log("Fetching Tamil shows...");
-  const { showRows: tamilShowRows, cityResults: tamilCityResults } =
-    await fetchShowtimesForCities(tamilEventCode, tamilCities, "Tamil");
-  saveToCSV(tamilShowRows, today, "show-wise-tamil");
-  saveToCSV(tamilCityResults, today, "city-wise-tamil");
-  console.log("✅ Tamil data fetched and saved.");
-
-  console.log("Fetching Telugu shows...");
-  const { showRows: teluguShowRows, cityResults: teluguCityResults } =
-    await fetchShowtimesForCities(teluguEventCode, teluguCities, "Telugu");
-  saveToCSV(teluguShowRows, today, "show-wise-telugu");
-  saveToCSV(teluguCityResults, today, "city-wise-telugu");
-  console.log("✅ Telugu data fetched and saved.");
+  saveCSV(allShows, filePath);
 })();
