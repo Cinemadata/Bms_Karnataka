@@ -1,5 +1,5 @@
 import fs from "fs";
-import fetch from "node-fetch";
+
 
 // ---------------- Batch2 Cities (10 cities) ----------------
 const batch2Cities = [
