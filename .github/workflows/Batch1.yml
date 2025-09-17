@@ -1,9 +1,9 @@
 name: Fetch Shows Batch1
 
 on:
+  workflow_dispatch:   # Manual trigger
   schedule:
-    - cron: '*/45 * * * *' # runs every 45 minutes
-  workflow_dispatch:
+    - cron: '*/45 * * * *'  # every 45 minutes
 
 permissions:
   contents: write
@@ -24,21 +24,26 @@ jobs:
       - name: Install dependencies
         run: npm install node-fetch@2
 
+      - name: Fetch latest remote changes
+        run: |
+          git fetch origin main
+          git reset --hard origin/main
+
       - name: Run Batch1 Script
+        run: node fetchShows.js
+
+      - name: Commit and push CSVs if changes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "🚀 Running Batch1 fetchShows.js..."
-          node fetchShows.js
-
-          echo "💾 Committing generated CSVs..."
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
+
           git add output_*/*.csv
 
           if ! git diff --cached --quiet; then
-            git commit -m "Update Batch1 CSVs [skip ci]"
-            git pull --rebase origin main || true
+            echo "🚀 CSV changes detected. Committing..."
+            git commit -m "Update CSVs [skip ci]"
             git push origin main
           else
             echo "⚠️ No CSV changes to commit."
