@@ -1,6 +1,7 @@
 import fs from "fs";
+import fetch from "node-fetch";
 
-// ---------------- Karnataka Cities ----------------
+// ---------------- Karnataka Cities (Batch 1) ----------------
 const karnatakaCities = [
   { name: "Bengaluru", code: "BANG", slug: "bengaluru", lat: 12.9716, lon: 77.5946 },
   { name: "Mysore", code: "MYS", slug: "mysore", lat: 12.2958, lon: 76.6394 },
@@ -27,53 +28,22 @@ const karnatakaCities = [
   { name: "Bijapur", code: "VJPR", slug: "bijapur", lat: 16.8307, lon: 75.7100 },
   { name: "Magadi", code: "MAGA", slug: "magadi", lat: 12.9300, lon: 77.2400 },
   { name: "Mudhol", code: "MUDL", slug: "mudhol", lat: 16.2200, lon: 75.4300 },
-  { name: "Krishnarajanagara", code: "KRJT", slug: "krishnarajanagara", lat: 12.2413, lon: 76.4407 },
-  { name: "Baindur", code: "BAND", slug: "baindur", lat: 13.9500, lon: 74.5500 },
-  { name: "Gundlupet", code: "GUND", slug: "gundlupet", lat: 12.1067, lon: 76.1697 },
-  { name: "Belur", code: "BELU", slug: "belur", lat: 13.1633, lon: 75.8667 },
-  { name: "Bhatkal", code: "BAKL", slug: "bhatkal", lat: 13.9693, lon: 74.5154 },
-  { name: "Dharwad", code: "DHAW", slug: "dharwad", lat: 15.4589, lon: 75.0078 },
-  { name: "Kanakapura", code: "KAKP", slug: "kanakapura", lat: 12.5797, lon: 77.4112 },
-  { name: "Karkala", code: "KARK", slug: "karkala", lat: 13.2945, lon: 74.9904 },
-  { name: "Mandya", code: "MND", slug: "mandya", lat: 12.5247, lon: 76.8977 },
-  { name: "Moodbidri", code: "MOOD", slug: "moodbidri", lat: 13.1587, lon: 74.9989 },
-  { name: "Saligrama", code: "SGMA", slug: "saligrama", lat: 13.2569, lon: 74.9862 },
-  { name: "Udupi", code: "UDUP", slug: "udupi", lat: 13.3409, lon: 74.7421 },
-  { name: "Channarayapatna", code: "CHNN", slug: "channarayapatna", lat: 12.9703, lon: 76.4976 },
-  { name: "Bagalkote", code: "BAGA", slug: "bagalkote", lat: 16.1814, lon: 75.6911 },
-  { name: "Shahpur", code: "SUPH", slug: "shahpur", lat: 17.1823, lon: 75.1263 },
-  { name: "Chitradurga", code: "CHIT", slug: "chitradurga", lat: 14.2304, lon: 76.4019 },
-  { name: "Ranebennuru", code: "RANE", slug: "ranebennuru", lat: 14.6239, lon: 75.6235 },
-  { name: "Nanjangud", code: "NJGU", slug: "nanjangud", lat: 12.0345, lon: 76.6494 },
-  { name: "Ramanagara", code: "RANG", slug: "ramanagara", lat: 12.7202, lon: 77.2810 },
-  { name: "Chamrajanagar", code: "CHAJ", slug: "chamrajanagar", lat: 11.9185, lon: 76.6788 },
-  { name: "Karwar", code: "KWAR", slug: "karwar", lat: 14.8054, lon: 74.1304 },
-  { name: "Puttur", code: "PTTU", slug: "puttur", lat: 12.7594, lon: 75.2422 },
-  { name: "Channapatana", code: "CPTN", slug: "channapatana", lat: 12.6579, lon: 77.1512 },
-
-  ];
+];
 
 // ---------------- Save to CSV ----------------
 function saveToCSV(data, filenameBase) {
   if (!data.length) return;
-
   const today = new Date().toISOString().split("T")[0];
   const folder = `output_${today}`;
   fs.mkdirSync(folder, { recursive: true });
-
   const csvFilePath = `${folder}/${filenameBase}.csv`;
-
   const headers = Object.keys(data[0]);
-  const rows = data.map(obj =>
-    headers.map(h => `${obj[h] !== undefined ? obj[h] : ""}`).join(",")
-  );
-
+  const rows = data.map(obj => headers.map(h => `${obj[h] ?? ""}`).join(","));
   if (!fs.existsSync(csvFilePath)) {
     fs.writeFileSync(csvFilePath, headers.join(",") + "\n" + rows.join("\n") + "\n", "utf8");
   } else {
     fs.appendFileSync(csvFilePath, rows.join("\n") + "\n", "utf8");
   }
-
   console.log(`💾 Appended ${data.length} rows to ${csvFilePath}`);
 }
 
@@ -81,13 +51,8 @@ function saveToCSV(data, filenameBase) {
 async function fetchShowtimesForCities(eventCode, dateCode, cities, language = "") {
   const showRows = [];
   const cityResults = [];
-
-  let grandTotalSeats = 0,
-    grandBookedSeats = 0,
-    grandBookedCollection = 0,
-    grandTotalCollection = 0,
-    grandWeightedPriceSum = 0,
-    grandTotalShows = 0;
+  let grandTotalSeats = 0, grandBookedSeats = 0, grandBookedCollection = 0,
+      grandTotalCollection = 0, grandWeightedPriceSum = 0, grandTotalShows = 0;
 
   function formatShowTime(raw) {
     if (!raw || raw === "N/A") return "Unknown";
@@ -112,42 +77,23 @@ async function fetchShowtimesForCities(eventCode, dateCode, cities, language = "
   }
 
   for (const city of cities) {
-    const url = `https://in.bookmyshow.com/api/movies-data/showtimes-by-event?appCode=MOBAND2&appVersion=14304&language=en&eventCode=${eventCode}&regionCode=${city.code}&subRegion=${city.code}&bmsId=1.3158053074.1724928349489&token=67x1xa33b4x422b361ba&lat=${city.lat}&lon=${city.lon}&query=&dateCode=${dateCode}`;
-
+    const url = `https://in.bookmyshow.com/api/movies-data/showtimes-by-event?appCode=MOBAND2&eventCode=${eventCode}&regionCode=${city.code}&subRegion=${city.code}&lat=${city.lat}&lon=${city.lon}&dateCode=${dateCode}`;
     const headers = {
-      Host: "in.bookmyshow.com",
-      "x-bms-id": "1.3158053074.1724928349489",
       "x-region-code": city.code,
       "x-subregion-code": city.code,
       "x-region-slug": city.slug,
       "x-platform": "AND",
       "x-platform-code": "ANDROID",
       "x-app-code": "MOBAND2",
-      "x-device-make": "Google-Pixel XL",
-      "x-screen-height": "2392",
-      "x-screen-width": "1440",
-      "x-screen-density": "3.5",
-      "x-app-version": "14.3.4",
-      "x-app-version-code": "14304",
-      "x-network": "Android | WIFI",
-      "x-latitude": city.lat.toString(),
-      "x-longitude": city.lon.toString(),
-      "x-location-selection": "manual",
-      "x-location-shared": "false",
       lang: "en",
-      "user-agent": "Dalvik/2.1.0 (Linux; U; Android 12; Pixel XL Build/SP2A.220505.008)",
     };
 
     try {
       const data = await fetchWithRetry(url, { method: "GET", headers });
       if (!data?.ShowDetails?.length) continue;
 
-      let cityTotalSeats = 0,
-        cityBookedSeats = 0,
-        cityBookedCollection = 0,
-        cityTotalPotentialCollection = 0,
-        cityWeightedPriceSum = 0,
-        totalShowsInCity = 0;
+      let cityTotalSeats = 0, cityBookedSeats = 0, cityBookedCollection = 0,
+          cityTotalPotentialCollection = 0, cityWeightedPriceSum = 0, totalShowsInCity = 0;
 
       for (const showDetail of data.ShowDetails) {
         for (const venue of showDetail.Venues) {
@@ -155,25 +101,18 @@ async function fetchShowtimesForCities(eventCode, dateCode, cities, language = "
             totalShowsInCity++;
             const formattedTime = formatShowTime(showTime.ShowTime);
 
-            let totalSeats = 0,
-              totalBooked = 0,
-              totalShowCollection = 0,
-              sumCategoryPrices = 0,
-              catCount = 0;
-
+            let totalSeats = 0, totalBooked = 0, totalShowCollection = 0, sumCategoryPrices = 0, catCount = 0;
             for (const cat of showTime.Categories) {
               const maxSeats = parseInt(cat.MaxSeats) || 0;
               const seatsAvail = parseInt(cat.SeatsAvail) || 0;
               const booked = maxSeats - seatsAvail;
               const price = parseFloat(cat.CurPrice) || 0;
-
               totalSeats += maxSeats;
               totalBooked += booked;
               totalShowCollection += booked * price;
               sumCategoryPrices += price;
               catCount++;
             }
-
             const avgPrice = catCount > 0 ? sumCategoryPrices / catCount : 0;
             const totalPotentialCollection = totalSeats * avgPrice;
             const occupancy = totalSeats ? ((totalBooked / totalSeats) * 100).toFixed(2) : "0.00";
@@ -223,14 +162,13 @@ async function fetchShowtimesForCities(eventCode, dateCode, cities, language = "
       grandTotalShows += totalShowsInCity;
 
     } catch (err) {
-      console.error(`Error ${city.name}:`, err);
+      console.error(`❌ ${city.name}: ${err.message}`);
     }
   }
 
   if (grandTotalShows > 0) {
     const grandOccupancy = grandTotalSeats ? ((grandBookedSeats / grandTotalSeats) * 100).toFixed(2) : "0.00";
     const grandAvgTicketPrice = grandTotalSeats ? (grandWeightedPriceSum / grandTotalSeats).toFixed(2) : "0.00";
-
     cityResults.push({
       Language: language,
       City: "TOTAL",
@@ -247,33 +185,25 @@ async function fetchShowtimesForCities(eventCode, dateCode, cities, language = "
   return { showRows, cityResults };
 }
 
-// ---------------- Chunking ----------------
-async function runInChunks(eventCode, dateCode, cities, language = "", chunkCount = 4) {
-  const chunkSize = Math.ceil(cities.length / chunkCount);
+// ---------------- Runner with 5-min loop ----------------
+const eventCode = "ET00395402";
 
-  for (let i = 0; i < chunkCount; i++) {
-    const chunk = cities.slice(i * chunkSize, (i + 1) * chunkSize);
-    if (!chunk.length) continue;
-
-    console.log(`🚀 Running chunk ${i + 1}/${chunkCount} (${chunk.length} cities)`);
-    const { showRows, cityResults } = await fetchShowtimesForCities(eventCode, dateCode, chunk, language);
-
-    saveToCSV(showRows, "show-wise");
-    saveToCSV(cityResults, "city-wise");
-
-    if (i < chunkCount - 1) {
-      console.log("⏳ Waiting 10 minutes before next chunk...");
-      await new Promise(r => setTimeout(r, 10 * 60 * 1000));
-    }
+async function run() {
+  const dateCode = new Date().toISOString().split("T")[0].replace(/-/g, "");
+  console.log(`🚀 Fetching BMS shows for Batch 1 cities at ${new Date().toLocaleTimeString()}`);
+  try {
+    const { showRows, cityResults } = await fetchShowtimesForCities(eventCode, dateCode, karnatakaCities);
+    saveToCSV(showRows, "show-wise-batch1");
+    saveToCSV(cityResults, "city-wise-batch1");
+    console.log("✅ Batch 1 completed.");
+  } catch (err) {
+    console.error("❌ Error in run:", err.message);
   }
+  console.log("⏳ Waiting 5 minutes for next run...");
+  setTimeout(run, 5 * 60 * 1000);
 }
 
-// ---------------- Main Execution ----------------
-const eventCode = "ET00395402";
-const dateCode = new Date().toISOString().split("T")[0].replace(/-/g, ""); // YYYYMMDD
+// ---------------- Start immediately ----------------
+run();
 
-(async () => {
-  console.log("Fetching BMS shows for all Karnataka cities...");
-  await runInChunks(eventCode, dateCode, karnatakaCities);
-  console.log("✅ All chunks completed.");
-})();
+ 
