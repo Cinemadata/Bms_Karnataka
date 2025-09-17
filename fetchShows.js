@@ -1,8 +1,8 @@
 import fs from "fs";
 
 
-// ---------------- Karnataka Cities ----------------
-const karnatakaCities = [
+// ---------------- Batch1 Cities (10 cities) ----------------
+const batch1Cities = [
   { name: "Bengaluru", code: "BANG", slug: "bengaluru", lat: 12.9716, lon: 77.5946 },
   { name: "Mysore", code: "MYS", slug: "mysore", lat: 12.2958, lon: 76.6394 },
   { name: "Hubli", code: "HUBL", slug: "hubli", lat: 15.3647, lon: 75.1237 },
@@ -13,36 +13,9 @@ const karnatakaCities = [
   { name: "Kundapura", code: "KUNA", slug: "kundapura", lat: 13.4333, lon: 74.75 },
   { name: "Manipal", code: "MANI", slug: "manipal", lat: 13.3567, lon: 74.7861 },
   { name: "Mangalore", code: "MLR", slug: "mangalore", lat: 12.9141, lon: 74.856 },
-  { name: "Davangere", code: "DAVA", slug: "davangere", lat: 14.4646, lon: 75.921 },
-  { name: "Bidar", code: "BIDR", slug: "bidar", lat: 17.9133, lon: 77.5301 },
-  { name: "Chikballapur", code: "CHIK", slug: "chikballapur", lat: 13.435, lon: 77.7317 },
-  { name: "Bhadravati", code: "BDVT", slug: "bhadravati", lat: 13.8476, lon: 75.7045 },
-  { name: "Vijayapura", code: "VIJP", slug: "bijapur", lat: 16.8307, lon: 75.710 },
-  { name: "Kolar", code: "OLAR", slug: "kolar", lat: 13.1364, lon: 78.1298 },
-  { name: "Sidlaghatta", code: "SIDL", slug: "sidlaghatta", lat: 13.3036, lon: 77.8934 },
-  { name: "Malur", code: "MLLR", slug: "malur", lat: 13.2817, lon: 78.2062 },
-  { name: "Tiptur", code: "TIPT", slug: "tiptur", lat: 13.3153, lon: 76.4537 },
-  { name: "Kunigal", code: "KUUN", slug: "kunigal", lat: 13.2113, lon: 77.0843 },
-  { name: "Chikkamagalur", code: "CHUR", slug: "chikkamagalur", lat: 13.3167, lon: 75.77 },
-  { name: "Gadag", code: "GADG", slug: "gadag", lat: 15.4332, lon: 75.6343 },
-  { name: "Bijapur", code: "VJPR", slug: "bijapur", lat: 16.8307, lon: 75.71 },
-  { name: "Magadi", code: "MAGA", slug: "magadi", lat: 12.93, lon: 77.24 },
-  { name: "Mudhol", code: "MUDL", slug: "mudhol", lat: 16.22, lon: 75.43 },
 ];
 
-// ---------------- Split into 4 chunks ----------------
-function chunkArray(arr, chunks = 4) {
-  const result = [];
-  const len = Math.ceil(arr.length / chunks);
-  for (let i = 0; i < chunks; i++) {
-    result.push(arr.slice(i * len, (i + 1) * len));
-  }
-  return result;
-}
-
-const cityChunks = chunkArray(karnatakaCities, 4);
-
-// ---------------- CSV Saver ----------------
+// ---------------- Save CSV ----------------
 function saveToCSV(data, filenameBase) {
   if (!data.length) return;
   const today = new Date().toISOString().split("T")[0];
@@ -60,7 +33,7 @@ function saveToCSV(data, filenameBase) {
 }
 
 // ---------------- Fetch Showtimes ----------------
-async function fetchShowtimesForCities(eventCode, dateCode, cities, language = "") {
+async function fetchShowtimesForCities(eventCode, dateCode, cities) {
   const showRows = [];
   const cityResults = [];
   let grandTotalSeats = 0, grandBookedSeats = 0, grandBookedCollection = 0,
@@ -68,7 +41,6 @@ async function fetchShowtimesForCities(eventCode, dateCode, cities, language = "
 
   function formatShowTime(raw) {
     if (!raw || raw === "N/A") return "Unknown";
-    if (/^\d{1,2}:\d{2}\s?(AM|PM)$/i.test(raw)) return raw;
     const n = Number(raw);
     const d = !isNaN(n) ? new Date(n) : new Date(raw);
     if (isNaN(d.getTime())) return "Unknown";
@@ -91,14 +63,30 @@ async function fetchShowtimesForCities(eventCode, dateCode, cities, language = "
   for (const city of cities) {
     const url = `https://in.bookmyshow.com/api/movies-data/showtimes-by-event?appCode=MOBAND2&eventCode=${eventCode}&regionCode=${city.code}&subRegion=${city.code}&lat=${city.lat}&lon=${city.lon}&dateCode=${dateCode}`;
     const headers = {
-      "x-region-code": city.code,
-      "x-subregion-code": city.code,
-      "x-region-slug": city.slug,
-      "x-platform": "AND",
-      "x-platform-code": "ANDROID",
-      "x-app-code": "MOBAND2",
-      lang: "en",
-    };
+    Host: "in.bookmyshow.com",
+    "x-bms-id": "1.3158053074.1724928349489",
+    "x-region-code": "BANG",
+    "x-subregion-code": "BANG",
+    "x-region-slug": "bengaluru",
+    "x-platform": "AND",
+    "x-platform-code": "ANDROID",
+    "x-app-code": "MOBAND2",
+    "x-device-make": "Google-Pixel XL",
+    "x-screen-height": "2392",
+    "x-screen-width": "1440",
+    "x-screen-density": "3.5",
+    "x-app-version": "14.3.4",
+    "x-app-version-code": "14304",
+    "x-network": "Android | WIFI",
+    "x-latitude": "12.971599",
+    "x-longitude": "77.59457",
+    "x-location-selection": "manual",
+    "x-location-shared": "false",
+    lang: "en",
+    "user-agent":
+      "Dalvik/2.1.0 (Linux; U; Android 12; Pixel XL Build/SP2A.220505.008)",
+  };
+
 
     try {
       const data = await fetchWithRetry(url, { method: "GET", headers });
@@ -130,7 +118,6 @@ async function fetchShowtimesForCities(eventCode, dateCode, cities, language = "
             const occupancy = totalSeats ? ((totalBooked / totalSeats) * 100).toFixed(2) : "0.00";
 
             showRows.push({
-              Language: language,
               City: city.name,
               Venue: venue.VenueName,
               "Show Time": formattedTime,
@@ -155,7 +142,6 @@ async function fetchShowtimesForCities(eventCode, dateCode, cities, language = "
       const cityAvgTicketPrice = cityTotalSeats ? (cityWeightedPriceSum / cityTotalSeats).toFixed(2) : "0.00";
 
       cityResults.push({
-        Language: language,
         City: city.name,
         "Total Shows": totalShowsInCity,
         "Total Seats": cityTotalSeats,
@@ -182,7 +168,6 @@ async function fetchShowtimesForCities(eventCode, dateCode, cities, language = "
     const grandOccupancy = grandTotalSeats ? ((grandBookedSeats / grandTotalSeats) * 100).toFixed(2) : "0.00";
     const grandAvgTicketPrice = grandTotalSeats ? (grandWeightedPriceSum / grandTotalSeats).toFixed(2) : "0.00";
     cityResults.push({
-      Language: language,
       City: "TOTAL",
       "Total Shows": grandTotalShows,
       "Total Seats": grandTotalSeats,
@@ -197,29 +182,32 @@ async function fetchShowtimesForCities(eventCode, dateCode, cities, language = "
   return { showRows, cityResults };
 }
 
-// ---------------- Runner with Chunks & 10-min Gap ----------------
+// ---------------- Runner with 2 Chunks, 10-min gap ----------------
 const eventCode = "ET00395402";
+const chunks = 2;
+const gapMinutes = 10;
 
-async function runChunks() {
+async function run() {
   const dateCode = new Date().toISOString().split("T")[0].replace(/-/g, "");
-  for (let i = 0; i < cityChunks.length; i++) {
-    console.log(`🚀 Running chunk ${i + 1}/${cityChunks.length} at ${new Date().toLocaleTimeString()}`);
+  const chunkSize = Math.ceil(batch1Cities.length / chunks);
+
+  for (let i = 0; i < chunks; i++) {
+    const chunkCities = batch1Cities.slice(i * chunkSize, (i + 1) * chunkSize);
+    console.log(`🚀 Running chunk ${i + 1} for ${chunkCities.map(c=>c.name).join(", ")}`);
     try {
-      const { showRows, cityResults } = await fetchShowtimesForCities(eventCode, dateCode, cityChunks[i]);
-      saveToCSV(showRows, "show-wise");
-      saveToCSV(cityResults, "city-wise");
+      const { showRows, cityResults } = await fetchShowtimesForCities(eventCode, dateCode, chunkCities);
+      saveToCSV(showRows, `show-wise-batch1-chunk${i+1}`);
+      saveToCSV(cityResults, `city-wise-batch1-chunk${i+1}`);
       console.log(`✅ Chunk ${i + 1} completed.`);
     } catch (err) {
-      console.error(`❌ Error in chunk ${i + 1}:`, err.message);
+      console.error(`❌ Error in chunk ${i+1}: ${err.message}`);
     }
-    if (i < cityChunks.length - 1) {
-      console.log("⏳ Waiting 10 minutes before next chunk...");
-      await new Promise(r => setTimeout(r, 10 * 60 * 1000)); // 10 minutes
+    if (i < chunks - 1) {
+      console.log(`⏳ Waiting ${gapMinutes} minutes before next chunk...`);
+      await new Promise(r => setTimeout(r, gapMinutes * 60 * 1000));
     }
   }
-  console.log("✅ All chunks completed. Restarting in 5 minutes...");
-  setTimeout(runChunks, 5 * 60 * 1000); // 5 minutes loop
+  console.log("🎯 Batch1 all chunks completed.");
 }
 
-// ---------------- Start ----------------
-runChunks();
+run();
