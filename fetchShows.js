@@ -1,7 +1,7 @@
 import fs from "fs";
 
 
-// ---------------- Karnataka Cities (Batch 1) ----------------
+// ---------------- Karnataka Cities ----------------
 const karnatakaCities = [
   { name: "Bengaluru", code: "BANG", slug: "bengaluru", lat: 12.9716, lon: 77.5946 },
   { name: "Mysore", code: "MYS", slug: "mysore", lat: 12.2958, lon: 76.6394 },
@@ -23,14 +23,26 @@ const karnatakaCities = [
   { name: "Malur", code: "MLLR", slug: "malur", lat: 13.2817, lon: 78.2062 },
   { name: "Tiptur", code: "TIPT", slug: "tiptur", lat: 13.3153, lon: 76.4537 },
   { name: "Kunigal", code: "KUUN", slug: "kunigal", lat: 13.2113, lon: 77.0843 },
-  { name: "Chikkamagalur", code: "CHUR", slug: "chikkamagalur", lat: 13.3167, lon: 75.7700 },
+  { name: "Chikkamagalur", code: "CHUR", slug: "chikkamagalur", lat: 13.3167, lon: 75.77 },
   { name: "Gadag", code: "GADG", slug: "gadag", lat: 15.4332, lon: 75.6343 },
-  { name: "Bijapur", code: "VJPR", slug: "bijapur", lat: 16.8307, lon: 75.7100 },
-  { name: "Magadi", code: "MAGA", slug: "magadi", lat: 12.9300, lon: 77.2400 },
-  { name: "Mudhol", code: "MUDL", slug: "mudhol", lat: 16.2200, lon: 75.4300 },
+  { name: "Bijapur", code: "VJPR", slug: "bijapur", lat: 16.8307, lon: 75.71 },
+  { name: "Magadi", code: "MAGA", slug: "magadi", lat: 12.93, lon: 77.24 },
+  { name: "Mudhol", code: "MUDL", slug: "mudhol", lat: 16.22, lon: 75.43 },
 ];
 
-// ---------------- Save to CSV ----------------
+// ---------------- Split into 4 chunks ----------------
+function chunkArray(arr, chunks = 4) {
+  const result = [];
+  const len = Math.ceil(arr.length / chunks);
+  for (let i = 0; i < chunks; i++) {
+    result.push(arr.slice(i * len, (i + 1) * len));
+  }
+  return result;
+}
+
+const cityChunks = chunkArray(karnatakaCities, 4);
+
+// ---------------- CSV Saver ----------------
 function saveToCSV(data, filenameBase) {
   if (!data.length) return;
   const today = new Date().toISOString().split("T")[0];
@@ -185,25 +197,29 @@ async function fetchShowtimesForCities(eventCode, dateCode, cities, language = "
   return { showRows, cityResults };
 }
 
-// ---------------- Runner with 5-min loop ----------------
+// ---------------- Runner with Chunks & 10-min Gap ----------------
 const eventCode = "ET00395402";
 
-async function run() {
+async function runChunks() {
   const dateCode = new Date().toISOString().split("T")[0].replace(/-/g, "");
-  console.log(`🚀 Fetching BMS shows for Batch 1 cities at ${new Date().toLocaleTimeString()}`);
-  try {
-    const { showRows, cityResults } = await fetchShowtimesForCities(eventCode, dateCode, karnatakaCities);
-    saveToCSV(showRows, "show-wise-batch1");
-    saveToCSV(cityResults, "city-wise-batch1");
-    console.log("✅ Batch 1 completed.");
-  } catch (err) {
-    console.error("❌ Error in run:", err.message);
+  for (let i = 0; i < cityChunks.length; i++) {
+    console.log(`🚀 Running chunk ${i + 1}/${cityChunks.length} at ${new Date().toLocaleTimeString()}`);
+    try {
+      const { showRows, cityResults } = await fetchShowtimesForCities(eventCode, dateCode, cityChunks[i]);
+      saveToCSV(showRows, "show-wise");
+      saveToCSV(cityResults, "city-wise");
+      console.log(`✅ Chunk ${i + 1} completed.`);
+    } catch (err) {
+      console.error(`❌ Error in chunk ${i + 1}:`, err.message);
+    }
+    if (i < cityChunks.length - 1) {
+      console.log("⏳ Waiting 10 minutes before next chunk...");
+      await new Promise(r => setTimeout(r, 10 * 60 * 1000)); // 10 minutes
+    }
   }
-  console.log("⏳ Waiting 5 minutes for next run...");
-  setTimeout(run, 5 * 60 * 1000);
+  console.log("✅ All chunks completed. Restarting in 5 minutes...");
+  setTimeout(runChunks, 5 * 60 * 1000); // 5 minutes loop
 }
 
-// ---------------- Start immediately ----------------
-run();
-
- 
+// ---------------- Start ----------------
+runChunks();
