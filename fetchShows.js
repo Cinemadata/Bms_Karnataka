@@ -1,5 +1,5 @@
 import fs from "fs";
-import fetch from "node-fetch";
+
 
 // ---------------- Karnataka Cities (Batch 1) ----------------
 const karnatakaCities = [
