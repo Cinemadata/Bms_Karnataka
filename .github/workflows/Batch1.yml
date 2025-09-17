@@ -1,0 +1,45 @@
+name: Fetch Shows Batch1
+
+on:
+  schedule:
+    - cron: '*/45 * * * *' # runs every 45 minutes
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  run-batch1:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install node-fetch@2
+
+      - name: Run Batch1 Script
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "🚀 Running Batch1 fetchShows.js..."
+          node fetchShows.js
+
+          echo "💾 Committing generated CSVs..."
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add output_*/*.csv
+
+          if ! git diff --cached --quiet; then
+            git commit -m "Update Batch1 CSVs [skip ci]"
+            git pull --rebase origin main || true
+            git push origin main
+          else
+            echo "⚠️ No CSV changes to commit."
+          fi
