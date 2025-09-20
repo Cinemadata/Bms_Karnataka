@@ -1,213 +1,169 @@
+// ================= Node.js Script: fetchShows.js =================
+import fetch from "node-fetch";
 import fs from "fs";
+import path from "path";
 
+// ================= Cities (All Telangana) ================= //
+const cities = {
+  hyderabad: { regionCode: "HYD", subRegionCode: "HYD", latitude: "17.3850", longitude: "78.4867" },
+  warangal: { regionCode: "WAR", subRegionCode: "WAR", latitude: "17.9787", longitude: "79.5948" },
+  karimnagar: { regionCode: "KARIM", subRegionCode: "KARIM", latitude: "18.4386", longitude: "79.1288" },
+  nizamabad: { regionCode: "NIZA", subRegionCode: "NIZA", latitude: "18.6739", longitude: "78.0941" },
+  khammam: { regionCode: "KHAM", subRegionCode: "KHAM", latitude: "17.2473", longitude: "80.1514" },
+  mahbubnagar: { regionCode: "MAHB", subRegionCode: "MAHB", latitude: "16.7441", longitude: "77.9862" },
+  mancherial: { regionCode: "MANC", subRegionCode: "MANC", latitude: "18.8741", longitude: "79.4476" },
+  nalgonda: { regionCode: "NALK", subRegionCode: "NALK", latitude: "17.0540", longitude: "79.2672" },
+  adilabad: { regionCode: "ADIL", subRegionCode: "ADIL", latitude: "19.6669", longitude: "78.5322" },
+  suryapet: { regionCode: "SURY", subRegionCode: "SURY", latitude: "17.1302", longitude: "79.6217" },
+  miryalaguda: { regionCode: "MRGD", subRegionCode: "MRGD", latitude: "16.8667", longitude: "79.5833" },
+  siddipet: { regionCode: "SDDP", subRegionCode: "SDDP", latitude: "18.1033", longitude: "78.8489" },
+  jagtial: { regionCode: "JGTL", subRegionCode: "JGTL", latitude: "18.8000", longitude: "79.5333" },
+  sircilla: { regionCode: "SIRC", subRegionCode: "SIRC", latitude: "18.8000", longitude: "78.8667" },
+  kamareddy: { regionCode: "KMRD", subRegionCode: "KMRD", latitude: "18.3269", longitude: "78.3361" },
+  palwancha: { regionCode: "PLWA", subRegionCode: "PLWA", latitude: "17.5556", longitude: "80.6364" },
+  kothagudem: { regionCode: "KTGM", subRegionCode: "KTGM", latitude: "17.5500", longitude: "80.6333" },
+  bodhan: { regionCode: "BODH", subRegionCode: "BODH", latitude: "18.6700", longitude: "78.6700" },
+  sangareddy: { regionCode: "SARE", subRegionCode: "SARE", latitude: "17.6231", longitude: "78.0860" },
+  metpally: { regionCode: "METT", subRegionCode: "METT", latitude: "18.8167", longitude: "79.5667" },
+  zaheerabad: { regionCode: "ZAGE", subRegionCode: "ZAGE", latitude: "17.6790", longitude: "77.5970" },
+  korutla: { regionCode: "KCKA", subRegionCode: "KCKA", latitude: "18.8200", longitude: "78.5500" },
+  tandur: { regionCode: "TAND", subRegionCode: "TAND", latitude: "17.1600", longitude: "77.5800" },
+  kodad: { regionCode: "KODA", subRegionCode: "KODA", latitude: "16.9000", longitude: "79.9333" },
+  armoor: { regionCode: "ARMO", subRegionCode: "ARMO", latitude: "18.8700", longitude: "78.4300" },
+  gadwal: { regionCode: "GADW", subRegionCode: "GADW", latitude: "16.2667", longitude: "77.8000" },
+  wanaparthy: { regionCode: "WANA", subRegionCode: "WANA", latitude: "16.2667", longitude: "78.0167" },
+  bellampally: { regionCode: "BELL", subRegionCode: "BELL", latitude: "18.9000", longitude: "79.3833" },
+  bhongir: { regionCode: "BHUV", subRegionCode: "BHUV", latitude: "17.5150", longitude: "78.8880" },
+  vikarabad: { regionCode: "VKBD", subRegionCode: "VKBD", latitude: "17.3300", longitude: "77.9000" },
+  mahbubabad: { regionCode: "MAHA", subRegionCode: "MAHA", latitude: "17.5500", longitude: "80.5500" },
+  jangaon: { regionCode: "JNGN", subRegionCode: "JNGN", latitude: "17.7200", longitude: "79.1500" },
+  bhadrachelam: { regionCode: "BHDR", subRegionCode: "BHDR", latitude: "17.6650", longitude: "80.8800" },
+  bhupalapally: { regionCode: "BHUP", subRegionCode: "BHUP", latitude: "18.4600", longitude: "79.5700" },
+  narayanpet: { regionCode: "NRYN", subRegionCode: "NRYN", latitude: "16.9000", longitude: "77.4800" },
+  peddapalli: { regionCode: "PEDA", subRegionCode: "PEDA", latitude: "18.6100", longitude: "79.4000" },
+  huzurnagar: { regionCode: "HUZU", subRegionCode: "HUZU", latitude: "17.1200", longitude: "79.6000" },
+  medchal: { regionCode: "MDCH", subRegionCode: "MDCH", latitude: "17.5300", longitude: "78.6000" },
+  manuguru: { regionCode: "MNGU", subRegionCode: "MNGU", latitude: "17.5500", longitude: "80.8200" },
+  achampet: { regionCode: "ACHM", subRegionCode: "ACHM", latitude: "16.5800", longitude: "78.3500" }
+};
 
-// ---------------- Batch1 Cities (10 cities) ----------------
-const batch1Cities = [
-  { name: "Bengaluru", code: "BANG", slug: "bengaluru", lat: 12.9716, lon: 77.5946 },
-  { name: "Mysore", code: "MYS", slug: "mysore", lat: 12.2958, lon: 76.6394 },
-  { name: "Hubli", code: "HUBL", slug: "hubli", lat: 15.3647, lon: 75.1237 },
-  { name: "Gulbarga", code: "GULB", slug: "gulbarga", lat: 17.3297, lon: 76.8343 },
-  { name: "Shivamogga", code: "SHIA", slug: "shivamogga", lat: 13.9299, lon: 75.5681 },
-  { name: "Belagavi", code: "BELG", slug: "belagavi", lat: 15.8497, lon: 74.4977 },
-  { name: "Tumkur", code: "TUMK", slug: "tumkur", lat: 13.3392, lon: 77.1135 },
-  { name: "Kundapura", code: "KUNA", slug: "kundapura", lat: 13.4333, lon: 74.75 },
-  { name: "Manipal", code: "MANI", slug: "manipal", lat: 13.3567, lon: 74.7861 },
-  { name: "Mangalore", code: "MLR", slug: "mangalore", lat: 12.9141, lon: 74.856 },
+// ================= Event Codes ================= //
+const eventCodes = [
+  { movie: "They Call Him OG", code: "ET00369074" }
 ];
 
-// ---------------- Save CSV ----------------
-function saveToCSV(data, filenameBase) {
-  if (!data.length) return;
-  const today = new Date().toISOString().split("T")[0];
-  const folder = `output_${today}`;
-  fs.mkdirSync(folder, { recursive: true });
-  const csvFilePath = `${folder}/${filenameBase}.csv`;
-  const headers = Object.keys(data[0]);
-  const rows = data.map(obj => headers.map(h => `${obj[h] ?? ""}`).join(","));
-  if (!fs.existsSync(csvFilePath)) {
-    fs.writeFileSync(csvFilePath, headers.join(",") + "\n" + rows.join("\n") + "\n", "utf8");
-  } else {
-    fs.appendFileSync(csvFilePath, rows.join("\n") + "\n", "utf8");
-  }
-  console.log(`💾 Appended ${data.length} rows to ${csvFilePath}`);
+// ================= Helper Functions ================= //
+function getNextDay() {
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  return `${tomorrow.getFullYear()}-${String(tomorrow.getMonth() + 1).padStart(2,'0')}-${String(tomorrow.getDate()).padStart(2,'0')}`;
 }
 
-// ---------------- Fetch Showtimes ----------------
-async function fetchShowtimesForCities(eventCode, dateCode, cities) {
-  const showRows = [];
-  const cityResults = [];
-  let grandTotalSeats = 0, grandBookedSeats = 0, grandBookedCollection = 0,
-      grandTotalCollection = 0, grandWeightedPriceSum = 0, grandTotalShows = 0;
+function processShowtimeData(data, movieName) {
+  const results = [];
+  let grandTotalMaxSeats = 0, grandTotalBookedTickets = 0, grandTotalGross = 0, grandBookedGross = 0, totalShows = 0;
 
-  function formatShowTime(raw) {
-    if (!raw || raw === "N/A") return "Unknown";
-    const n = Number(raw);
-    const d = !isNaN(n) ? new Date(n) : new Date(raw);
-    if (isNaN(d.getTime())) return "Unknown";
-    return d.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true });
-  }
+  data.ShowDetails.forEach(showDetail => {
+    showDetail.Venues.forEach(venue => {
+      venue.ShowTimes.forEach(showTime => {
+        totalShows++;
+        let totalMaxSeats = 0, totalBookedTickets = 0, totalGross = 0, bookedGross = 0;
 
-  async function fetchWithRetry(url, options, retries = 3) {
-    for (let i = 0; i < retries; i++) {
-      try {
-        const resp = await fetch(url, options);
-        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-        return await resp.json();
-      } catch (err) {
-        if (i === retries - 1) throw err;
-        await new Promise(r => setTimeout(r, 1000 * (i + 1)));
-      }
-    }
-  }
+        showTime.Categories.forEach(category => {
+          const maxSeats = parseInt(category.MaxSeats, 10) || 0;
+          const seatsAvail = parseInt(category.SeatsAvail, 10) || 0;
+          const bookedTickets = maxSeats - seatsAvail;
+          const price = parseFloat(category.CurPrice) || 0;
 
-  for (const city of cities) {
-    const url = `https://in.bookmyshow.com/api/movies-data/showtimes-by-event?appCode=MOBAND2&eventCode=${eventCode}&regionCode=${city.code}&subRegion=${city.code}&lat=${city.lat}&lon=${city.lon}&dateCode=${dateCode}`;
-    const headers = {
-    Host: "in.bookmyshow.com",
-    "x-bms-id": "1.3158053074.1724928349489",
-    "x-region-code": "BANG",
-    "x-subregion-code": "BANG",
-    "x-region-slug": "bengaluru",
-    "x-platform": "AND",
-    "x-platform-code": "ANDROID",
-    "x-app-code": "MOBAND2",
-    "x-device-make": "Google-Pixel XL",
-    "x-screen-height": "2392",
-    "x-screen-width": "1440",
-    "x-screen-density": "3.5",
-    "x-app-version": "14.3.4",
-    "x-app-version-code": "14304",
-    "x-network": "Android | WIFI",
-    "x-latitude": "12.971599",
-    "x-longitude": "77.59457",
-    "x-location-selection": "manual",
-    "x-location-shared": "false",
-    lang: "en",
-    "user-agent":
-      "Dalvik/2.1.0 (Linux; U; Android 12; Pixel XL Build/SP2A.220505.008)",
+          totalMaxSeats += maxSeats;
+          totalBookedTickets += bookedTickets;
+          totalGross += maxSeats * price;
+          bookedGross += bookedTickets * price;
+        });
+
+        grandTotalMaxSeats += totalMaxSeats;
+        grandTotalBookedTickets += totalBookedTickets;
+        grandTotalGross += totalGross;
+        grandBookedGross += bookedGross;
+
+        results.push({
+          Movie: movieName,
+          VenueName: venue.VenueName,
+          ShowTime: showTime.ShowTime,
+          MaxSeats: totalMaxSeats,
+          BookedSeats: totalBookedTickets,
+          Occupancy: totalMaxSeats > 0 ? `${((totalBookedTickets / totalMaxSeats) * 100).toFixed(2)}%` : "0.00%",
+          TotalGross: totalGross.toFixed(0),
+          BookedGross: bookedGross.toFixed(0)
+        });
+      });
+    });
+  });
+
+  return {
+    results,
+    totalShows,
+    totalBookedGross: grandBookedGross.toFixed(0),
+    totalGross: grandTotalGross.toFixed(0),
+    totalOccupancy: grandTotalMaxSeats > 0 ? `${((grandTotalBookedTickets / grandTotalMaxSeats) * 100).toFixed(2)}%` : "0.00%"
+  };
+}
+
+async function fetchShowtimes(city, cityName, eventCode, movieName) {
+  const url = `https://in.bookmyshow.com/api/movies-data/showtimes-by-event?eventCode=${eventCode}&regionCode=${city.regionCode}&subRegion=${city.subRegionCode}&lat=${city.latitude}&lon=${city.longitude}&date=${getNextDay()}`;
+
+  const headers = {
+    "x-platform": "DESKTOP",
+    "x-app-code": "BMSWEB",
+    "Accept": "application/json"
   };
 
+  try {
+    const response = await fetch(url, { method: "GET", headers });
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    const data = await response.json();
+    return processShowtimeData(data, movieName);
+  } catch (error) {
+    console.error(`Error fetching data for ${cityName} (${movieName}, ${eventCode}):`, error);
+    return null;
+  }
+}
 
-    try {
-      const data = await fetchWithRetry(url, { method: "GET", headers });
-      if (!data?.ShowDetails?.length) continue;
+async function fetchAllCitiesAndEvents() {
+  const allData = [];
+  for (const [cityName, cityData] of Object.entries(cities)) {
+    console.log(`\n📍 Fetching data for ${cityName.toUpperCase()}...`);
+    for (const event of eventCodes) {
+      console.log(`🎬 Fetching data for "${event.movie}" (${event.code})...`);
+      const results = await fetchShowtimes(cityData, cityName, event.code, event.movie);
+      if (results) {
+        const cityOutput = {
+          City: cityName.toUpperCase(),
+          Movie: event.movie,
+          EventCode: event.code,
+          "Total Shows": results.totalShows,
+          "Booked Seats": results.results.reduce((sum, r) => sum + r.BookedSeats, 0),
+          "Max Seats": results.results.reduce((sum, r) => sum + r.MaxSeats, 0),
+          "Occupancy": results.totalOccupancy,
+          "Booked Gross": `₹${results.totalBookedGross}`,
+          "Total Gross": `₹${results.totalGross}`
+        };
 
-      let cityTotalSeats = 0, cityBookedSeats = 0, cityBookedCollection = 0,
-          cityTotalPotentialCollection = 0, cityWeightedPriceSum = 0, totalShowsInCity = 0;
+        allData.push(cityOutput);
 
-      for (const showDetail of data.ShowDetails) {
-        for (const venue of showDetail.Venues) {
-          for (const showTime of venue.ShowTimes) {
-            totalShowsInCity++;
-            const formattedTime = formatShowTime(showTime.ShowTime);
-
-            let totalSeats = 0, totalBooked = 0, totalShowCollection = 0, sumCategoryPrices = 0, catCount = 0;
-            for (const cat of showTime.Categories) {
-              const maxSeats = parseInt(cat.MaxSeats) || 0;
-              const seatsAvail = parseInt(cat.SeatsAvail) || 0;
-              const booked = maxSeats - seatsAvail;
-              const price = parseFloat(cat.CurPrice) || 0;
-              totalSeats += maxSeats;
-              totalBooked += booked;
-              totalShowCollection += booked * price;
-              sumCategoryPrices += price;
-              catCount++;
-            }
-            const avgPrice = catCount > 0 ? sumCategoryPrices / catCount : 0;
-            const totalPotentialCollection = totalSeats * avgPrice;
-            const occupancy = totalSeats ? ((totalBooked / totalSeats) * 100).toFixed(2) : "0.00";
-
-            showRows.push({
-              City: city.name,
-              Venue: venue.VenueName,
-              "Show Time": formattedTime,
-              "Total Seats": totalSeats,
-              "Booked Seats": totalBooked,
-              "Occupancy (%)": `${occupancy}%`,
-              "Booked Collection (₹)": totalShowCollection.toFixed(2),
-              "Total Collection (₹)": totalPotentialCollection.toFixed(2),
-              "Avg Ticket Price (₹)": avgPrice.toFixed(2),
-            });
-
-            cityTotalSeats += totalSeats;
-            cityBookedSeats += totalBooked;
-            cityBookedCollection += totalShowCollection;
-            cityTotalPotentialCollection += totalPotentialCollection;
-            cityWeightedPriceSum += avgPrice * totalSeats;
-          }
-        }
+        // Write individual city CSV
+        const csvHeader = Object.keys(cityOutput).join(",") + "\n";
+        const csvRow = Object.values(cityOutput).join(",") + "\n";
+        const outputDir = path.join(".", "output_telangana");
+        if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir);
+        fs.appendFileSync(path.join(outputDir, `${cityName}.csv`), csvHeader + csvRow);
       }
-
-      const cityOccupancy = cityTotalSeats ? ((cityBookedSeats / cityTotalSeats) * 100).toFixed(2) : "0.00";
-      const cityAvgTicketPrice = cityTotalSeats ? (cityWeightedPriceSum / cityTotalSeats).toFixed(2) : "0.00";
-
-      cityResults.push({
-        City: city.name,
-        "Total Shows": totalShowsInCity,
-        "Total Seats": cityTotalSeats,
-        "Booked Seats": cityBookedSeats,
-        "Occupancy (%)": `${cityOccupancy}%`,
-        "Booked Collection (₹)": cityBookedCollection.toFixed(2),
-        "Total Collection (₹)": cityTotalPotentialCollection.toFixed(2),
-        "Avg Ticket Price (₹)": cityAvgTicketPrice,
-      });
-
-      grandTotalSeats += cityTotalSeats;
-      grandBookedSeats += cityBookedSeats;
-      grandBookedCollection += cityBookedCollection;
-      grandTotalCollection += cityTotalPotentialCollection;
-      grandWeightedPriceSum += cityWeightedPriceSum;
-      grandTotalShows += totalShowsInCity;
-
-    } catch (err) {
-      console.error(`❌ ${city.name}: ${err.message}`);
     }
   }
 
-  if (grandTotalShows > 0) {
-    const grandOccupancy = grandTotalSeats ? ((grandBookedSeats / grandTotalSeats) * 100).toFixed(2) : "0.00";
-    const grandAvgTicketPrice = grandTotalSeats ? (grandWeightedPriceSum / grandTotalSeats).toFixed(2) : "0.00";
-    cityResults.push({
-      City: "TOTAL",
-      "Total Shows": grandTotalShows,
-      "Total Seats": grandTotalSeats,
-      "Booked Seats": grandBookedSeats,
-      "Occupancy (%)": `${grandOccupancy}%`,
-      "Booked Collection (₹)": grandBookedCollection.toFixed(2),
-      "Total Collection (₹)": grandTotalCollection.toFixed(2),
-      "Avg Ticket Price (₹)": grandAvgTicketPrice,
-    });
-  }
-
-  return { showRows, cityResults };
+  console.table(allData);
 }
 
-// ---------------- Runner with 2 Chunks, 10-min gap ----------------
-const eventCode = "ET00395402";
-const chunks = 2;
-const gapMinutes = 10;
+// ================= Run Script ================= //
+fetchAllCitiesAndEvents();
 
-async function run() {
-  const dateCode = new Date().toISOString().split("T")[0].replace(/-/g, "");
-  const chunkSize = Math.ceil(batch1Cities.length / chunks);
-
-  for (let i = 0; i < chunks; i++) {
-    const chunkCities = batch1Cities.slice(i * chunkSize, (i + 1) * chunkSize);
-    console.log(`🚀 Running chunk ${i + 1} for ${chunkCities.map(c=>c.name).join(", ")}`);
-    try {
-      const { showRows, cityResults } = await fetchShowtimesForCities(eventCode, dateCode, chunkCities);
-      saveToCSV(showRows, `show-wise-batch1-chunk${i+1}`);
-      saveToCSV(cityResults, `city-wise-batch1-chunk${i+1}`);
-      console.log(`✅ Chunk ${i + 1} completed.`);
-    } catch (err) {
-      console.error(`❌ Error in chunk ${i+1}: ${err.message}`);
-    }
-    if (i < chunks - 1) {
-      console.log(`⏳ Waiting ${gapMinutes} minutes before next chunk...`);
-      await new Promise(r => setTimeout(r, gapMinutes * 60 * 1000));
-    }
-  }
-  console.log("🎯 Batch1 all chunks completed.");
-}
-
-run();
