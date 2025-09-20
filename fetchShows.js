@@ -1,5 +1,6 @@
 // ================= Node.js Script: fetchShows.js =================
-import fetch from "node-fetch";
+import fs from "fs";
+import path from "path";
 
 
 // ================= Cities (All Telangana) ================= //
