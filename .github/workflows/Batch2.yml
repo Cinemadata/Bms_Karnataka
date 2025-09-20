@@ -1,4 +1,4 @@
-name: Fetch Shows Batch 2
+name: Fetch Telangana 2
 
 on:
   workflow_dispatch:
