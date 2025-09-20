@@ -1,353 +1,216 @@
-// 🛠 Auth headers (replace with your own values from DevTools → Network)
-const auth = {
-  bmsId: "1.547186.1754404861153",  // replace with your session's x-bms-id
-  token: "4d17a59c2597410e714ab31d421148d9" // replace with your session's token
-};
+import fs from "fs";
+import fetch from "node-fetch"; // npm install node-fetch
 
-// 📌 Telangana cities
-const telanganaCities = {
-  Hyderabad: "HYD",
-  Warangal: "WAR",
-  Karimnagar: "KARIM",
-  Nizamabad: "NIZA",
-  Khammam: "KHAM",
-  Mahbubnagar: "MAHB",
-  Mancherial: "MANC",
-  Nalgonda: "NALK",
-  Adilabad: "ADIL",
-  Suryapet: "SURY",
-  Miryalaguda: "MRGD",
-  Siddipet: "SDDP",
-  Jagtial: "JGTL",
-  Sircilla: "SIRC",
-  Kamareddy: "KMRD",
-  Palwancha: "PLWA",
-  Kothagudem: "KTGM",
-  Bodhan: "BODH",
-  Sangareddy: "SARE",
-  Metpally: "METT",
-  Zaheerabad: "ZAGE",
-  Korutla: "KCKA",
-  Tandur: "TAND",
-  Kodad: "KODA",
-  Armoor: "ARMO",
-  Gadwal: "GADW",
-  Wanaparthy: "WANA",
-  Bellampally: "BELL",
-  Bhongir: "BHUV",
-  Vikarabad: "VKBD",
-  Mahbubabad: "MAHA",
-  Jangaon: "JNGN",
-  Bhadrachalam: "BHDR",
-  Bhupalapally: "BHUP",
-  Narayanpet: "NRYN",
-  Peddapalli: "PEDA",
-  Huzurnagar: "HUZU",
-  Medchal: "MDCH",
-  Manuguru: "MNGU",
-  Achampet: "ACHM"
-};
+// ---------------- Telangana Cities ----------------
+const telanganaCities = [
+  { name: "Hyderabad", code: "HYD", slug: "hyderabad", lat: 17.3850, lon: 78.4867 },
+  { name: "Warangal", code: "WAR", slug: "warangal", lat: 17.9789, lon: 79.5558 },
+  { name: "Karimnagar", code: "KARIM", slug: "karimnagar", lat: 18.4386, lon: 79.1288 },
+  { name: "Nizamabad", code: "NIZA", slug: "nizamabad", lat: 18.6722, lon: 78.0940 },
+  { name: "Khammam", code: "KHAM", slug: "khammam", lat: 17.2473, lon: 80.1514 },
+  { name: "Mahbubnagar", code: "MAHB", slug: "mahbubnagar", lat: 16.7426, lon: 78.0060 },
+  { name: "Mancherial", code: "MANC", slug: "mancherial", lat: 18.8750, lon: 79.4436 },
+  { name: "Nalgonda", code: "NALK", slug: "nalgonda", lat: 17.0560, lon: 79.2675 },
+  { name: "Adilabad", code: "ADIL", slug: "adilabad", lat: 19.6667, lon: 78.5333 },
+  { name: "Suryapet", code: "SURY", slug: "suryapet", lat: 17.1311, lon: 79.6210 },
+  { name: "Miryalaguda", code: "MRGD", slug: "miryalaguda", lat: 16.8667, lon: 79.5833 },
+  { name: "Siddipet", code: "SDDP", slug: "siddipet", lat: 18.1046, lon: 78.8519 },
+  { name: "Jagtial", code: "JGTL", slug: "jagtial", lat: 18.8000, lon: 79.4333 },
+  { name: "Sircilla", code: "SIRC", slug: "sircilla", lat: 18.8000, lon: 79.4333 },
+  { name: "Kamareddy", code: "KMRD", slug: "kamareddy", lat: 18.3273, lon: 78.3450 },
+  { name: "Palwancha", code: "PLWA", slug: "palwancha", lat: 17.5167, lon: 80.6500 },
+  { name: "Kothagudem", code: "KTGM", slug: "kothagudem", lat: 17.5500, lon: 80.6500 },
+  { name: "Bodhan", code: "BODH", slug: "bodhan", lat: 18.6700, lon: 78.5600 },
+  { name: "Sangareddy", code: "SARE", slug: "sangareddy", lat: 17.6000, lon: 78.1000 },
+  { name: "Metpally", code: "METT", slug: "metpally", lat: 18.8000, lon: 79.5833 },
+  { name: "Zaheerabad", code: "ZAGE", slug: "zaheerabad", lat: 17.6700, lon: 77.5800 },
+  { name: "Korutla", code: "KCKA", slug: "korutla", lat: 18.8000, lon: 78.8167 },
+  { name: "Tandur", code: "TAND", slug: "tandur", lat: 17.1000, lon: 77.6500 },
+  { name: "Kodad", code: "KODA", slug: "kodad", lat: 16.9000, lon: 79.9500 },
+  { name: "Armoor", code: "ARMO", slug: "armoor", lat: 18.8500, lon: 78.3500 },
+  { name: "Gadwal", code: "GADW", slug: "gadwal", lat: 16.2700, lon: 77.8200 },
+  { name: "Wanaparthy", code: "WANA", slug: "wanaparthy", lat: 16.3000, lon: 78.4000 },
+  { name: "Bellampally", code: "BELL", slug: "bellampally", lat: 18.9000, lon: 79.4000 },
+  { name: "Bhongir", code: "BHUV", slug: "bhongir", lat: 17.5100, lon: 78.8880 },
+  { name: "Vikarabad", code: "VKBD", slug: "vikarabad", lat: 17.3294, lon: 77.9033 },
+  { name: "Mahbubabad", code: "MAHA", slug: "mahbubabad", lat: 17.8000, lon: 80.0000 },
+  { name: "Jangaon", code: "JNGN", slug: "jangaon", lat: 17.7200, lon: 79.1700 },
+  { name: "Bhadrachalam", code: "BHDR", slug: "bhadradri", lat: 17.6650, lon: 80.8800 },
+  { name: "Bhupalapally", code: "BHUP", slug: "bhupalapally", lat: 18.5500, lon: 80.4500 },
+  { name: "Narayanpet", code: "NRYN", slug: "narayanpet", lat: 16.9000, lon: 77.5000 },
+  { name: "Peddapalli", code: "PEDA", slug: "peddapalli", lat: 18.6100, lon: 79.4000 },
+  { name: "Huzurnagar", code: "HUZU", slug: "huzurnagar", lat: 16.8500, lon: 80.6000 },
+  { name: "Medchal", code: "MDCH", slug: "medchal", lat: 17.6292, lon: 78.5586 },
+  { name: "Manuguru", code: "MNGU", slug: "manuguru", lat: 17.5250, lon: 80.8800 },
+  { name: "Achampet", code: "ACHM", slug: "achampet", lat: 16.5833, lon: 78.3833 }
+];
 
-// 📌 East Godavari cities
-const eastGodavariCities = {
-  Rajahmundry: "RJMU",
-  Kakinada: "KAKI",
-  Amalapuram: "AMAP",
-  Mandapeta: "MAND",
-  Ravulapalem: "RVPL",
-  Pithapuram: "PITA",
-  Peddapuram: "PEDP",
-  Jaggampeta: "JAGG",
-  Tatipaka: "TATI",
-  Draksharamam: "DAKR",
-  Kothapeta: "KTPE",
-  Kathipudi: "KATP",
-  Kirlampudi: "KIDI"
-};
-
-// 📌 Guntur & Prakasam
-const gunturCities = {
-  Guntur: "GUNT",
-  Tenali: "TENA",
-  Chilakaluripet: "CHIL",
-  Repalle: "REPA",
-  Sattenapalli: "SATP",
-  Macherla: "MACH",
-  Ongole: "ONGL",
-  Addanki: "ADKI",
-  Piduguralla: "PIDU",
-  Chirala: "CHIR",
-  Tangutur: "TANG"
-};
-
-// 📌 Krishna
-const krishnaCities = {
-  Vijayawada: "VIJA",
-  Machilipatnam: "MCHT",
-  Gudivada: "GDVD",
-  Nuzvid: "NUZV",
-  Jaggaiahpet: "JGPT",
-  Pedana: "PENA",
-  Vuyyuru: "VUYU",
-  Nandigama: "NDGM",
-  Mylavaram: "MYLA",
-  Vissannapeta: "VSNP",
-  HanumanJunction: "HANU",
-  Kaikaluru: "KAIK",
-  Jaggayyapeta: "JGGY"
-};
-
-// 📌 Nellore
-const nelloreCities = {
-  Nellore: "NELL",
-  Kavali: "KVLI",
-  Gudur: "GUDR",
-  Kandukur: "KAND",
-  Kanigiri: "KANI",
-  Naidupeta: "NDPT",
-  Podili: "PODI",
-  Singarayakonda: "SIGN",
-  Darsi: "DARS",
-  Pamur: "PMMR",
-  Podalakur: "PODA"
-};
-
-// 📌 Ceeded
-const ceededCities = {
-  Tirupati: "TIRU",
-  Madanapalle: "MDNP",
-  Chittoor: "CHTT",
-  Kadapa: "KDPA",
-  Proddatur: "PROD",
-  RailwayKoduru: "RLKD",
-  Kurnool: "KURN",
-  Nandyal: "NADY",
-  Anantapur: "ANAN",
-  Tadipatri: "TDPT",
-  Hindupur: "HNDP",
-  Guntakal: "GUNL",
-  Kadiri: "KADR"
-};
-
-// 📌 Uttar Andhra
-const uttarAndhraCities = {
-  Vizag: "VIZAG",
-  Anakapalle: "ANKP",
-  Vizianagaram: "VIZI",
-  Srikakulam: "SRKL",
-  Rajam: "RJAM",
-  Payakaraopeta: "PATE",
-  Gajapathinagaram: "GJPT",
-  Parvathipuram: "PRVT",
-  Bobbili: "BOBB",
-  Palasa: "PALS",
-  Narasannapeta: "NRPT",
-  Cheepurupalli: "CHEE",
-  Ponduru: "PONU",
-  Ranasthalam: "RNST",
-  Nellimarla: "NLEM",
-  Palakonda: "PALK",
-  Tekkali: "TKLI",
-  Sompeta: "SOMA",
-  Kothavalasa: "KTVL"
-};
-
-// 📌 West Godavari
-const westGodavariCities = {
-  Eluru: "ELRU",
-  Bhimavaram: "BHIM",
-  Tadepalligudem: "TDPG",
-  Nidadavole: "NIDA",
-  Kovvur: "KOVU",
-  Tanuku: "TANU",
-  Jangareddygudem: "JRED",
-  Palakollu: "PLKU"
-};
-
-// 🌍 Merge all 8 regions
-const mergedRegions = {
-  Telangana: telanganaCities,
-  EastGodavari: eastGodavariCities,
-  Guntur: gunturCities,
-  Krishna: krishnaCities,
-  Nellore: nelloreCities,
-  Ceeded: ceededCities,
-  UttarAndhra: uttarAndhraCities,
-  WestGodavari: westGodavariCities
-};
-
-// 🛠 Build headers
-function buildHeaders() {
-  return {
-    "x-bms-id": auth.bmsId,
-    "authorization": `Bearer ${auth.token}`,
-    "user-agent": navigator.userAgent,
-    "cookie": document.cookie
-  };
+// ---------------- Save CSV ----------------
+function saveToCSV(data, filenameBase) {
+  if (!data.length) return;
+  const today = new Date().toISOString().split("T")[0];
+  const folder = `output_${today}`;
+  fs.mkdirSync(folder, { recursive: true });
+  const csvFilePath = `${folder}/${filenameBase}.csv`;
+  const headers = Object.keys(data[0]);
+  const rows = data.map(obj => headers.map(h => `${obj[h] ?? ""}`).join(","));
+  if (!fs.existsSync(csvFilePath)) {
+    fs.writeFileSync(csvFilePath, headers.join(",") + "\n" + rows.join("\n") + "\n", "utf8");
+  } else {
+    fs.appendFileSync(csvFilePath, rows.join("\n") + "\n", "utf8");
+  }
+  console.log(`💾 Appended ${data.length} rows to ${csvFilePath}`);
 }
 
-// 📊 Generic Analytics Generator
-function createAnalyticsFunctions(regions, dateCode = "20250918") {
-  async function fetchData(eventCode, regionCode) {
-    const url = `https://in.bookmyshow.com/api/movies-data/showtimes-by-event?eventCode=${eventCode}&regionCode=${regionCode}&dateCode=${dateCode}`;
-    const res = await fetch(url, { headers: buildHeaders() });
-    if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
-    return res.json();
+// ---------------- Delay ----------------
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// ---------------- Fetch Showtimes ----------------
+async function fetchShowtimesForCities(eventCode, dateCode, cities) {
+  const showRows = [];
+  const cityResults = [];
+  let grandTotalSeats = 0, grandBookedSeats = 0, grandBookedCollection = 0,
+      grandTotalCollection = 0, grandWeightedPriceSum = 0, grandTotalShows = 0;
+
+  function formatShowTime(raw) {
+    if (!raw || raw === "N/A") return "Unknown";
+    const n = Number(raw);
+    const d = !isNaN(n) ? new Date(n) : new Date(raw);
+    if (isNaN(d.getTime())) return "Unknown";
+    return d.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true });
   }
 
-  async function regionStats(eventCode) {
-    const regionSummary = [];
-    for (const [regionName, cityMap] of Object.entries(regions)) {
-      let totalShows = 0, totalBooked = 0, totalMaxSeats = 0, totalCollection = 0, totalMaxCollection = 0;
-
-      for (const [cityName, regionCode] of Object.entries(cityMap)) {
-        try {
-          const data = await fetchData(eventCode, regionCode);
-          if (!data?.ShowDetails) continue;
-
-          data.ShowDetails.forEach(detail => {
-            detail.Venues.forEach(venue => {
-              totalShows += venue.ShowTimes.length;
-              venue.ShowTimes.forEach(show => {
-                show.Categories.forEach(cat => {
-                  const max = +cat.MaxSeats, avail = +cat.SeatsAvail, price = +cat.CurPrice;
-                  const booked = max - avail;
-                  totalMaxSeats += max;
-                  totalBooked += booked;
-                  totalCollection += booked * price;
-                  totalMaxCollection += max * price;
-                });
-              });
-            });
-          });
-
-        } catch (err) {
-          console.warn(`⛔ Error in ${regionName} ➜ ${cityName}: ${err.message}`);
-        }
+  async function fetchWithRetry(url, options, retries = 3) {
+    for (let i = 0; i < retries; i++) {
+      try {
+        const resp = await fetch(url, options);
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+        return await resp.json();
+      } catch (err) {
+        if (i === retries - 1) throw err;
+        await new Promise(r => setTimeout(r, 1000 * (i + 1)));
       }
-      const occupancy = totalMaxSeats > 0 ? ((totalBooked / totalMaxSeats) * 100).toFixed(2) + "%" : "N/A";
-      regionSummary.push({
-        Region: regionName,
-        Total_Shows: totalShows,
-        Booked_Tickets: totalBooked,
-        Max_Seats: totalMaxSeats,
-        Collection: `₹${totalCollection.toFixed(2)}`,
-        Max_Collection: `₹${totalMaxCollection.toFixed(2)}`,
-        Occupancy: occupancy
-      });
     }
-    console.log(`\n📍 Region-wise Summary (📅 ${dateCode}):`);
-    console.table(regionSummary);
   }
 
-  async function cityWiseStats(eventCode) {
-    const cityStats = [];
-    for (const [regionName, cityMap] of Object.entries(regions)) {
-      for (const [cityName, regionCode] of Object.entries(cityMap)) {
-        let shows = 0, booked = 0, maxSeats = 0, collection = 0, maxCollection = 0;
-        try {
-          const data = await fetchData(eventCode, regionCode);
-          if (!data?.ShowDetails) continue;
-          data.ShowDetails.forEach(detail => {
-            detail.Venues.forEach(venue => {
-              shows += venue.ShowTimes.length;
-              venue.ShowTimes.forEach(show => {
-                show.Categories.forEach(cat => {
-                  const max = +cat.MaxSeats, avail = +cat.SeatsAvail, price = +cat.CurPrice;
-                  const bookedSeats = max - avail;
-                  maxSeats += max;
-                  booked += bookedSeats;
-                  collection += bookedSeats * price;
-                  maxCollection += max * price;
-                });
-              });
+  for (const city of cities) {
+    await delay(3000); // 3-second delay per city
+    const url = `https://in.bookmyshow.com/api/movies-data/showtimes-by-event?appCode=MOBAND2&eventCode=${eventCode}&regionCode=${city.code}&subRegion=${city.code}&lat=${city.lat}&lon=${city.lon}&dateCode=${dateCode}`;
+    const headers = {
+      "x-platform": "DESKTOP",
+      "x-app-code": "MOBAND2",
+      lang: "en"
+    };
+
+    try {
+      const data = await fetchWithRetry(url, { method: "GET", headers });
+      if (!data?.ShowDetails?.length) continue;
+
+      let cityTotalSeats = 0, cityBookedSeats = 0, cityBookedCollection = 0,
+          cityTotalPotentialCollection = 0, cityWeightedPriceSum = 0, totalShowsInCity = 0;
+
+      for (const showDetail of data.ShowDetails) {
+        for (const venue of showDetail.Venues) {
+          for (const showTime of venue.ShowTimes) {
+            totalShowsInCity++;
+            const formattedTime = formatShowTime(showTime.ShowTime);
+
+            let totalSeats = 0, totalBooked = 0, totalShowCollection = 0, sumCategoryPrices = 0, catCount = 0;
+            for (const cat of showTime.Categories) {
+              const maxSeats = parseInt(cat.MaxSeats) || 0;
+              const seatsAvail = parseInt(cat.SeatsAvail) || 0;
+              const booked = maxSeats - seatsAvail;
+              const price = parseFloat(cat.CurPrice) || 0;
+              totalSeats += maxSeats;
+              totalBooked += booked;
+              totalShowCollection += booked * price;
+              sumCategoryPrices += price;
+              catCount++;
+            }
+            const avgPrice = catCount > 0 ? sumCategoryPrices / catCount : 0;
+            const totalPotentialCollection = totalSeats * avgPrice;
+            const occupancy = totalSeats ? ((totalBooked / totalSeats) * 100).toFixed(2) : "0.00";
+
+            showRows.push({
+              City: city.name,
+              Venue: venue.VenueName,
+              "Show Time": formattedTime,
+              "Total Seats": totalSeats,
+              "Booked Seats": totalBooked,
+              "Occupancy (%)": `${occupancy}%`,
+              "Booked Collection (₹)": totalShowCollection.toFixed(2),
+              "Total Collection (₹)": totalPotentialCollection.toFixed(2),
+              "Avg Ticket Price (₹)": avgPrice.toFixed(2),
             });
-          });
-          if (shows > 0) {
-            const occupancy = maxSeats > 0 ? ((booked / maxSeats) * 100).toFixed(2) + "%" : "N/A";
-            cityStats.push({
-              Region: regionName,
-              City: cityName,
-              Shows: shows,
-              Booked_Tickets: booked,
-              Max_Seats: maxSeats,
-              Collection: `₹${collection.toFixed(2)}`,
-              Max_Collection: `₹${maxCollection.toFixed(2)}`,
-              Occupancy: occupancy
-            });
+
+            cityTotalSeats += totalSeats;
+            cityBookedSeats += totalBooked;
+            cityBookedCollection += totalShowCollection;
+            cityTotalPotentialCollection += totalPotentialCollection;
+            cityWeightedPriceSum += avgPrice * totalSeats;
           }
-        } catch (err) {
-          console.warn(`⛔ Error in ${regionName} ➜ ${cityName}: ${err.message}`);
         }
       }
+
+      const cityOccupancy = cityTotalSeats ? ((cityBookedSeats / cityTotalSeats) * 100).toFixed(2) : "0.00";
+      const cityAvgTicketPrice = cityTotalSeats ? (cityWeightedPriceSum / cityTotalSeats).toFixed(2) : "0.00";
+
+      cityResults.push({
+        City: city.name,
+        "Total Shows": totalShowsInCity,
+        "Total Seats": cityTotalSeats,
+        "Booked Seats": cityBookedSeats,
+        "Occupancy (%)": `${cityOccupancy}%`,
+        "Booked Collection (₹)": cityBookedCollection.toFixed(2),
+        "Total Collection (₹)": cityTotalPotentialCollection.toFixed(2),
+        "Avg Ticket Price (₹)": cityAvgTicketPrice,
+      });
+
+      grandTotalSeats += cityTotalSeats;
+      grandBookedSeats += cityBookedSeats;
+      grandBookedCollection += cityBookedCollection;
+      grandTotalCollection += cityTotalPotentialCollection;
+      grandWeightedPriceSum += cityWeightedPriceSum;
+      grandTotalShows += totalShowsInCity;
+
+    } catch (err) {
+      console.error(`❌ ${city.name}: ${err.message}`);
     }
-    console.log(`\n🏙 City-wise Summary (📅 ${dateCode}):`);
-    console.table(cityStats);
   }
 
-  async function showWiseStats(eventCode) {
-    const showStats = [];
-    for (const [regionName, cityMap] of Object.entries(regions)) {
-      for (const [cityName, regionCode] of Object.entries(cityMap)) {
-        try {
-          const data = await fetchData(eventCode, regionCode);
-          if (!data?.ShowDetails) continue;
-          data.ShowDetails.forEach(detail => {
-            detail.Venues.forEach(venue => {
-              venue.ShowTimes.forEach(show => {
-                let showBooked = 0, showMax = 0, revenue = 0, maxRev = 0;
-                show.Categories.forEach(cat => {
-                  const max = +cat.MaxSeats, avail = +cat.SeatsAvail, price = +cat.CurPrice;
-                  const booked = max - avail;
-                  showMax += max;
-                  showBooked += booked;
-                  revenue += booked * price;
-                  maxRev += max * price;
-                });
-                if (showMax > 0) {
-                  const occupancy = ((showBooked / showMax) * 100).toFixed(2) + "%";
-                  showStats.push({
-                    Region: regionName,
-                    City: cityName,
-                    Venue: venue.VenueName,
-                    Show_Time: show.ShowTime,
-                    Booked: showBooked,
-                    Max_Seats: showMax,
-                    Collection: `₹${revenue.toFixed(2)}`,
-                    Max_Collection: `₹${maxRev.toFixed(2)}`,
-                    Occupancy: occupancy
-                  });
-                }
-              });
-            });
-          });
-        } catch (err) {
-          console.warn(`⛔ Show error in ${cityName}: ${err.message}`);
-        }
-      }
-    }
-    console.log(`\n🎞 Show-wise Summary (📅 ${dateCode}, first 100 rows):`);
-    console.table(showStats.slice(0, 100));
-    window.allShows = showStats;
+  if (grandTotalShows > 0) {
+    const grandOccupancy = grandTotalSeats ? ((grandBookedSeats / grandTotalSeats) * 100).toFixed(2) : "0.00";
+    const grandAvgTicketPrice = grandTotalSeats ? (grandWeightedPriceSum / grandTotalSeats).toFixed(2) : "0.00";
+    cityResults.push({
+      City: "TOTAL",
+      "Total Shows": grandTotalShows,
+      "Total Seats": grandTotalSeats,
+      "Booked Seats": grandBookedSeats,
+      "Occupancy (%)": `${grandOccupancy}%`,
+      "Booked Collection (₹)": grandBookedCollection.toFixed(2),
+      "Total Collection (₹)": grandTotalCollection.toFixed(2),
+      "Avg Ticket Price (₹)": grandAvgTicketPrice,
+    });
   }
 
-  async function runAll(eventCode) {
-    await regionStats(eventCode);
-    await cityWiseStats(eventCode);
-    await showWiseStats(eventCode);
-  }
-
-  return { regionStats, cityWiseStats, showWiseStats, runAll };
+  return { showRows, cityResults };
 }
 
-// 🚀 Run analytics
-const eventCode = "ET00395402"; // replace with your event
-const dateCodes = ["20250918"]; // replace with your date(s)
+// ---------------- Runner ----------------
+const eventCode = "ET00395402"; // Replace with actual event code
+async function run() {
+  const dateCode = new Date().toISOString().split("T")[0].replace(/-/g, "");
+  console.log(`🚀 Starting Telangana showtime fetch for ${telanganaCities.length} cities`);
 
-(async function runAnalytics() {
-  for (const dateCode of dateCodes) {
-    console.log(`\n🟢 Running Analytics for 📅 ${dateCode}`);
-    const analytics = createAnalyticsFunctions(mergedRegions, dateCode);
-    await analytics.runAll(eventCode);
-  }
-})();
+  const { showRows, cityResults } = await fetchShowtimesForCities(eventCode, dateCode, telanganaCities);
+
+  saveToCSV(showRows, `telangana_showwise`);
+  saveToCSV(cityResults, `telangana_citywise`);
+
+  console.log("✅ Telangana fetch completed.");
+}
+
+run();
+
