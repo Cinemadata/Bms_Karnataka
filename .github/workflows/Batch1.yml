@@ -40,3 +40,6 @@ jobs:
             git push origin main
           else
             echo "⚠️ No CSV changes to commit."
+
+          else
+            echo "⚠️ No CSV changes to commit."
