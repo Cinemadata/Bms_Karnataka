@@ -1,4 +1,4 @@
-name: Fetch Shows Batch 1
+name: Fetch Telangana Shows
 
 on:
   workflow_dispatch:
@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 jobs:
-  run-batch1:
+  run-telangana:
     runs-on: ubuntu-latest
 
     steps:
@@ -24,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: npm install node-fetch@2
 
-      - name: Run Batch1 Script
+      - name: Run Telangana Showwise Script
         run: node fetchShows.js
 
       - name: Commit & Push CSVs
@@ -36,9 +36,7 @@ jobs:
           git add output_*/*.csv
           if ! git diff --cached --quiet; then
             echo "🚀 CSV changes detected. Committing..."
-            git commit -m "Update Batch1 CSVs [skip ci]"
-            git pull --rebase origin main || true
+            git commit -m "Update Telangana showwise CSVs [skip ci]"
             git push origin main
           else
             echo "⚠️ No CSV changes to commit."
-          fi
