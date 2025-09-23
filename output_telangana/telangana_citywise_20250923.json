@@ -1,92 +1,11 @@
 [
   {
-    "City": "Miryalaguda",
-    "Total_Shows": 5,
-    "Total_Seats": 1209,
-    "Booked_Seats": 969,
-    "Collection": "775200.00",
-    "Max_Collection": "967200.00",
-    "Occupancy": "80.15%"
-  },
-  {
-    "City": "Siddipet",
-    "Total_Shows": 1,
-    "Total_Seats": 553,
-    "Booked_Seats": 108,
-    "Collection": "84200.00",
-    "Max_Collection": "420200.00",
-    "Occupancy": "19.53%"
-  },
-  {
-    "City": "Jagtial",
-    "Total_Shows": 5,
-    "Total_Seats": 2175,
-    "Booked_Seats": 1637,
-    "Collection": "450175.00",
-    "Max_Collection": "598125.00",
-    "Occupancy": "75.26%"
-  },
-  {
-    "City": "Sircilla",
-    "Total_Shows": 4,
-    "Total_Seats": 2400,
-    "Booked_Seats": 378,
-    "Collection": "95790.00",
-    "Max_Collection": "585880.00",
-    "Occupancy": "15.75%"
-  },
-  {
-    "City": "Kamareddy",
-    "Total_Shows": 5,
-    "Total_Seats": 2430,
-    "Booked_Seats": 1081,
-    "Collection": "297275.00",
-    "Max_Collection": "668250.00",
-    "Occupancy": "44.49%"
-  },
-  {
-    "City": "Palwancha",
-    "Total_Shows": 0,
-    "Total_Seats": 0,
-    "Booked_Seats": 0,
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Kothagudem",
-    "Total_Shows": 1,
-    "Total_Seats": 527,
-    "Booked_Seats": 50,
-    "Collection": "40000.00",
-    "Max_Collection": "421600.00",
-    "Occupancy": "9.49%"
-  },
-  {
-    "City": "Bodhan",
-    "Total_Shows": 0,
-    "Total_Seats": 0,
-    "Booked_Seats": 0,
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Sangareddy",
-    "Total_Shows": 1,
-    "Total_Seats": 658,
-    "Booked_Seats": 467,
-    "Collection": "372600.00",
-    "Max_Collection": "507200.00",
-    "Occupancy": "70.97%"
-  },
-  {
-    "City": "Metpally",
-    "Total_Shows": 5,
-    "Total_Seats": 3280,
-    "Booked_Seats": 1503,
-    "Collection": "364915.00",
-    "Max_Collection": "701300.00",
-    "Occupancy": "45.82%"
+    "City": "Hyderabad",
+    "Total_Shows": 89,
+    "Total_Seats": 38445,
+    "Booked_Seats": 35244,
+    "Collection": "28195200.00",
+    "Max_Collection": "30756000.00",
+    "Occupancy": "91.67%"
   }
 ]
