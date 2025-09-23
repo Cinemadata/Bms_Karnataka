@@ -30,10 +30,8 @@ jobs:
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git add output_telangana/telangana_showwise.csv
-          git add output_telangana/telangana_citywise.csv
-          git add output_telangana/telangana_showwise.json
-          git add output_telangana/telangana_citywise.json
+          git add output_telangana/*.csv
+          git add output_telangana/*.json
           git commit -m "Update Telangana shows CSVs [skip ci]" || echo "No changes to commit"
           git push origin main
         env:
