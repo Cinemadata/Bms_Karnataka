@@ -1,12 +1,11 @@
 name: Fetch Telangana shows 2
 
-# Trigger every 30 minutes
 on:
   schedule:
-    - cron: '*/30 * * * *'
-  workflow_dispatch: # manual trigger
+    # Runs at the top of every hour
+    - cron: '0 * * * *'
+  workflow_dispatch: # allows manual trigger
 
-# Give write permissions to push CSVs
 permissions:
   contents: write
 
@@ -14,31 +13,27 @@ jobs:
   fetch-and-push:
     runs-on: ubuntu-latest
     steps:
-      # Checkout the repo
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 20
 
-      # Install dependencies
       - name: Install dependencies
         run: npm install
 
-      - name: Run Batch2 fetch script
+      - name: Run Telangana fetch script
         run: node fetchShows2.js
 
-      
-      # Commit and push generated CSVs
-      - name: Commit and push CSVs
+      - name: Commit and push CSVs & JSONs
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git add output/*.csv
-          git commit -m "Update District shows CSVs [skip ci]" || echo "No changes to commit"
+          git add output_telangana/*.csv
+          git add output_telangana/*.json
+          git commit -m "Update Telangana shows CSVs [skip ci]" || echo "No changes to commit"
           git push origin main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
