@@ -1,1 +1,92 @@
-[]
+[
+  {
+    "City": "Hyderabad",
+    "Total_Shows": 87,
+    "Total_Seats": 37417,
+    "Booked_Seats": 34044,
+    "Collection": "27235200.00",
+    "Max_Collection": "29933600.00",
+    "Occupancy": "90.99%"
+  },
+  {
+    "City": "Warangal",
+    "Total_Shows": 5,
+    "Total_Seats": 2838,
+    "Booked_Seats": 1584,
+    "Collection": "1267200.00",
+    "Max_Collection": "2270400.00",
+    "Occupancy": "55.81%"
+  },
+  {
+    "City": "Karimnagar",
+    "Total_Shows": 2,
+    "Total_Seats": 782,
+    "Booked_Seats": 103,
+    "Collection": "82400.00",
+    "Max_Collection": "625600.00",
+    "Occupancy": "13.17%"
+  },
+  {
+    "City": "Nizamabad",
+    "Total_Shows": 1,
+    "Total_Seats": 335,
+    "Booked_Seats": 87,
+    "Collection": "69600.00",
+    "Max_Collection": "268000.00",
+    "Occupancy": "25.97%"
+  },
+  {
+    "City": "Khammam",
+    "Total_Shows": 2,
+    "Total_Seats": 1652,
+    "Booked_Seats": 1014,
+    "Collection": "811200.00",
+    "Max_Collection": "1321600.00",
+    "Occupancy": "61.38%"
+  },
+  {
+    "City": "Mahbubnagar",
+    "Total_Shows": 4,
+    "Total_Seats": 2169,
+    "Booked_Seats": 1491,
+    "Collection": "1192800.00",
+    "Max_Collection": "1735200.00",
+    "Occupancy": "68.74%"
+  },
+  {
+    "City": "Mancherial",
+    "Total_Shows": 5,
+    "Total_Seats": 3340,
+    "Booked_Seats": 1702,
+    "Collection": "465200.00",
+    "Max_Collection": "903500.00",
+    "Occupancy": "50.96%"
+  },
+  {
+    "City": "Nalgonda",
+    "Total_Shows": 5,
+    "Total_Seats": 720,
+    "Booked_Seats": 86,
+    "Collection": "30100.00",
+    "Max_Collection": "252000.00",
+    "Occupancy": "11.94%"
+  },
+  {
+    "City": "Adilabad",
+    "Total_Shows": 1,
+    "Total_Seats": 542,
+    "Booked_Seats": 49,
+    "Collection": "39200.00",
+    "Max_Collection": "433600.00",
+    "Occupancy": "9.04%"
+  },
+  {
+    "City": "Suryapet",
+    "Total_Shows": 2,
+    "Total_Seats": 640,
+    "Booked_Seats": 235,
+    "Collection": "188000.00",
+    "Max_Collection": "512000.00",
+    "Occupancy": "36.72%"
+  }
+]
