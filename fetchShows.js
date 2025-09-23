@@ -2,9 +2,9 @@
 
 import fs from "fs";
 import path from "path";
+import fetch from "node-fetch";
 
-
-// ================= Telangana Cities ================= //
+// Telangana cities
 const telanganaCities = {
   Hyderabad: "HYD",
   Warangal: "WAR",
@@ -16,21 +16,46 @@ const telanganaCities = {
   Nalgonda: "NALK",
   Adilabad: "ADIL",
   Suryapet: "SURY",
-  
-  
+  Miryalaguda: "MRGD",
+  Siddipet: "SDDP",
+  Jagtial: "JGTL",
+  Sircilla: "SIRC",
+  Kamareddy: "KMRD",
+  Palwancha: "PLWA",
+  Kothagudem: "KTGM",
+  Bodhan: "BODH",
+  Sangareddy: "SARE",
+  Metpally: "METT",
+  Zaheerabad: "ZAGE",
+  Korutla: "KCKA",
+  Tandur: "TAND",
+  Kodad: "KODA",
+  Armoor: "ARMO",
+  Gadwal: "GADW",
+  Wanaparthy: "WANA",
+  Bellampally: "BELL",
+  Bhongir: "BHUV",
+  Vikarabad: "VKBD",
+  Mahbubabad: "MAHA",
+  Jangaon: "JNGN",
+  Bhadrachalam: "BHDR",
+  Bhupalapally: "BHUP",
+  Narayanpet: "NRYN",
+  Peddapalli: "PEDA",
+  Huzurnagar: "HUZU",
+  Medchal: "MDCH",
+  Manuguru: "MNGU",
+  Achampet: "ACHM",
 };
 
-// ================= Event Code ================= //
+// Event code
 const eventCode = "ET00369074";
 
-// ================= Helper Functions ================= //
-function getNextDay() {
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  return `${tomorrow.getFullYear()}-${String(tomorrow.getMonth() + 1).padStart(
-    2,
-    "0"
-  )}-${String(tomorrow.getDate()).padStart(2, "0")}`;
+// ================= Helpers ================= //
+function getDateString(date = new Date()) {
+  return `${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, "0")}${String(
+    date.getDate()
+  ).padStart(2, "0")}`;
 }
 
 function saveCSV(data, filename) {
@@ -50,8 +75,8 @@ function saveJSON(data, filename) {
   fs.writeFileSync(path.join(outputDir, filename), JSON.stringify(data, null, 2));
 }
 
-// ================= Fetch Functions ================= //
-async function fetchCityStats(cityName, regionCode, date = getNextDay()) {
+// ================= Fetch Function ================= //
+async function fetchCityStats(cityName, regionCode, date) {
   const url = `https://in.bookmyshow.com/api/movies-data/showtimes-by-event?eventCode=${eventCode}&regionCode=${regionCode}&date=${date}`;
   const headers = {
     "x-platform": "DESKTOP",
@@ -111,9 +136,7 @@ async function fetchCityStats(cityName, regionCode, date = getNextDay()) {
       Booked_Seats: totalBooked,
       Collection: totalCollection.toFixed(2),
       Max_Collection: totalMaxCollection.toFixed(2),
-      Occupancy: totalMaxSeats
-        ? ((totalBooked / totalMaxSeats) * 100).toFixed(2) + "%"
-        : "0.00%",
+      Occupancy: totalMaxSeats ? ((totalBooked / totalMaxSeats) * 100).toFixed(2) + "%" : "0.00%",
     };
 
     return { showRows, citySummary };
@@ -124,7 +147,8 @@ async function fetchCityStats(cityName, regionCode, date = getNextDay()) {
 }
 
 // ================= Run Script ================= //
-async function runTelangana(date = getNextDay()) {
+async function runTelangana() {
+  const date = getDateString();
   const allShowRows = [];
   const allCitySummaries = [];
 
@@ -133,18 +157,17 @@ async function runTelangana(date = getNextDay()) {
     const { showRows, citySummary } = await fetchCityStats(cityName, regionCode, date);
     allShowRows.push(...showRows);
     if (citySummary) allCitySummaries.push(citySummary);
-    await new Promise((r) => setTimeout(r, 3000)); // 3s delay per city
+    await new Promise((r) => setTimeout(r, 3000));
   }
 
-  // Save single CSV & JSON per type
-  saveCSV(allShowRows, `telangana_showwise.csv`);
-  saveCSV(allCitySummaries, `telangana_citywise.csv`);
-  saveJSON(allShowRows, `telangana_showwise.json`);
-  saveJSON(allCitySummaries, `telangana_citywise.json`);
+  // Save CSV & JSON with date in filename
+  saveCSV(allShowRows, `telangana_showwise_${date}.csv`);
+  saveCSV(allCitySummaries, `telangana_citywise_${date}.csv`);
+  saveJSON(allShowRows, `telangana_showwise_${date}.json`);
+  saveJSON(allCitySummaries, `telangana_citywise_${date}.json`);
 
-  console.log(
-    `✅ Telangana fetch completed for ${date}. Shows: ${allShowRows.length}, Cities: ${allCitySummaries.length}`
-  );
+  console.log(`✅ Completed Telangana fetch for ${date}`);
 }
 
 runTelangana();
+
