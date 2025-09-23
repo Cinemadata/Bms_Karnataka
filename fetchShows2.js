@@ -1,110 +1,144 @@
-// ================= Node.js Script: fetchShows.js =================
+// ================= Node.js Script: fetchShows2.js =================
 
 import fs from "fs";
 import path from "path";
 
 
-// ================= Cities (All Telangana: Updated) ================= //
-const cities = {
-  miryalaguda: { regionCode: "MRGD", subRegionCode: "MRGD", latitude: "16.8667", longitude: "79.5333" },
-  siddipet: { regionCode: "SDDP", subRegionCode: "SDDP", latitude: "18.1083", longitude: "78.8533" },
-  jagtial: { regionCode: "JGTL", subRegionCode: "JGTL", latitude: "18.8000", longitude: "78.9333" },
-  sircilla: { regionCode: "SIRC", subRegionCode: "SIRC", latitude: "18.8000", longitude: "78.8000" },
-  kamareddy: { regionCode: "KMRD", subRegionCode: "KMRD", latitude: "18.3250", longitude: "78.3322" },
-  palwancha: { regionCode: "PLWA", subRegionCode: "PLWA", latitude: "17.5260", longitude: "80.6287" },
-  kothagudem: { regionCode: "KTGM", subRegionCode: "KTGM", latitude: "17.5500", longitude: "80.6333" },
-  bodhan: { regionCode: "BODH", subRegionCode: "BODH", latitude: "18.6723", longitude: "78.6719" },
-  sangareddy: { regionCode: "SARE", subRegionCode: "SARE", latitude: "17.6200", longitude: "78.0900" },
-  metpally: { regionCode: "METT", subRegionCode: "METT", latitude: "18.8000", longitude: "79.4500" },
+// Telangana cities
+const telanganaCities = {
+  
+  Miryalaguda: "MRGD",
+  Siddipet: "SDDP",
+  Jagtial: "JGTL",
+  Sircilla: "SIRC",
+  Kamareddy: "KMRD",
+  Palwancha: "PLWA",
+  Kothagudem: "KTGM",
+  Bodhan: "BODH",
+  Sangareddy: "SARE",
+  Metpally: "METT",
   
 };
 
-// ================= Event Codes ================= //
-const eventCodes = [{ movie: "They Call Him OG", code: "ET00369074" }];
+// Event code
+const eventCode = "ET00369074";
 
-// ================= Helper Functions ================= //
-function getNextDay() {
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  return `${tomorrow.getFullYear()}-${String(tomorrow.getMonth() + 1).padStart(2,'0')}-${String(tomorrow.getDate()).padStart(2,'0')}`;
+// ================= Helpers ================= //
+function getDateString(date = new Date()) {
+  return `${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, "0")}${String(
+    date.getDate()
+  ).padStart(2, "0")}`;
 }
 
-function processShowtimeData(data) {
-  let totalShows = 0, totalBookedSeats = 0, totalMaxSeats = 0, totalBookedGross = 0, totalGross = 0;
-  if (!data?.ShowDetails) return { totalShows, totalBookedSeats, totalMaxSeats, totalGross, totalBookedGross, occupancy: '0.00%' };
+function saveCSV(data, filename) {
+  if (!data.length) return;
+  const csvHeader = Object.keys(data[0]).join(",") + "\n";
+  const csvRows = data
+    .map((r) => Object.values(r).map((v) => `"${v}"`).join(","))
+    .join("\n");
+  const outputDir = path.join(".", "output_telangana");
+  if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir);
+  fs.writeFileSync(path.join(outputDir, filename), csvHeader + csvRows);
+}
 
-  data.ShowDetails.forEach(showDetail => {
-    showDetail.Venues?.forEach(venue => {
-      venue.ShowTimes?.forEach(showTime => {
-        totalShows++;
-        showTime.Categories?.forEach(category => {
-          const maxSeats = parseInt(category.MaxSeats,10)||0;
-          const bookedSeats = maxSeats - (parseInt(category.SeatsAvail,10)||0);
-          const price = parseFloat(category.CurPrice)||0;
+function saveJSON(data, filename) {
+  const outputDir = path.join(".", "output_telangana");
+  if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir);
+  fs.writeFileSync(path.join(outputDir, filename), JSON.stringify(data, null, 2));
+}
 
-          totalMaxSeats += maxSeats;
-          totalBookedSeats += bookedSeats;
-          totalGross += maxSeats * price;
-          totalBookedGross += bookedSeats * price;
+// ================= Fetch Function ================= //
+async function fetchCityStats(cityName, regionCode, date) {
+  const url = `https://in.bookmyshow.com/api/movies-data/showtimes-by-event?eventCode=${eventCode}&regionCode=${regionCode}&date=${date}`;
+  const headers = {
+    "x-platform": "DESKTOP",
+    "x-app-code": "BMSWEB",
+    Accept: "application/json",
+  };
+
+  try {
+    const res = await fetch(url, { headers });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    if (!data?.ShowDetails) return { showRows: [], citySummary: null };
+
+    let showRows = [];
+    let totalShows = 0,
+      totalMaxSeats = 0,
+      totalBooked = 0,
+      totalCollection = 0,
+      totalMaxCollection = 0;
+
+    data.ShowDetails.forEach((detail) => {
+      detail.Venues.forEach((venue) => {
+        venue.ShowTimes.forEach((show) => {
+          totalShows += 1;
+          show.Categories.forEach((cat) => {
+            const max = +cat.MaxSeats || 0;
+            const avail = +cat.SeatsAvail || 0;
+            const booked = max - avail;
+            const price = +cat.CurPrice || 0;
+
+            totalMaxSeats += max;
+            totalBooked += booked;
+            totalCollection += booked * price;
+            totalMaxCollection += max * price;
+
+            showRows.push({
+              City: cityName,
+              Venue: venue.VenueName,
+              Show_Time: show.ShowTime,
+              Category: cat.CategoryName || "",
+              Max_Seats: max,
+              Booked_Seats: booked,
+              Price: price.toFixed(2),
+              Collection: (booked * price).toFixed(2),
+              Max_Collection: (max * price).toFixed(2),
+              Occupancy: max ? ((booked / max) * 100).toFixed(2) + "%" : "0.00%",
+            });
+          });
         });
       });
     });
-  });
 
-  const occupancy = totalMaxSeats > 0 ? ((totalBookedSeats/totalMaxSeats)*100).toFixed(2)+'%' : '0.00%';
-  return { totalShows, totalBookedSeats, totalMaxSeats, totalGross, totalBookedGross, occupancy };
-}
+    const citySummary = {
+      City: cityName,
+      Total_Shows: totalShows,
+      Total_Seats: totalMaxSeats,
+      Booked_Seats: totalBooked,
+      Collection: totalCollection.toFixed(2),
+      Max_Collection: totalMaxCollection.toFixed(2),
+      Occupancy: totalMaxSeats ? ((totalBooked / totalMaxSeats) * 100).toFixed(2) + "%" : "0.00%",
+    };
 
-// ================= Fetch Functions ================= //
-async function fetchShowtimes(cityData) {
-  const date = getNextDay();
-  const url = `https://in.bookmyshow.com/api/movies-data/showtimes-by-event?eventCode=${eventCodes[0].code}&regionCode=${cityData.regionCode}&subRegion=${cityData.subRegionCode}&lat=${cityData.latitude}&lon=${cityData.longitude}&date=${date}`;
-  const headers = { "x-platform": "DESKTOP", "x-app-code": "BMSWEB", "Accept": "application/json" };
-
-  try {
-    const res = await fetch(url, { method: "GET", headers });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
-    return processShowtimeData(data);
-  } catch(e) {
-    console.error(`Error fetching city ${cityData.regionCode}:`, e.message);
-    return null;
+    return { showRows, citySummary };
+  } catch (err) {
+    console.error(`Error fetching ${cityName}: ${err.message}`);
+    return { showRows: [], citySummary: null };
   }
 }
 
 // ================= Run Script ================= //
-async function run() {
-  const allResults = [];
-  for (const [cityName, cityData] of Object.entries(cities)) {
-    console.log(`Fetching: ${cityName.toUpperCase()}`);
-    const stats = await fetchShowtimes(cityData);
-    if(stats){
-      allResults.push({
-        City: cityName.toUpperCase(),
-        "Total Shows": stats.totalShows,
-        "Booked Seats": stats.totalBookedSeats,
-        "Max Seats": stats.totalMaxSeats,
-        Occupancy: stats.occupancy,
-        "Booked Gross": `₹${stats.totalBookedGross.toFixed(0)}`,
-        "Total Gross": `₹${stats.totalGross.toFixed(0)}`
-      });
-    }
+async function runTelangana() {
+  const date = getDateString();
+  const allShowRows = [];
+  const allCitySummaries = [];
+
+  for (const [cityName, regionCode] of Object.entries(telanganaCities)) {
+    console.log(`Fetching: ${cityName} (${regionCode})`);
+    const { showRows, citySummary } = await fetchCityStats(cityName, regionCode, date);
+    allShowRows.push(...showRows);
+    if (citySummary) allCitySummaries.push(citySummary);
+    await new Promise((r) => setTimeout(r, 3000));
   }
 
-  console.table(allResults);
+  // Save CSV & JSON with date in filename
+  saveCSV(allShowRows, `telangana_showwise_${date}.csv`);
+  saveCSV(allCitySummaries, `telangana_citywise_${date}.csv`);
+  saveJSON(allShowRows, `telangana_showwise_${date}.json`);
+  saveJSON(allCitySummaries, `telangana_citywise_${date}.json`);
 
-  if(allResults.length){
-    const csvHeader = Object.keys(allResults[0]).join(",") + "\n";
-    const csvRows = allResults.map(r =>
-      Object.values(r).map(v => `"${v}"`).join(",")
-    ).join("\n");
-
-    const outputDir = path.join(".", "output_telangana");
-    fs.mkdirSync(outputDir, { recursive: true });
-
-    const timestamp = new Date().toISOString().replace(/[:.]/g,'-');
-    fs.writeFileSync(path.join(outputDir, `telangana_city_summary_${timestamp}.csv`), csvHeader+csvRows);
-  }
+  console.log(`✅ Completed Telangana fetch for ${date}`);
 }
 
-run();
+runTelangana();
