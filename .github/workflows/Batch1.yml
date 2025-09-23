@@ -2,7 +2,7 @@ name: Fetch Telangana shows 1
 
 on:
   schedule:
-    - cron: '*/30 * * * *'  # every 30 minutes
+    - cron: '*/30 * * * *'
   workflow_dispatch:
 
 permissions:
@@ -23,20 +23,18 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run Batch1 fetch script
+      - name: Run Telangana fetch script
         run: node fetchShows.js
 
-      - name: Commit and push CSVs
+      - name: Commit and push CSVs & JSONs
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add output_telangana/telangana_showwise.csv
+          git add output_telangana/telangana_citywise.csv
+          git add output_telangana/telangana_showwise.json
+          git add output_telangana/telangana_citywise.json
+          git commit -m "Update Telangana shows CSVs [skip ci]" || echo "No changes to commit"
+          git push origin main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "github-actions@github.com"
-          git add output/*.csv
-          if ! git diff --cached --quiet; then
-            echo "🚀 CSV changes detected. Committing..."
-            git commit -m "Update District shows CSVs [skip ci]"
-            git pull --rebase origin main || true
-            git push origin main
-          else
-            echo "⚠️ No CSV changes to commit."
