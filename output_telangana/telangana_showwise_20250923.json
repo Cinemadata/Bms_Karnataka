@@ -2,6 +2,42 @@
   {
     "City": "Hyderabad",
     "Venue": "AAA Cinemas: Ameerpet",
+    "Show_Time": "10:00 PM",
+    "Category": "",
+    "Max_Seats": 20,
+    "Booked_Seats": 20,
+    "Price": "800.00",
+    "Collection": "16000.00",
+    "Max_Collection": "16000.00",
+    "Occupancy": "100.00%"
+  },
+  {
+    "City": "Hyderabad",
+    "Venue": "AAA Cinemas: Ameerpet",
+    "Show_Time": "10:00 PM",
+    "Category": "",
+    "Max_Seats": 376,
+    "Booked_Seats": 376,
+    "Price": "800.00",
+    "Collection": "300800.00",
+    "Max_Collection": "300800.00",
+    "Occupancy": "100.00%"
+  },
+  {
+    "City": "Hyderabad",
+    "Venue": "AAA Cinemas: Ameerpet",
+    "Show_Time": "10:00 PM",
+    "Category": "",
+    "Max_Seats": 26,
+    "Booked_Seats": 26,
+    "Price": "800.00",
+    "Collection": "20800.00",
+    "Max_Collection": "20800.00",
+    "Occupancy": "100.00%"
+  },
+  {
+    "City": "Hyderabad",
+    "Venue": "AAA Cinemas: Ameerpet",
     "Show_Time": "10:05 PM",
     "Category": "",
     "Max_Seats": 15,
@@ -65,34 +101,10 @@
     "Show_Time": "10:40 PM",
     "Category": "",
     "Max_Seats": 120,
-    "Booked_Seats": 119,
+    "Booked_Seats": 120,
     "Price": "800.00",
-    "Collection": "95200.00",
+    "Collection": "96000.00",
     "Max_Collection": "96000.00",
-    "Occupancy": "99.17%"
-  },
-  {
-    "City": "Hyderabad",
-    "Venue": "Alankar (Pratap Theatre): Langer House",
-    "Show_Time": "10:15 PM",
-    "Category": "",
-    "Max_Seats": 48,
-    "Booked_Seats": 48,
-    "Price": "800.00",
-    "Collection": "38400.00",
-    "Max_Collection": "38400.00",
-    "Occupancy": "100.00%"
-  },
-  {
-    "City": "Hyderabad",
-    "Venue": "Alankar (Pratap Theatre): Langer House",
-    "Show_Time": "10:15 PM",
-    "Category": "",
-    "Max_Seats": 383,
-    "Booked_Seats": 383,
-    "Price": "800.00",
-    "Collection": "306400.00",
-    "Max_Collection": "306400.00",
     "Occupancy": "100.00%"
   },
   {
@@ -117,6 +129,30 @@
     "Price": "800.00",
     "Collection": "116000.00",
     "Max_Collection": "116000.00",
+    "Occupancy": "100.00%"
+  },
+  {
+    "City": "Hyderabad",
+    "Venue": "Alankar (Pratap Theatre): Langer House",
+    "Show_Time": "10:15 PM",
+    "Category": "",
+    "Max_Seats": 48,
+    "Booked_Seats": 48,
+    "Price": "800.00",
+    "Collection": "38400.00",
+    "Max_Collection": "38400.00",
+    "Occupancy": "100.00%"
+  },
+  {
+    "City": "Hyderabad",
+    "Venue": "Alankar (Pratap Theatre): Langer House",
+    "Show_Time": "10:15 PM",
+    "Category": "",
+    "Max_Seats": 383,
+    "Booked_Seats": 383,
+    "Price": "800.00",
+    "Collection": "306400.00",
+    "Max_Collection": "306400.00",
     "Occupancy": "100.00%"
   },
   {
@@ -352,24 +388,12 @@
     "Venue": "Anjali Movie Max: Secunderabad",
     "Show_Time": "10:00 PM",
     "Category": "",
-    "Max_Seats": 307,
-    "Booked_Seats": 304,
-    "Price": "800.00",
-    "Collection": "243200.00",
-    "Max_Collection": "245600.00",
-    "Occupancy": "99.02%"
-  },
-  {
-    "City": "Hyderabad",
-    "Venue": "Anjali Movie Max: Secunderabad",
-    "Show_Time": "10:00 PM",
-    "Category": "",
     "Max_Seats": 83,
-    "Booked_Seats": 37,
+    "Booked_Seats": 40,
     "Price": "800.00",
-    "Collection": "29600.00",
+    "Collection": "32000.00",
     "Max_Collection": "66400.00",
-    "Occupancy": "44.58%"
+    "Occupancy": "48.19%"
   },
   {
     "City": "Hyderabad",
@@ -385,15 +409,15 @@
   },
   {
     "City": "Hyderabad",
-    "Venue": "Aparna Cinemas: Nallagandla",
+    "Venue": "Anjali Movie Max: Secunderabad",
     "Show_Time": "10:00 PM",
     "Category": "",
-    "Max_Seats": 111,
-    "Booked_Seats": 111,
+    "Max_Seats": 307,
+    "Booked_Seats": 304,
     "Price": "800.00",
-    "Collection": "88800.00",
-    "Max_Collection": "88800.00",
-    "Occupancy": "100.00%"
+    "Collection": "243200.00",
+    "Max_Collection": "245600.00",
+    "Occupancy": "99.02%"
   },
   {
     "City": "Hyderabad",
@@ -405,6 +429,18 @@
     "Price": "800.00",
     "Collection": "7200.00",
     "Max_Collection": "7200.00",
+    "Occupancy": "100.00%"
+  },
+  {
+    "City": "Hyderabad",
+    "Venue": "Aparna Cinemas: Nallagandla",
+    "Show_Time": "10:00 PM",
+    "Category": "",
+    "Max_Seats": 111,
+    "Booked_Seats": 111,
+    "Price": "800.00",
+    "Collection": "88800.00",
+    "Max_Collection": "88800.00",
     "Occupancy": "100.00%"
   },
   {
@@ -496,23 +532,23 @@
     "Venue": "Aparna Cinemas: Nallagandla",
     "Show_Time": "10:00 PM",
     "Category": "",
-    "Max_Seats": 234,
-    "Booked_Seats": 226,
+    "Max_Seats": 12,
+    "Booked_Seats": 12,
     "Price": "800.00",
-    "Collection": "180800.00",
-    "Max_Collection": "187200.00",
-    "Occupancy": "96.58%"
+    "Collection": "9600.00",
+    "Max_Collection": "9600.00",
+    "Occupancy": "100.00%"
   },
   {
     "City": "Hyderabad",
     "Venue": "Aparna Cinemas: Nallagandla",
     "Show_Time": "10:00 PM",
     "Category": "",
-    "Max_Seats": 12,
-    "Booked_Seats": 12,
+    "Max_Seats": 234,
+    "Booked_Seats": 234,
     "Price": "800.00",
-    "Collection": "9600.00",
-    "Max_Collection": "9600.00",
+    "Collection": "187200.00",
+    "Max_Collection": "187200.00",
     "Occupancy": "100.00%"
   },
   {
@@ -665,11 +701,11 @@
     "Show_Time": "10:35 PM",
     "Category": "",
     "Max_Seats": 220,
-    "Booked_Seats": 219,
+    "Booked_Seats": 220,
     "Price": "800.00",
-    "Collection": "175200.00",
+    "Collection": "176000.00",
     "Max_Collection": "176000.00",
-    "Occupancy": "99.55%"
+    "Occupancy": "100.00%"
   },
   {
     "City": "Hyderabad",
@@ -713,11 +749,11 @@
     "Show_Time": "10:55 PM",
     "Category": "",
     "Max_Seats": 153,
-    "Booked_Seats": 100,
+    "Booked_Seats": 108,
     "Price": "800.00",
-    "Collection": "80000.00",
+    "Collection": "86400.00",
     "Max_Collection": "122400.00",
-    "Occupancy": "65.36%"
+    "Occupancy": "70.59%"
   },
   {
     "City": "Hyderabad",
@@ -833,11 +869,11 @@
     "Show_Time": "10:10 PM",
     "Category": "",
     "Max_Seats": 304,
-    "Booked_Seats": 299,
+    "Booked_Seats": 300,
     "Price": "800.00",
-    "Collection": "239200.00",
+    "Collection": "240000.00",
     "Max_Collection": "243200.00",
-    "Occupancy": "98.36%"
+    "Occupancy": "98.68%"
   },
   {
     "City": "Hyderabad",
@@ -845,11 +881,11 @@
     "Show_Time": "10:30 PM",
     "Category": "",
     "Max_Seats": 359,
-    "Booked_Seats": 359,
+    "Booked_Seats": 358,
     "Price": "800.00",
-    "Collection": "287200.00",
+    "Collection": "286400.00",
     "Max_Collection": "287200.00",
-    "Occupancy": "100.00%"
+    "Occupancy": "99.72%"
   },
   {
     "City": "Hyderabad",
@@ -1120,6 +1156,18 @@
     "Venue": "Asian Mukta A2 Sensation Cinema: Kairathabad",
     "Show_Time": "10:00 PM",
     "Category": "",
+    "Max_Seats": 8,
+    "Booked_Seats": 8,
+    "Price": "800.00",
+    "Collection": "6400.00",
+    "Max_Collection": "6400.00",
+    "Occupancy": "100.00%"
+  },
+  {
+    "City": "Hyderabad",
+    "Venue": "Asian Mukta A2 Sensation Cinema: Kairathabad",
+    "Show_Time": "10:00 PM",
+    "Category": "",
     "Max_Seats": 104,
     "Booked_Seats": 104,
     "Price": "800.00",
@@ -1154,14 +1202,14 @@
   {
     "City": "Hyderabad",
     "Venue": "Asian Mukta A2 Sensation Cinema: Kairathabad",
-    "Show_Time": "10:00 PM",
+    "Show_Time": "10:30 PM",
     "Category": "",
-    "Max_Seats": 8,
-    "Booked_Seats": 8,
+    "Max_Seats": 80,
+    "Booked_Seats": 79,
     "Price": "800.00",
-    "Collection": "6400.00",
-    "Max_Collection": "6400.00",
-    "Occupancy": "100.00%"
+    "Collection": "63200.00",
+    "Max_Collection": "64000.00",
+    "Occupancy": "98.75%"
   },
   {
     "City": "Hyderabad",
@@ -1198,18 +1246,6 @@
     "Collection": "13600.00",
     "Max_Collection": "13600.00",
     "Occupancy": "100.00%"
-  },
-  {
-    "City": "Hyderabad",
-    "Venue": "Asian Mukta A2 Sensation Cinema: Kairathabad",
-    "Show_Time": "10:30 PM",
-    "Category": "",
-    "Max_Seats": 80,
-    "Booked_Seats": 76,
-    "Price": "800.00",
-    "Collection": "60800.00",
-    "Max_Collection": "64000.00",
-    "Occupancy": "95.00%"
   },
   {
     "City": "Hyderabad",
@@ -1253,11 +1289,11 @@
     "Show_Time": "10:00 PM",
     "Category": "",
     "Max_Seats": 145,
-    "Booked_Seats": 78,
+    "Booked_Seats": 84,
     "Price": "800.00",
-    "Collection": "62400.00",
+    "Collection": "67200.00",
     "Max_Collection": "116000.00",
-    "Occupancy": "53.79%"
+    "Occupancy": "57.93%"
   },
   {
     "City": "Hyderabad",
@@ -1289,11 +1325,47 @@
     "Show_Time": "10:40 PM",
     "Category": "",
     "Max_Seats": 192,
-    "Booked_Seats": 161,
+    "Booked_Seats": 169,
     "Price": "800.00",
-    "Collection": "128800.00",
+    "Collection": "135200.00",
     "Max_Collection": "153600.00",
-    "Occupancy": "83.85%"
+    "Occupancy": "88.02%"
+  },
+  {
+    "City": "Hyderabad",
+    "Venue": "Asian Rajya Lakshmi: Uppal",
+    "Show_Time": "10:00 PM",
+    "Category": "",
+    "Max_Seats": 386,
+    "Booked_Seats": 375,
+    "Price": "800.00",
+    "Collection": "300000.00",
+    "Max_Collection": "308800.00",
+    "Occupancy": "97.15%"
+  },
+  {
+    "City": "Hyderabad",
+    "Venue": "Asian Rajya Lakshmi: Uppal",
+    "Show_Time": "10:00 PM",
+    "Category": "",
+    "Max_Seats": 88,
+    "Booked_Seats": 35,
+    "Price": "800.00",
+    "Collection": "28000.00",
+    "Max_Collection": "70400.00",
+    "Occupancy": "39.77%"
+  },
+  {
+    "City": "Hyderabad",
+    "Venue": "Asian Rajya Lakshmi: Uppal",
+    "Show_Time": "10:00 PM",
+    "Category": "",
+    "Max_Seats": 132,
+    "Booked_Seats": 0,
+    "Price": "800.00",
+    "Collection": "0.00",
+    "Max_Collection": "105600.00",
+    "Occupancy": "0.00%"
   },
   {
     "City": "Hyderabad",
@@ -1313,11 +1385,11 @@
     "Show_Time": "10:00 PM",
     "Category": "",
     "Max_Seats": 156,
-    "Booked_Seats": 126,
+    "Booked_Seats": 130,
     "Price": "800.00",
-    "Collection": "100800.00",
+    "Collection": "104000.00",
     "Max_Collection": "124800.00",
-    "Occupancy": "80.77%"
+    "Occupancy": "83.33%"
   },
   {
     "City": "Hyderabad",
@@ -1337,11 +1409,11 @@
     "Show_Time": "10:30 PM",
     "Category": "",
     "Max_Seats": 88,
-    "Booked_Seats": 67,
+    "Booked_Seats": 72,
     "Price": "800.00",
-    "Collection": "53600.00",
+    "Collection": "57600.00",
     "Max_Collection": "70400.00",
-    "Occupancy": "76.14%"
+    "Occupancy": "81.82%"
   },
   {
     "City": "Hyderabad",
@@ -1349,11 +1421,11 @@
     "Show_Time": "10:00 PM",
     "Category": "",
     "Max_Seats": 537,
-    "Booked_Seats": 536,
+    "Booked_Seats": 537,
     "Price": "800.00",
-    "Collection": "428800.00",
+    "Collection": "429600.00",
     "Max_Collection": "429600.00",
-    "Occupancy": "99.81%"
+    "Occupancy": "100.00%"
   },
   {
     "City": "Hyderabad",
@@ -1409,11 +1481,11 @@
     "Show_Time": "10:00 PM",
     "Category": "",
     "Max_Seats": 151,
-    "Booked_Seats": 63,
+    "Booked_Seats": 70,
     "Price": "800.00",
-    "Collection": "50400.00",
+    "Collection": "56000.00",
     "Max_Collection": "120800.00",
-    "Occupancy": "41.72%"
+    "Occupancy": "46.36%"
   },
   {
     "City": "Hyderabad",
@@ -1445,11 +1517,11 @@
     "Show_Time": "10:00 PM",
     "Category": "",
     "Max_Seats": 122,
-    "Booked_Seats": 52,
+    "Booked_Seats": 56,
     "Price": "800.00",
-    "Collection": "41600.00",
+    "Collection": "44800.00",
     "Max_Collection": "97600.00",
-    "Occupancy": "42.62%"
+    "Occupancy": "45.90%"
   },
   {
     "City": "Hyderabad",
@@ -1541,11 +1613,11 @@
     "Show_Time": "10:10 PM",
     "Category": "",
     "Max_Seats": 596,
-    "Booked_Seats": 576,
+    "Booked_Seats": 574,
     "Price": "800.00",
-    "Collection": "460800.00",
+    "Collection": "459200.00",
     "Max_Collection": "476800.00",
-    "Occupancy": "96.64%"
+    "Occupancy": "96.31%"
   },
   {
     "City": "Hyderabad",
@@ -1553,11 +1625,11 @@
     "Show_Time": "10:20 PM",
     "Category": "",
     "Max_Seats": 357,
-    "Booked_Seats": 309,
+    "Booked_Seats": 317,
     "Price": "800.00",
-    "Collection": "247200.00",
+    "Collection": "253600.00",
     "Max_Collection": "285600.00",
-    "Occupancy": "86.55%"
+    "Occupancy": "88.80%"
   },
   {
     "City": "Hyderabad",
@@ -1565,11 +1637,11 @@
     "Show_Time": "10:30 PM",
     "Category": "",
     "Max_Seats": 210,
-    "Booked_Seats": 170,
+    "Booked_Seats": 174,
     "Price": "800.00",
-    "Collection": "136000.00",
+    "Collection": "139200.00",
     "Max_Collection": "168000.00",
-    "Occupancy": "80.95%"
+    "Occupancy": "82.86%"
   },
   {
     "City": "Hyderabad",
@@ -1577,11 +1649,11 @@
     "Show_Time": "10:05 PM",
     "Category": "",
     "Max_Seats": 327,
-    "Booked_Seats": 327,
+    "Booked_Seats": 326,
     "Price": "800.00",
-    "Collection": "261600.00",
+    "Collection": "260800.00",
     "Max_Collection": "261600.00",
-    "Occupancy": "100.00%"
+    "Occupancy": "99.69%"
   },
   {
     "City": "Hyderabad",
@@ -1601,11 +1673,11 @@
     "Show_Time": "10:05 PM",
     "Category": "",
     "Max_Seats": 140,
-    "Booked_Seats": 116,
+    "Booked_Seats": 122,
     "Price": "800.00",
-    "Collection": "92800.00",
+    "Collection": "97600.00",
     "Max_Collection": "112000.00",
-    "Occupancy": "82.86%"
+    "Occupancy": "87.14%"
   },
   {
     "City": "Hyderabad",
@@ -1625,11 +1697,11 @@
     "Show_Time": "10:15 PM",
     "Category": "",
     "Max_Seats": 304,
-    "Booked_Seats": 288,
+    "Booked_Seats": 301,
     "Price": "800.00",
-    "Collection": "230400.00",
+    "Collection": "240800.00",
     "Max_Collection": "243200.00",
-    "Occupancy": "94.74%"
+    "Occupancy": "99.01%"
   },
   {
     "City": "Hyderabad",
@@ -1649,11 +1721,11 @@
     "Show_Time": "10:15 PM",
     "Category": "",
     "Max_Seats": 130,
-    "Booked_Seats": 48,
+    "Booked_Seats": 61,
     "Price": "800.00",
-    "Collection": "38400.00",
+    "Collection": "48800.00",
     "Max_Collection": "104000.00",
-    "Occupancy": "36.92%"
+    "Occupancy": "46.92%"
   },
   {
     "City": "Hyderabad",
@@ -1685,11 +1757,11 @@
     "Show_Time": "10:10 PM",
     "Category": "",
     "Max_Seats": 492,
-    "Booked_Seats": 482,
+    "Booked_Seats": 483,
     "Price": "800.00",
-    "Collection": "385600.00",
+    "Collection": "386400.00",
     "Max_Collection": "393600.00",
-    "Occupancy": "97.97%"
+    "Occupancy": "98.17%"
   },
   {
     "City": "Hyderabad",
@@ -1697,11 +1769,11 @@
     "Show_Time": "10:10 PM",
     "Category": "",
     "Max_Seats": 74,
-    "Booked_Seats": 8,
+    "Booked_Seats": 10,
     "Price": "800.00",
-    "Collection": "6400.00",
+    "Collection": "8000.00",
     "Max_Collection": "59200.00",
-    "Occupancy": "10.81%"
+    "Occupancy": "13.51%"
   },
   {
     "City": "Hyderabad",
@@ -1745,11 +1817,11 @@
     "Show_Time": "10:00 PM",
     "Category": "",
     "Max_Seats": 126,
-    "Booked_Seats": 41,
+    "Booked_Seats": 43,
     "Price": "800.00",
-    "Collection": "32800.00",
+    "Collection": "34400.00",
     "Max_Collection": "100800.00",
-    "Occupancy": "32.54%"
+    "Occupancy": "34.13%"
   },
   {
     "City": "Hyderabad",
@@ -1781,11 +1853,11 @@
     "Show_Time": "10:30 PM",
     "Category": "",
     "Max_Seats": 98,
-    "Booked_Seats": 27,
+    "Booked_Seats": 35,
     "Price": "800.00",
-    "Collection": "21600.00",
+    "Collection": "28000.00",
     "Max_Collection": "78400.00",
-    "Occupancy": "27.55%"
+    "Occupancy": "35.71%"
   },
   {
     "City": "Hyderabad",
@@ -1805,11 +1877,11 @@
     "Show_Time": "10:00 PM",
     "Category": "",
     "Max_Seats": 248,
-    "Booked_Seats": 225,
+    "Booked_Seats": 230,
     "Price": "800.00",
-    "Collection": "180000.00",
+    "Collection": "184000.00",
     "Max_Collection": "198400.00",
-    "Occupancy": "90.73%"
+    "Occupancy": "92.74%"
   },
   {
     "City": "Hyderabad",
@@ -1817,11 +1889,11 @@
     "Show_Time": "10:00 PM",
     "Category": "",
     "Max_Seats": 186,
-    "Booked_Seats": 31,
+    "Booked_Seats": 36,
     "Price": "800.00",
-    "Collection": "24800.00",
+    "Collection": "28800.00",
     "Max_Collection": "148800.00",
-    "Occupancy": "16.67%"
+    "Occupancy": "19.35%"
   },
   {
     "City": "Hyderabad",
@@ -1853,11 +1925,11 @@
     "Show_Time": "10:00 PM",
     "Category": "",
     "Max_Seats": 629,
-    "Booked_Seats": 628,
+    "Booked_Seats": 629,
     "Price": "800.00",
-    "Collection": "502400.00",
+    "Collection": "503200.00",
     "Max_Collection": "503200.00",
-    "Occupancy": "99.84%"
+    "Occupancy": "100.00%"
   },
   {
     "City": "Hyderabad",
@@ -1937,11 +2009,11 @@
     "Show_Time": "10:00 PM",
     "Category": "",
     "Max_Seats": 153,
-    "Booked_Seats": 90,
+    "Booked_Seats": 98,
     "Price": "800.00",
-    "Collection": "72000.00",
+    "Collection": "78400.00",
     "Max_Collection": "122400.00",
-    "Occupancy": "58.82%"
+    "Occupancy": "64.05%"
   },
   {
     "City": "Hyderabad",
@@ -1961,11 +2033,11 @@
     "Show_Time": "10:15 PM",
     "Category": "",
     "Max_Seats": 230,
-    "Booked_Seats": 229,
+    "Booked_Seats": 230,
     "Price": "800.00",
-    "Collection": "183200.00",
+    "Collection": "184000.00",
     "Max_Collection": "184000.00",
-    "Occupancy": "99.57%"
+    "Occupancy": "100.00%"
   },
   {
     "City": "Hyderabad",
@@ -1973,11 +2045,11 @@
     "Show_Time": "10:15 PM",
     "Category": "",
     "Max_Seats": 326,
-    "Booked_Seats": 323,
+    "Booked_Seats": 325,
     "Price": "800.00",
-    "Collection": "258400.00",
+    "Collection": "260000.00",
     "Max_Collection": "260800.00",
-    "Occupancy": "99.08%"
+    "Occupancy": "99.69%"
   },
   {
     "City": "Hyderabad",
@@ -1985,11 +2057,11 @@
     "Show_Time": "10:15 PM",
     "Category": "",
     "Max_Seats": 198,
-    "Booked_Seats": 50,
+    "Booked_Seats": 54,
     "Price": "800.00",
-    "Collection": "40000.00",
+    "Collection": "43200.00",
     "Max_Collection": "158400.00",
-    "Occupancy": "25.25%"
+    "Occupancy": "27.27%"
   },
   {
     "City": "Hyderabad",
@@ -2009,11 +2081,11 @@
     "Show_Time": "10:00 PM",
     "Category": "",
     "Max_Seats": 212,
-    "Booked_Seats": 208,
+    "Booked_Seats": 212,
     "Price": "800.00",
-    "Collection": "166400.00",
+    "Collection": "169600.00",
     "Max_Collection": "169600.00",
-    "Occupancy": "98.11%"
+    "Occupancy": "100.00%"
   },
   {
     "City": "Hyderabad",
@@ -2033,11 +2105,11 @@
     "Show_Time": "10:00 PM",
     "Category": "",
     "Max_Seats": 67,
-    "Booked_Seats": 10,
+    "Booked_Seats": 9,
     "Price": "800.00",
-    "Collection": "8000.00",
+    "Collection": "7200.00",
     "Max_Collection": "53600.00",
-    "Occupancy": "14.93%"
+    "Occupancy": "13.43%"
   },
   {
     "City": "Hyderabad",
@@ -2105,11 +2177,11 @@
     "Show_Time": "10:00 PM",
     "Category": "",
     "Max_Seats": 304,
-    "Booked_Seats": 14,
+    "Booked_Seats": 13,
     "Price": "800.00",
-    "Collection": "11200.00",
+    "Collection": "10400.00",
     "Max_Collection": "243200.00",
-    "Occupancy": "4.61%"
+    "Occupancy": "4.28%"
   },
   {
     "City": "Hyderabad",
@@ -2140,6 +2212,18 @@
     "Venue": "Sree Sai Raja Theatre: Musheerabad",
     "Show_Time": "10:00 PM",
     "Category": "",
+    "Max_Seats": 174,
+    "Booked_Seats": 149,
+    "Price": "800.00",
+    "Collection": "119200.00",
+    "Max_Collection": "139200.00",
+    "Occupancy": "85.63%"
+  },
+  {
+    "City": "Hyderabad",
+    "Venue": "Sree Sai Raja Theatre: Musheerabad",
+    "Show_Time": "10:00 PM",
+    "Category": "",
     "Max_Seats": 138,
     "Booked_Seats": 0,
     "Price": "800.00",
@@ -2153,23 +2237,11 @@
     "Show_Time": "10:00 PM",
     "Category": "",
     "Max_Seats": 216,
-    "Booked_Seats": 215,
+    "Booked_Seats": 216,
     "Price": "800.00",
-    "Collection": "172000.00",
+    "Collection": "172800.00",
     "Max_Collection": "172800.00",
-    "Occupancy": "99.54%"
-  },
-  {
-    "City": "Hyderabad",
-    "Venue": "Sree Sai Raja Theatre: Musheerabad",
-    "Show_Time": "10:00 PM",
-    "Category": "",
-    "Max_Seats": 174,
-    "Booked_Seats": 140,
-    "Price": "800.00",
-    "Collection": "112000.00",
-    "Max_Collection": "139200.00",
-    "Occupancy": "80.46%"
+    "Occupancy": "100.00%"
   },
   {
     "City": "Hyderabad",
@@ -2189,11 +2261,11 @@
     "Show_Time": "10:10 PM",
     "Category": "",
     "Max_Seats": 172,
-    "Booked_Seats": 30,
+    "Booked_Seats": 33,
     "Price": "800.00",
-    "Collection": "24000.00",
+    "Collection": "26400.00",
     "Max_Collection": "137600.00",
-    "Occupancy": "17.44%"
+    "Occupancy": "19.19%"
   },
   {
     "City": "Hyderabad",
@@ -2213,11 +2285,11 @@
     "Show_Time": "10:00 PM",
     "Category": "",
     "Max_Seats": 434,
-    "Booked_Seats": 284,
+    "Booked_Seats": 290,
     "Price": "800.00",
-    "Collection": "227200.00",
+    "Collection": "232000.00",
     "Max_Collection": "347200.00",
-    "Occupancy": "65.44%"
+    "Occupancy": "66.82%"
   },
   {
     "City": "Hyderabad",
@@ -2225,11 +2297,11 @@
     "Show_Time": "10:00 PM",
     "Category": "",
     "Max_Seats": 228,
-    "Booked_Seats": 3,
+    "Booked_Seats": 7,
     "Price": "800.00",
-    "Collection": "2400.00",
+    "Collection": "5600.00",
     "Max_Collection": "182400.00",
-    "Occupancy": "1.32%"
+    "Occupancy": "3.07%"
   },
   {
     "City": "Hyderabad",
@@ -2321,11 +2393,11 @@
     "Show_Time": "10:00 PM",
     "Category": "",
     "Max_Seats": 201,
-    "Booked_Seats": 179,
+    "Booked_Seats": 183,
     "Price": "800.00",
-    "Collection": "143200.00",
+    "Collection": "146400.00",
     "Max_Collection": "160800.00",
-    "Occupancy": "89.05%"
+    "Occupancy": "91.04%"
   },
   {
     "City": "Hyderabad",
@@ -2357,11 +2429,11 @@
     "Show_Time": "10:20 PM",
     "Category": "",
     "Max_Seats": 169,
-    "Booked_Seats": 143,
+    "Booked_Seats": 146,
     "Price": "800.00",
-    "Collection": "114400.00",
+    "Collection": "116800.00",
     "Max_Collection": "135200.00",
-    "Occupancy": "84.62%"
+    "Occupancy": "86.39%"
   },
   {
     "City": "Hyderabad",
@@ -2477,11 +2549,11 @@
     "Show_Time": "10:15 PM",
     "Category": "",
     "Max_Seats": 155,
-    "Booked_Seats": 11,
+    "Booked_Seats": 15,
     "Price": "800.00",
-    "Collection": "8800.00",
+    "Collection": "12000.00",
     "Max_Collection": "124000.00",
-    "Occupancy": "7.10%"
+    "Occupancy": "9.68%"
   },
   {
     "City": "Hyderabad",
@@ -2549,11 +2621,11 @@
     "Show_Time": "10:00 PM",
     "Category": "",
     "Max_Seats": 519,
-    "Booked_Seats": 181,
+    "Booked_Seats": 182,
     "Price": "800.00",
-    "Collection": "144800.00",
+    "Collection": "145600.00",
     "Max_Collection": "415200.00",
-    "Occupancy": "34.87%"
+    "Occupancy": "35.07%"
   },
   {
     "City": "Warangal",
@@ -2597,11 +2669,11 @@
     "Show_Time": "10:00 PM",
     "Category": "",
     "Max_Seats": 285,
-    "Booked_Seats": 218,
+    "Booked_Seats": 220,
     "Price": "800.00",
-    "Collection": "174400.00",
+    "Collection": "176000.00",
     "Max_Collection": "228000.00",
-    "Occupancy": "76.49%"
+    "Occupancy": "77.19%"
   },
   {
     "City": "Warangal",
@@ -2621,11 +2693,11 @@
     "Show_Time": "10:05 PM",
     "Category": "",
     "Max_Seats": 308,
-    "Booked_Seats": 227,
+    "Booked_Seats": 187,
     "Price": "800.00",
-    "Collection": "181600.00",
+    "Collection": "149600.00",
     "Max_Collection": "246400.00",
-    "Occupancy": "73.70%"
+    "Occupancy": "60.71%"
   },
   {
     "City": "Warangal",
@@ -2717,11 +2789,11 @@
     "Show_Time": "10:00 PM",
     "Category": "",
     "Max_Seats": 396,
-    "Booked_Seats": 37,
+    "Booked_Seats": 36,
     "Price": "800.00",
-    "Collection": "29600.00",
+    "Collection": "28800.00",
     "Max_Collection": "316800.00",
-    "Occupancy": "9.34%"
+    "Occupancy": "9.09%"
   },
   {
     "City": "Karimnagar",
@@ -2741,11 +2813,11 @@
     "Show_Time": "10:00 PM",
     "Category": "",
     "Max_Seats": 300,
-    "Booked_Seats": 65,
+    "Booked_Seats": 67,
     "Price": "800.00",
-    "Collection": "52000.00",
+    "Collection": "53600.00",
     "Max_Collection": "240000.00",
-    "Occupancy": "21.67%"
+    "Occupancy": "22.33%"
   },
   {
     "City": "Nizamabad",
@@ -2777,11 +2849,11 @@
     "Show_Time": "10:00 PM",
     "Category": "",
     "Max_Seats": 250,
-    "Booked_Seats": 214,
+    "Booked_Seats": 217,
     "Price": "800.00",
-    "Collection": "171200.00",
+    "Collection": "173600.00",
     "Max_Collection": "200000.00",
-    "Occupancy": "85.60%"
+    "Occupancy": "86.80%"
   },
   {
     "City": "Khammam",
@@ -2789,11 +2861,11 @@
     "Show_Time": "10:00 PM",
     "Category": "",
     "Max_Seats": 343,
-    "Booked_Seats": 26,
+    "Booked_Seats": 30,
     "Price": "800.00",
-    "Collection": "20800.00",
+    "Collection": "24000.00",
     "Max_Collection": "274400.00",
-    "Occupancy": "7.58%"
+    "Occupancy": "8.75%"
   },
   {
     "City": "Khammam",
@@ -2885,11 +2957,11 @@
     "Show_Time": "10:00 PM",
     "Category": "",
     "Max_Seats": 525,
-    "Booked_Seats": 484,
+    "Booked_Seats": 485,
     "Price": "800.00",
-    "Collection": "387200.00",
+    "Collection": "388000.00",
     "Max_Collection": "420000.00",
-    "Occupancy": "92.19%"
+    "Occupancy": "92.38%"
   },
   {
     "City": "Mahbubnagar",
@@ -2969,11 +3041,11 @@
     "Show_Time": "10:15 PM",
     "Category": "",
     "Max_Seats": 464,
-    "Booked_Seats": 153,
+    "Booked_Seats": 151,
     "Price": "800.00",
-    "Collection": "122400.00",
+    "Collection": "120800.00",
     "Max_Collection": "371200.00",
-    "Occupancy": "32.97%"
+    "Occupancy": "32.54%"
   },
   {
     "City": "Mancherial",
@@ -3053,11 +3125,11 @@
     "Show_Time": "02:15 PM",
     "Category": "",
     "Max_Seats": 199,
-    "Booked_Seats": 137,
+    "Booked_Seats": 138,
     "Price": "275.00",
-    "Collection": "37675.00",
+    "Collection": "37950.00",
     "Max_Collection": "54725.00",
-    "Occupancy": "68.84%"
+    "Occupancy": "69.35%"
   },
   {
     "City": "Mancherial",
@@ -3244,24 +3316,24 @@
     "Venue": "Eswar Cinemas A/C Dolby: Suryapet",
     "Show_Time": "10:00 PM",
     "Category": "",
-    "Max_Seats": 59,
-    "Booked_Seats": 0,
+    "Max_Seats": 342,
+    "Booked_Seats": 201,
     "Price": "800.00",
-    "Collection": "0.00",
-    "Max_Collection": "47200.00",
-    "Occupancy": "0.00%"
+    "Collection": "160800.00",
+    "Max_Collection": "273600.00",
+    "Occupancy": "58.77%"
   },
   {
     "City": "Suryapet",
     "Venue": "Eswar Cinemas A/C Dolby: Suryapet",
     "Show_Time": "10:00 PM",
     "Category": "",
-    "Max_Seats": 342,
-    "Booked_Seats": 200,
+    "Max_Seats": 59,
+    "Booked_Seats": 0,
     "Price": "800.00",
-    "Collection": "160000.00",
-    "Max_Collection": "273600.00",
-    "Occupancy": "58.48%"
+    "Collection": "0.00",
+    "Max_Collection": "47200.00",
+    "Occupancy": "0.00%"
   },
   {
     "City": "Suryapet",
