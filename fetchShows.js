@@ -2,7 +2,7 @@
 
 import fs from "fs";
 import path from "path";
-import fetch from "node-fetch";
+
 
 // Telangana cities
 const telanganaCities = {
@@ -16,36 +16,7 @@ const telanganaCities = {
   Nalgonda: "NALK",
   Adilabad: "ADIL",
   Suryapet: "SURY",
-  Miryalaguda: "MRGD",
-  Siddipet: "SDDP",
-  Jagtial: "JGTL",
-  Sircilla: "SIRC",
-  Kamareddy: "KMRD",
-  Palwancha: "PLWA",
-  Kothagudem: "KTGM",
-  Bodhan: "BODH",
-  Sangareddy: "SARE",
-  Metpally: "METT",
-  Zaheerabad: "ZAGE",
-  Korutla: "KCKA",
-  Tandur: "TAND",
-  Kodad: "KODA",
-  Armoor: "ARMO",
-  Gadwal: "GADW",
-  Wanaparthy: "WANA",
-  Bellampally: "BELL",
-  Bhongir: "BHUV",
-  Vikarabad: "VKBD",
-  Mahbubabad: "MAHA",
-  Jangaon: "JNGN",
-  Bhadrachalam: "BHDR",
-  Bhupalapally: "BHUP",
-  Narayanpet: "NRYN",
-  Peddapalli: "PEDA",
-  Huzurnagar: "HUZU",
-  Medchal: "MDCH",
-  Manuguru: "MNGU",
-  Achampet: "ACHM",
+  
 };
 
 // Event code
