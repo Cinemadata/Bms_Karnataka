@@ -1,0 +1,41 @@
+name: Fetch karnataka shows 2
+
+on:
+  schedule:
+    # Runs at the top of every hour
+    - cron: '0 * * * *'
+  workflow_dispatch: # allows manual trigger
+
+permissions:
+  contents: write
+
+jobs:
+  fetch-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run karnataka fetch script
+        run: node karnataka2.js
+
+      - name: Commit and push CSVs & JSONs
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add output_telangana/*.csv
+          git add output_telangana/*.json
+          git diff --quiet || (
+            git commit -m "Update karnataka shows CSVs [skip ci]"
+            git push origin main
+          )
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
