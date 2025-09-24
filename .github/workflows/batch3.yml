@@ -24,17 +24,17 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run Karnataka fetch script
+      - name: Run Karnataka batch 1 fetch script
         run: node karnataka1.js
 
       - name: Commit and push CSVs & JSONs
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git add output_telangana/*.csv
-          git add output_telangana/*.json
+          git add output_karnataka1/*.csv
+          git add output_karnataka1/*.json
           git diff --quiet || (
-            git commit -m "Update karnataka shows CSVs [skip ci]"
+            git commit -m "Update Karnataka batch 1 shows CSVs [skip ci]"
             git push origin main
           )
         env:
