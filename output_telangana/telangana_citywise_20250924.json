@@ -1,1 +1,92 @@
-[]
+[
+  {
+    "City": "Miryalaguda",
+    "Total_Shows": 24,
+    "Total_Seats": 8414,
+    "Booked_Seats": 3794,
+    "Collection": "1101705.00",
+    "Max_Collection": "2544355.00",
+    "Occupancy": "45.09%"
+  },
+  {
+    "City": "Siddipet",
+    "Total_Shows": 10,
+    "Total_Seats": 5645,
+    "Booked_Seats": 3148,
+    "Collection": "854900.00",
+    "Max_Collection": "1514750.00",
+    "Occupancy": "55.77%"
+  },
+  {
+    "City": "Jagtial",
+    "Total_Shows": 5,
+    "Total_Seats": 2175,
+    "Booked_Seats": 1816,
+    "Collection": "499400.00",
+    "Max_Collection": "598125.00",
+    "Occupancy": "83.49%"
+  },
+  {
+    "City": "Sircilla",
+    "Total_Shows": 4,
+    "Total_Seats": 2400,
+    "Booked_Seats": 926,
+    "Collection": "239690.00",
+    "Max_Collection": "585880.00",
+    "Occupancy": "38.58%"
+  },
+  {
+    "City": "Kamareddy",
+    "Total_Shows": 5,
+    "Total_Seats": 2430,
+    "Booked_Seats": 1432,
+    "Collection": "393800.00",
+    "Max_Collection": "668250.00",
+    "Occupancy": "58.93%"
+  },
+  {
+    "City": "Palwancha",
+    "Total_Shows": 0,
+    "Total_Seats": 0,
+    "Booked_Seats": 0,
+    "Collection": "0.00",
+    "Max_Collection": "0.00",
+    "Occupancy": "0.00%"
+  },
+  {
+    "City": "Kothagudem",
+    "Total_Shows": 5,
+    "Total_Seats": 2587,
+    "Booked_Seats": 1566,
+    "Collection": "363160.00",
+    "Max_Collection": "618775.00",
+    "Occupancy": "60.53%"
+  },
+  {
+    "City": "Bodhan",
+    "Total_Shows": 0,
+    "Total_Seats": 0,
+    "Booked_Seats": 0,
+    "Collection": "0.00",
+    "Max_Collection": "0.00",
+    "Occupancy": "0.00%"
+  },
+  {
+    "City": "Sangareddy",
+    "Total_Shows": 9,
+    "Total_Seats": 5178,
+    "Booked_Seats": 4194,
+    "Collection": "1091925.00",
+    "Max_Collection": "1320750.00",
+    "Occupancy": "81.00%"
+  },
+  {
+    "City": "Metpally",
+    "Total_Shows": 5,
+    "Total_Seats": 3280,
+    "Booked_Seats": 1917,
+    "Collection": "460240.00",
+    "Max_Collection": "701300.00",
+    "Occupancy": "58.45%"
+  }
+]
