@@ -108,10 +108,10 @@ async function runKarnataka() {
     await new Promise(r => setTimeout(r, 3000));
   }
 
-  saveCSV(allShowRows, `karnataka2_showwise_${dateCode}.csv`);
-  saveCSV(allCitySummaries, `karnataka2_citywise_${dateCode}.csv`);
-  saveJSON(allShowRows, `karnataka2_showwise_${dateCode}.json`);
-  saveJSON(allCitySummaries, `karnataka2_citywise_${dateCode}.json`);
+  saveCSV(allShowRows, `karnataka1_showwise_${dateCode}.csv`);
+  saveCSV(allCitySummaries, `karnataka1_citywise_${dateCode}.csv`);
+  saveJSON(allShowRows, `karnataka1_showwise_${dateCode}.json`);
+  saveJSON(allCitySummaries, `karnataka1_citywise_${dateCode}.json`);
 
   console.log(`✅ Completed Karnataka group 2 fetch for ${dateCode}`);
 }
