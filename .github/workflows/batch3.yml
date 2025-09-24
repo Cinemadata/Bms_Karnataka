@@ -34,7 +34,7 @@ jobs:
           git add output_telangana/*.csv
           git add output_telangana/*.json
           git diff --quiet || (
-            git commit -m "Update Telangana shows CSVs [skip ci]"
+            git commit -m "Update karnataka shows CSVs [skip ci]"
             git push origin main
           )
         env:
