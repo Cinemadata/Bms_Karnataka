@@ -1,1 +1,56 @@
-[]
+[
+  {
+    "City": "Miryalaguda",
+    "Total_Shows": 5,
+    "Total_Seats": 1209,
+    "Booked_Seats": 1118,
+    "Collection": "875200.00",
+    "Max_Collection": "920700.00",
+    "Occupancy": "92.47%"
+  },
+  {
+    "City": "Sircilla",
+    "Total_Shows": 4,
+    "Total_Seats": 2400,
+    "Booked_Seats": 877,
+    "Collection": "226725.00",
+    "Max_Collection": "585880.00",
+    "Occupancy": "36.54%"
+  },
+  {
+    "City": "Palwancha",
+    "Total_Shows": 0,
+    "Total_Seats": 0,
+    "Booked_Seats": 0,
+    "Collection": "0.00",
+    "Max_Collection": "0.00",
+    "Occupancy": "0.00%"
+  },
+  {
+    "City": "Kothagudem",
+    "Total_Shows": 5,
+    "Total_Seats": 2587,
+    "Booked_Seats": 1533,
+    "Collection": "354765.00",
+    "Max_Collection": "618775.00",
+    "Occupancy": "59.26%"
+  },
+  {
+    "City": "Sangareddy",
+    "Total_Shows": 1,
+    "Total_Seats": 658,
+    "Booked_Seats": 572,
+    "Collection": "448400.00",
+    "Max_Collection": "507200.00",
+    "Occupancy": "86.93%"
+  },
+  {
+    "City": "Metpally",
+    "Total_Shows": 5,
+    "Total_Seats": 3280,
+    "Booked_Seats": 1849,
+    "Collection": "444225.00",
+    "Max_Collection": "701300.00",
+    "Occupancy": "56.37%"
+  }
+]
