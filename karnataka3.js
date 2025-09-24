@@ -9,13 +9,14 @@ const karnatakaCities = {
   Tumkur: "TUMK",
   Dharwad: "DHAR",
   Gulbarga: "GULB",
-  Belur: "BELU",
-  Karwar: "KARW",
+  Belur: "BELR",
+  Karwar: "KRWR",
+  Haveri: "HAVI",
+  Raichur: "RAIC"
 };
 
 const eventCode = "ET00369074";
 
-// ================= Helpers ================= //
 function getDateCode(date = new Date()) {
   return `${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, "0")}${String(date.getDate()).padStart(2, "0")}`;
 }
@@ -35,9 +36,8 @@ function saveJSON(data, filename) {
   fs.writeFileSync(path.join(outputDir, filename), JSON.stringify(data, null, 2));
 }
 
-// ================= Fetch Function ================= //
 async function fetchCityStats(cityName, regionCode, dateCode) {
-  const url = `https://in.bookmyshow.com/api/movies-data/showtimes-by-event?eventCode=${eventCode}&regionCode=${regionCode}&date=${dateCode}`;
+  const url = `https://in.bookmyshow.com/api/movies-data/showtimes-by-event?eventCode=${eventCode}&regionCode=${regionCode}&dateCode=${dateCode}`;
   const headers = { "x-platform": "DESKTOP", "x-app-code": "BMSWEB", Accept: "application/json" };
   try {
     const res = await fetch(url, { headers });
@@ -90,25 +90,22 @@ async function fetchCityStats(cityName, regionCode, dateCode) {
     };
 
     return { showRows, citySummary };
-
   } catch (err) {
     console.error(`Error fetching ${cityName}: ${err.message}`);
     return { showRows: [], citySummary: null };
   }
 }
 
-// ================= Run Script ================= //
 async function runKarnataka() {
   const dateCode = getDateCode();
-  const allShowRows = [];
-  const allCitySummaries = [];
+  const allShowRows = [], allCitySummaries = [];
 
   for (const [cityName, regionCode] of Object.entries(karnatakaCities)) {
     console.log(`Fetching: ${cityName} (${regionCode})`);
     const { showRows, citySummary } = await fetchCityStats(cityName, regionCode, dateCode);
     allShowRows.push(...showRows);
     if (citySummary) allCitySummaries.push(citySummary);
-    await new Promise(r => setTimeout(r, 3000)); // 3 sec gap between cities
+    await new Promise(r => setTimeout(r, 3000));
   }
 
   saveCSV(allShowRows, `karnataka3_showwise_${dateCode}.csv`);
