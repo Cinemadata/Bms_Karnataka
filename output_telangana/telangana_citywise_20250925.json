@@ -1,92 +1,92 @@
 [
   {
-    "City": "Miryalaguda",
-    "Total_Shows": 27,
-    "Total_Seats": 8746,
-    "Booked_Seats": 3602,
-    "Collection": "997145.00",
-    "Max_Collection": "2700675.00",
-    "Occupancy": "41.18%"
+    "City": "Hyderabad",
+    "Total_Shows": 1388,
+    "Total_Seats": 421823,
+    "Booked_Seats": 323468,
+    "Collection": "118492865.00",
+    "Max_Collection": "158290600.00",
+    "Occupancy": "76.68%"
   },
   {
-    "City": "Siddipet",
-    "Total_Shows": 10,
-    "Total_Seats": 5645,
-    "Booked_Seats": 3187,
-    "Collection": "865400.00",
-    "Max_Collection": "1514750.00",
-    "Occupancy": "56.46%"
+    "City": "Warangal",
+    "Total_Shows": 84,
+    "Total_Seats": 29064,
+    "Booked_Seats": 17898,
+    "Collection": "5663430.00",
+    "Max_Collection": "9158880.00",
+    "Occupancy": "61.58%"
   },
   {
-    "City": "Jagtial",
-    "Total_Shows": 5,
-    "Total_Seats": 2175,
-    "Booked_Seats": 1739,
-    "Collection": "478225.00",
-    "Max_Collection": "598125.00",
-    "Occupancy": "79.95%"
-  },
-  {
-    "City": "Sircilla",
-    "Total_Shows": 4,
-    "Total_Seats": 2400,
-    "Booked_Seats": 939,
-    "Collection": "242925.00",
-    "Max_Collection": "585880.00",
-    "Occupancy": "39.13%"
-  },
-  {
-    "City": "Kamareddy",
-    "Total_Shows": 5,
-    "Total_Seats": 2430,
-    "Booked_Seats": 1452,
-    "Collection": "399300.00",
-    "Max_Collection": "668250.00",
-    "Occupancy": "59.75%"
-  },
-  {
-    "City": "Palwancha",
-    "Total_Shows": 0,
-    "Total_Seats": 0,
-    "Booked_Seats": 0,
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Kothagudem",
-    "Total_Shows": 5,
-    "Total_Seats": 2587,
-    "Booked_Seats": 1327,
-    "Collection": "297435.00",
-    "Max_Collection": "618775.00",
-    "Occupancy": "51.29%"
-  },
-  {
-    "City": "Bodhan",
-    "Total_Shows": 0,
-    "Total_Seats": 0,
-    "Booked_Seats": 0,
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Sangareddy",
+    "City": "Karimnagar",
     "Total_Shows": 9,
-    "Total_Seats": 5178,
-    "Booked_Seats": 4230,
-    "Collection": "1101385.00",
-    "Max_Collection": "1320750.00",
-    "Occupancy": "81.69%"
+    "Total_Seats": 3464,
+    "Booked_Seats": 1152,
+    "Collection": "518080.00",
+    "Max_Collection": "1480130.00",
+    "Occupancy": "33.26%"
   },
   {
-    "City": "Metpally",
-    "Total_Shows": 5,
-    "Total_Seats": 3280,
-    "Booked_Seats": 1952,
-    "Collection": "464870.00",
-    "Max_Collection": "701300.00",
-    "Occupancy": "59.51%"
+    "City": "Nizamabad",
+    "Total_Shows": 10,
+    "Total_Seats": 3525,
+    "Booked_Seats": 1305,
+    "Collection": "590625.00",
+    "Max_Collection": "1578525.00",
+    "Occupancy": "37.02%"
+  },
+  {
+    "City": "Khammam",
+    "Total_Shows": 8,
+    "Total_Seats": 6608,
+    "Booked_Seats": 4253,
+    "Collection": "1083090.00",
+    "Max_Collection": "1568720.00",
+    "Occupancy": "64.36%"
+  },
+  {
+    "City": "Mahbubnagar",
+    "Total_Shows": 14,
+    "Total_Seats": 8212,
+    "Booked_Seats": 4922,
+    "Collection": "1342885.00",
+    "Max_Collection": "2358400.00",
+    "Occupancy": "59.94%"
+  },
+  {
+    "City": "Mancherial",
+    "Total_Shows": 4,
+    "Total_Seats": 2672,
+    "Booked_Seats": 1550,
+    "Collection": "424600.00",
+    "Max_Collection": "722800.00",
+    "Occupancy": "58.01%"
+  },
+  {
+    "City": "Nalgonda",
+    "Total_Shows": 4,
+    "Total_Seats": 576,
+    "Booked_Seats": 30,
+    "Collection": "10500.00",
+    "Max_Collection": "201600.00",
+    "Occupancy": "5.21%"
+  },
+  {
+    "City": "Adilabad",
+    "Total_Shows": 13,
+    "Total_Seats": 6922,
+    "Booked_Seats": 2558,
+    "Collection": "632290.00",
+    "Max_Collection": "1791950.00",
+    "Occupancy": "36.95%"
+  },
+  {
+    "City": "Suryapet",
+    "Total_Shows": 14,
+    "Total_Seats": 6089,
+    "Booked_Seats": 1356,
+    "Collection": "433080.00",
+    "Max_Collection": "1818910.00",
+    "Occupancy": "22.27%"
   }
 ]
