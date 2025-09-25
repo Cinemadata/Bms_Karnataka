@@ -1,1 +1,92 @@
-[]
+[
+  {
+    "City": "Miryalaguda",
+    "Total_Shows": 3,
+    "Total_Seats": 434,
+    "Booked_Seats": 196,
+    "Collection": "93215.00",
+    "Max_Collection": "204020.00",
+    "Occupancy": "45.16%"
+  },
+  {
+    "City": "Siddipet",
+    "Total_Shows": 8,
+    "Total_Seats": 4516,
+    "Booked_Seats": 863,
+    "Collection": "234175.00",
+    "Max_Collection": "1211800.00",
+    "Occupancy": "19.11%"
+  },
+  {
+    "City": "Jagtial",
+    "Total_Shows": 4,
+    "Total_Seats": 1740,
+    "Booked_Seats": 391,
+    "Collection": "107525.00",
+    "Max_Collection": "478500.00",
+    "Occupancy": "22.47%"
+  },
+  {
+    "City": "Sircilla",
+    "Total_Shows": 0,
+    "Total_Seats": 0,
+    "Booked_Seats": 0,
+    "Collection": "0.00",
+    "Max_Collection": "0.00",
+    "Occupancy": "0.00%"
+  },
+  {
+    "City": "Kamareddy",
+    "Total_Shows": 4,
+    "Total_Seats": 1944,
+    "Booked_Seats": 367,
+    "Collection": "100925.00",
+    "Max_Collection": "534600.00",
+    "Occupancy": "18.88%"
+  },
+  {
+    "City": "Palwancha",
+    "Total_Shows": 0,
+    "Total_Seats": 0,
+    "Booked_Seats": 0,
+    "Collection": "0.00",
+    "Max_Collection": "0.00",
+    "Occupancy": "0.00%"
+  },
+  {
+    "City": "Kothagudem",
+    "Total_Shows": 1,
+    "Total_Seats": 527,
+    "Booked_Seats": 508,
+    "Collection": "121170.00",
+    "Max_Collection": "126395.00",
+    "Occupancy": "96.39%"
+  },
+  {
+    "City": "Bodhan",
+    "Total_Shows": 0,
+    "Total_Seats": 0,
+    "Booked_Seats": 0,
+    "Collection": "0.00",
+    "Max_Collection": "0.00",
+    "Occupancy": "0.00%"
+  },
+  {
+    "City": "Sangareddy",
+    "Total_Shows": 9,
+    "Total_Seats": 5293,
+    "Booked_Seats": 1824,
+    "Collection": "487910.00",
+    "Max_Collection": "1359275.00",
+    "Occupancy": "34.46%"
+  },
+  {
+    "City": "Metpally",
+    "Total_Shows": 4,
+    "Total_Seats": 2624,
+    "Booked_Seats": 82,
+    "Collection": "20300.00",
+    "Max_Collection": "561040.00",
+    "Occupancy": "3.13%"
+  }
+]
