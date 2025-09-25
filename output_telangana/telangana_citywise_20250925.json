@@ -1,1 +1,92 @@
-[]
+[
+  {
+    "City": "Hyderabad",
+    "Total_Shows": 494,
+    "Total_Seats": 142232,
+    "Booked_Seats": 126596,
+    "Collection": "48752225.00",
+    "Max_Collection": "55329710.00",
+    "Occupancy": "89.01%"
+  },
+  {
+    "City": "Warangal",
+    "Total_Shows": 32,
+    "Total_Seats": 11331,
+    "Booked_Seats": 8484,
+    "Collection": "2764260.00",
+    "Max_Collection": "3607500.00",
+    "Occupancy": "74.87%"
+  },
+  {
+    "City": "Karimnagar",
+    "Total_Shows": 8,
+    "Total_Seats": 2466,
+    "Booked_Seats": 1024,
+    "Collection": "458640.00",
+    "Max_Collection": "1057710.00",
+    "Occupancy": "41.52%"
+  },
+  {
+    "City": "Nizamabad",
+    "Total_Shows": 6,
+    "Total_Seats": 2039,
+    "Booked_Seats": 1060,
+    "Collection": "476870.00",
+    "Max_Collection": "912910.00",
+    "Occupancy": "51.99%"
+  },
+  {
+    "City": "Khammam",
+    "Total_Shows": 2,
+    "Total_Seats": 1652,
+    "Booked_Seats": 1284,
+    "Collection": "325525.00",
+    "Max_Collection": "392180.00",
+    "Occupancy": "77.72%"
+  },
+  {
+    "City": "Mahbubnagar",
+    "Total_Shows": 3,
+    "Total_Seats": 1790,
+    "Booked_Seats": 1489,
+    "Collection": "425145.00",
+    "Max_Collection": "515920.00",
+    "Occupancy": "83.18%"
+  },
+  {
+    "City": "Mancherial",
+    "Total_Shows": 1,
+    "Total_Seats": 668,
+    "Booked_Seats": 500,
+    "Collection": "137150.00",
+    "Max_Collection": "180700.00",
+    "Occupancy": "74.85%"
+  },
+  {
+    "City": "Nalgonda",
+    "Total_Shows": 2,
+    "Total_Seats": 288,
+    "Booked_Seats": 98,
+    "Collection": "34300.00",
+    "Max_Collection": "100800.00",
+    "Occupancy": "34.03%"
+  },
+  {
+    "City": "Adilabad",
+    "Total_Shows": 4,
+    "Total_Seats": 1929,
+    "Booked_Seats": 726,
+    "Collection": "181120.00",
+    "Max_Collection": "502575.00",
+    "Occupancy": "37.64%"
+  },
+  {
+    "City": "Suryapet",
+    "Total_Shows": 8,
+    "Total_Seats": 2732,
+    "Booked_Seats": 1128,
+    "Collection": "398850.00",
+    "Max_Collection": "919060.00",
+    "Occupancy": "41.29%"
+  }
+]
