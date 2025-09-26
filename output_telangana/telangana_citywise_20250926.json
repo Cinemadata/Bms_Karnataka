@@ -1,92 +1,92 @@
 [
   {
-    "City": "Hyderabad",
-    "Total_Shows": 514,
-    "Total_Seats": 185782,
-    "Booked_Seats": 100108,
-    "Collection": "35098760.00",
-    "Max_Collection": "67357070.00",
-    "Occupancy": "53.88%"
+    "City": "Miryalaguda",
+    "Total_Shows": 7,
+    "Total_Seats": 2105,
+    "Booked_Seats": 322,
+    "Collection": "104200.00",
+    "Max_Collection": "699100.00",
+    "Occupancy": "15.30%"
   },
   {
-    "City": "Warangal",
-    "Total_Shows": 31,
-    "Total_Seats": 11001,
-    "Booked_Seats": 4821,
-    "Collection": "1567965.00",
-    "Max_Collection": "3456940.00",
-    "Occupancy": "43.82%"
+    "City": "Siddipet",
+    "Total_Shows": 4,
+    "Total_Seats": 2258,
+    "Booked_Seats": 466,
+    "Collection": "128075.00",
+    "Max_Collection": "605900.00",
+    "Occupancy": "20.64%"
   },
   {
-    "City": "Karimnagar",
-    "Total_Shows": 10,
-    "Total_Seats": 3248,
-    "Booked_Seats": 398,
-    "Collection": "171125.00",
-    "Max_Collection": "1320590.00",
-    "Occupancy": "12.25%"
-  },
-  {
-    "City": "Nizamabad",
-    "Total_Shows": 6,
-    "Total_Seats": 2115,
-    "Booked_Seats": 310,
-    "Collection": "142295.00",
-    "Max_Collection": "947115.00",
-    "Occupancy": "14.66%"
-  },
-  {
-    "City": "Khammam",
-    "Total_Shows": 5,
-    "Total_Seats": 4078,
-    "Booked_Seats": 1408,
-    "Collection": "365345.00",
-    "Max_Collection": "968460.00",
-    "Occupancy": "34.53%"
-  },
-  {
-    "City": "Mahbubnagar",
-    "Total_Shows": 9,
-    "Total_Seats": 5370,
-    "Booked_Seats": 1620,
-    "Collection": "404635.00",
-    "Max_Collection": "1455750.00",
-    "Occupancy": "30.17%"
-  },
-  {
-    "City": "Mancherial",
-    "Total_Shows": 3,
-    "Total_Seats": 2004,
-    "Booked_Seats": 664,
-    "Collection": "182250.00",
-    "Max_Collection": "542100.00",
-    "Occupancy": "33.13%"
-  },
-  {
-    "City": "Nalgonda",
-    "Total_Shows": 3,
-    "Total_Seats": 432,
-    "Booked_Seats": 61,
-    "Collection": "21350.00",
-    "Max_Collection": "151200.00",
-    "Occupancy": "14.12%"
-  },
-  {
-    "City": "Adilabad",
+    "City": "Jagtial",
     "Total_Shows": 2,
-    "Total_Seats": 1084,
-    "Booked_Seats": 108,
-    "Collection": "29700.00",
-    "Max_Collection": "298100.00",
-    "Occupancy": "9.96%"
+    "Total_Seats": 870,
+    "Booked_Seats": 249,
+    "Collection": "68475.00",
+    "Max_Collection": "239250.00",
+    "Occupancy": "28.62%"
   },
   {
-    "City": "Suryapet",
-    "Total_Shows": 8,
-    "Total_Seats": 2500,
-    "Booked_Seats": 455,
-    "Collection": "142170.00",
-    "Max_Collection": "873700.00",
-    "Occupancy": "18.20%"
+    "City": "Sircilla",
+    "Total_Shows": 0,
+    "Total_Seats": 0,
+    "Booked_Seats": 0,
+    "Collection": "0.00",
+    "Max_Collection": "0.00",
+    "Occupancy": "0.00%"
+  },
+  {
+    "City": "Kamareddy",
+    "Total_Shows": 2,
+    "Total_Seats": 972,
+    "Booked_Seats": 292,
+    "Collection": "80300.00",
+    "Max_Collection": "267300.00",
+    "Occupancy": "30.04%"
+  },
+  {
+    "City": "Palwancha",
+    "Total_Shows": 0,
+    "Total_Seats": 0,
+    "Booked_Seats": 0,
+    "Collection": "0.00",
+    "Max_Collection": "0.00",
+    "Occupancy": "0.00%"
+  },
+  {
+    "City": "Kothagudem",
+    "Total_Shows": 0,
+    "Total_Seats": 0,
+    "Booked_Seats": 0,
+    "Collection": "0.00",
+    "Max_Collection": "0.00",
+    "Occupancy": "0.00%"
+  },
+  {
+    "City": "Bodhan",
+    "Total_Shows": 0,
+    "Total_Seats": 0,
+    "Booked_Seats": 0,
+    "Collection": "0.00",
+    "Max_Collection": "0.00",
+    "Occupancy": "0.00%"
+  },
+  {
+    "City": "Sangareddy",
+    "Total_Shows": 5,
+    "Total_Seats": 2987,
+    "Booked_Seats": 1646,
+    "Collection": "436320.00",
+    "Max_Collection": "765805.00",
+    "Occupancy": "55.11%"
+  },
+  {
+    "City": "Metpally",
+    "Total_Shows": 2,
+    "Total_Seats": 1312,
+    "Booked_Seats": 95,
+    "Collection": "23010.00",
+    "Max_Collection": "280520.00",
+    "Occupancy": "7.24%"
   }
 ]
