@@ -1,1 +1,92 @@
-[]
+[
+  {
+    "City": "Hyderabad",
+    "Total_Shows": 433,
+    "Total_Seats": 157091,
+    "Booked_Seats": 61864,
+    "Collection": "21654535.00",
+    "Max_Collection": "56799810.00",
+    "Occupancy": "39.38%"
+  },
+  {
+    "City": "Warangal",
+    "Total_Shows": 27,
+    "Total_Seats": 9008,
+    "Booked_Seats": 3038,
+    "Collection": "1053485.00",
+    "Max_Collection": "2871805.00",
+    "Occupancy": "33.73%"
+  },
+  {
+    "City": "Karimnagar",
+    "Total_Shows": 10,
+    "Total_Seats": 3248,
+    "Booked_Seats": 451,
+    "Collection": "194845.00",
+    "Max_Collection": "1320590.00",
+    "Occupancy": "13.89%"
+  },
+  {
+    "City": "Nizamabad",
+    "Total_Shows": 6,
+    "Total_Seats": 2115,
+    "Booked_Seats": 484,
+    "Collection": "219725.00",
+    "Max_Collection": "947115.00",
+    "Occupancy": "22.88%"
+  },
+  {
+    "City": "Khammam",
+    "Total_Shows": 4,
+    "Total_Seats": 3304,
+    "Booked_Seats": 1138,
+    "Collection": "307085.00",
+    "Max_Collection": "784360.00",
+    "Occupancy": "34.44%"
+  },
+  {
+    "City": "Mahbubnagar",
+    "Total_Shows": 6,
+    "Total_Seats": 3580,
+    "Booked_Seats": 931,
+    "Collection": "247015.00",
+    "Max_Collection": "970500.00",
+    "Occupancy": "26.01%"
+  },
+  {
+    "City": "Mancherial",
+    "Total_Shows": 2,
+    "Total_Seats": 1336,
+    "Booked_Seats": 398,
+    "Collection": "109450.00",
+    "Max_Collection": "361400.00",
+    "Occupancy": "29.79%"
+  },
+  {
+    "City": "Nalgonda",
+    "Total_Shows": 2,
+    "Total_Seats": 288,
+    "Booked_Seats": 19,
+    "Collection": "6650.00",
+    "Max_Collection": "100800.00",
+    "Occupancy": "6.60%"
+  },
+  {
+    "City": "Adilabad",
+    "Total_Shows": 2,
+    "Total_Seats": 1084,
+    "Booked_Seats": 84,
+    "Collection": "23100.00",
+    "Max_Collection": "298100.00",
+    "Occupancy": "7.75%"
+  },
+  {
+    "City": "Suryapet",
+    "Total_Shows": 4,
+    "Total_Seats": 1355,
+    "Booked_Seats": 225,
+    "Collection": "77365.00",
+    "Max_Collection": "442840.00",
+    "Occupancy": "16.61%"
+  }
+]
