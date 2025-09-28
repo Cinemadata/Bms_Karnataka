@@ -1,92 +1,11 @@
 [
   {
-    "City": "Miryalaguda",
-    "Total_Shows": 11,
-    "Total_Seats": 3655,
-    "Booked_Seats": 668,
-    "Collection": "175290.00",
-    "Max_Collection": "1141820.00",
-    "Occupancy": "18.28%"
-  },
-  {
-    "City": "Siddipet",
-    "Total_Shows": 8,
-    "Total_Seats": 4516,
-    "Booked_Seats": 734,
-    "Collection": "201175.00",
-    "Max_Collection": "1211800.00",
-    "Occupancy": "16.25%"
-  },
-  {
-    "City": "Jagtial",
-    "Total_Shows": 4,
-    "Total_Seats": 1740,
-    "Booked_Seats": 431,
-    "Collection": "118525.00",
-    "Max_Collection": "478500.00",
-    "Occupancy": "24.77%"
-  },
-  {
-    "City": "Sircilla",
-    "Total_Shows": 0,
-    "Total_Seats": 0,
-    "Booked_Seats": 0,
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Kamareddy",
-    "Total_Shows": 4,
-    "Total_Seats": 1944,
-    "Booked_Seats": 320,
-    "Collection": "88000.00",
-    "Max_Collection": "534600.00",
-    "Occupancy": "16.46%"
-  },
-  {
-    "City": "Palwancha",
-    "Total_Shows": 0,
-    "Total_Seats": 0,
-    "Booked_Seats": 0,
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Kothagudem",
-    "Total_Shows": 0,
-    "Total_Seats": 0,
-    "Booked_Seats": 0,
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Bodhan",
-    "Total_Shows": 0,
-    "Total_Seats": 0,
-    "Booked_Seats": 0,
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Sangareddy",
-    "Total_Shows": 8,
-    "Total_Seats": 4612,
-    "Booked_Seats": 1772,
-    "Collection": "477835.00",
-    "Max_Collection": "1186940.00",
-    "Occupancy": "38.42%"
-  },
-  {
-    "City": "Metpally",
-    "Total_Shows": 4,
-    "Total_Seats": 2624,
-    "Booked_Seats": 104,
-    "Collection": "23550.00",
-    "Max_Collection": "561040.00",
-    "Occupancy": "3.96%"
+    "City": "Karimnagar",
+    "Total_Shows": 14,
+    "Total_Seats": 4540,
+    "Booked_Seats": 542,
+    "Collection": "232345.00",
+    "Max_Collection": "1842720.00",
+    "Occupancy": "11.94%"
   }
 ]
