@@ -1,0 +1,92 @@
+[
+  {
+    "City": "Chikkamagalur",
+    "Total_Shows": 0,
+    "Total_Seats": 0,
+    "Booked_Seats": 0,
+    "Collection": "0.00",
+    "Max_Collection": "0.00",
+    "Occupancy": "0.00%"
+  },
+  {
+    "City": "Gadag",
+    "Total_Shows": 0,
+    "Total_Seats": 0,
+    "Booked_Seats": 0,
+    "Collection": "0.00",
+    "Max_Collection": "0.00",
+    "Occupancy": "0.00%"
+  },
+  {
+    "City": "Bijapur",
+    "Total_Shows": 6,
+    "Total_Seats": 1536,
+    "Booked_Seats": 252,
+    "Collection": "59550.00",
+    "Max_Collection": "358800.00",
+    "Occupancy": "16.41%"
+  },
+  {
+    "City": "Magadi",
+    "Total_Shows": 4,
+    "Total_Seats": 1024,
+    "Booked_Seats": 158,
+    "Collection": "23220.00",
+    "Max_Collection": "132960.00",
+    "Occupancy": "15.43%"
+  },
+  {
+    "City": "Mudhol",
+    "Total_Shows": 4,
+    "Total_Seats": 144,
+    "Booked_Seats": 53,
+    "Collection": "7950.00",
+    "Max_Collection": "21600.00",
+    "Occupancy": "36.81%"
+  },
+  {
+    "City": "Krishnarajanagara",
+    "Total_Shows": 0,
+    "Total_Seats": 0,
+    "Booked_Seats": 0,
+    "Collection": "0.00",
+    "Max_Collection": "0.00",
+    "Occupancy": "0.00%"
+  },
+  {
+    "City": "Baindur",
+    "Total_Shows": 0,
+    "Total_Seats": 0,
+    "Booked_Seats": 0,
+    "Collection": "0.00",
+    "Max_Collection": "0.00",
+    "Occupancy": "0.00%"
+  },
+  {
+    "City": "Gundlupet",
+    "Total_Shows": 0,
+    "Total_Seats": 0,
+    "Booked_Seats": 0,
+    "Collection": "0.00",
+    "Max_Collection": "0.00",
+    "Occupancy": "0.00%"
+  },
+  {
+    "City": "Belur",
+    "Total_Shows": 6,
+    "Total_Seats": 2502,
+    "Booked_Seats": 8,
+    "Collection": "960.00",
+    "Max_Collection": "318120.00",
+    "Occupancy": "0.32%"
+  },
+  {
+    "City": "Bhatkal",
+    "Total_Shows": 0,
+    "Total_Seats": 0,
+    "Booked_Seats": 0,
+    "Collection": "0.00",
+    "Max_Collection": "0.00",
+    "Occupancy": "0.00%"
+  }
+]
