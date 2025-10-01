@@ -2,7 +2,7 @@ name: Fetch Karnataka Shows 3 (Script 2)
 
 on:
   schedule:
-    - cron: '0 * * * *' # every hour
+    - cron: '0 * * * *'  # Runs every hour
   workflow_dispatch:
 
 permissions:
@@ -33,56 +33,72 @@ jobs:
       - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
 
-      - name: Run Karnataka fetch script 2
+      - name: Run Karnataka fetch script
         run: node fetchKarnataka3.js
 
-      - name: Append new data to cumulative files
+      - name: Commit and push output
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
           DATE=$(date -u +"%Y%m%d")
-          TODAY_DIR="output_karnataka/$DATE"
+          TODAY_DIR="output_karnataka"
+          CITYWISE_CSV="$TODAY_DIR/karnataka_citywise_$DATE.csv"
+          SHOWWISE_CSV="$TODAY_DIR/karnataka_showwise_$DATE.csv"
+          CITYWISE_JSON="$TODAY_DIR/karnataka_citywise_$DATE.json"
+          SHOWWISE_JSON="$TODAY_DIR/karnataka_showwise_$DATE.json"
 
-          CITYWISE_CSV="output_karnataka/karnataka_citywise.csv"
-          SHOWWISE_CSV="output_karnataka/karnataka_showwise.csv"
+          CUM_CITYWISE_CSV="$TODAY_DIR/karnataka_citywise.csv"
+          CUM_SHOWWISE_CSV="$TODAY_DIR/karnataka_showwise.csv"
+          CUM_CITYWISE_JSON="$TODAY_DIR/karnataka_citywise.json"
+          CUM_SHOWWISE_JSON="$TODAY_DIR/karnataka_showwise.json"
 
-          # Append today's citywise CSV
-          if [ -f "$TODAY_DIR/karnataka_citywise_$DATE.csv" ]; then
-            if [ -f "$CITYWISE_CSV" ]; then
-              tail -n +2 "$TODAY_DIR/karnataka_citywise_$DATE.csv" >> "$CITYWISE_CSV"
+          # Append citywise CSV
+          if [ -f "$CITYWISE_CSV" ]; then
+            if [ -f "$CUM_CITYWISE_CSV" ]; then
+              tail -n +2 "$CITYWISE_CSV" >> "$CUM_CITYWISE_CSV"
             else
-              cp "$TODAY_DIR/karnataka_citywise_$DATE.csv" "$CITYWISE_CSV"
+              cp "$CITYWISE_CSV" "$CUM_CITYWISE_CSV"
             fi
           fi
 
-          # Append today's showwise CSV
-          if [ -f "$TODAY_DIR/karnataka_showwise_$DATE.csv" ]; then
-            if [ -f "$SHOWWISE_CSV" ]; then
-              tail -n +2 "$TODAY_DIR/karnataka_showwise_$DATE.csv" >> "$SHOWWISE_CSV"
+          # Append showwise CSV
+          if [ -f "$SHOWWISE_CSV" ]; then
+            if [ -f "$CUM_SHOWWISE_CSV" ]; then
+              tail -n +2 "$SHOWWISE_CSV" >> "$CUM_SHOWWISE_CSV"
             else
-              cp "$TODAY_DIR/karnataka_showwise_$DATE.csv" "$SHOWWISE_CSV"
+              cp "$SHOWWISE_CSV" "$CUM_SHOWWISE_CSV"
             fi
           fi
 
-          # Merge JSON files
-          for type in citywise showwise; do
-            NEW_JSON="$TODAY_DIR/karnataka_${type}_$DATE.json"
-            CUM_JSON="output_karnataka/karnataka_${type}.json"
-            if [ -f "$NEW_JSON" ]; then
-              if [ -f "$CUM_JSON" ]; then
-                jq -s '.[0] + .[1]' "$CUM_JSON" "$NEW_JSON" > tmp.json && mv tmp.json "$CUM_JSON"
-              else
-                cp "$NEW_JSON" "$CUM_JSON"
-              fi
+          # Merge citywise JSON
+          if [ -f "$CITYWISE_JSON" ]; then
+            if [ -f "$CUM_CITYWISE_JSON" ]; then
+              jq -s '.[0] + .[1]' "$CUM_CITYWISE_JSON" "$CITYWISE_JSON" > tmp.json && mv tmp.json "$CUM_CITYWISE_JSON"
+            else
+              cp "$CITYWISE_JSON" "$CUM_CITYWISE_JSON"
             fi
-          done
+          fi
 
-          # Sync with remote
+          # Merge showwise JSON
+          if [ -f "$SHOWWISE_JSON" ]; then
+            if [ -f "$CUM_SHOWWISE_JSON" ]; then
+              jq -s '.[0] + .[1]' "$CUM_SHOWWISE_JSON" "$SHOWWISE_JSON" > tmp.json && mv tmp.json "$CUM_SHOWWISE_JSON"
+            else
+              cp "$SHOWWISE_JSON" "$CUM_SHOWWISE_JSON"
+            fi
+          fi
+
+          # Commit and push changes
           git fetch origin main
+          git checkout main
           git reset --hard origin/main
 
-          git add output_karnataka/karnataka_*.*
+          git add $TODAY_DIR/karnataka_*
 
-          git diff --cached --quiet || git commit -m "Append Karnataka show data [fetchShows2] [skip ci]"
-          git push origin main
+          if ! git diff --cached --quiet; then
+            git commit -m "Append Karnataka show data [fetchShows2] [skip ci]"
+            git push origin main
+          else
+            echo "No changes to commit."
+          fi
