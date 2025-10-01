@@ -1,4 +1,4 @@
-name: Fetch Karnataka Shows 3 (Script 2)
+name: Fetch Karnataka Shows 4(Script 2)
 
 on:
   schedule:
@@ -34,7 +34,7 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y jq
 
       - name: Run Karnataka fetch script
-        run: node fetchShows2.js
+        run: node fetchKarnataka4.js
 
       - name: Commit and push output
         run: |
