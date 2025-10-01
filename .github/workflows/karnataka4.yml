@@ -2,7 +2,7 @@ name: Fetch Karnataka Shows 4 (Script 2)
 
 on:
   schedule:
-    - cron: '0 * * * *'  # hourly
+    - cron: '0 * * * *'  # Runs every hour
   workflow_dispatch:
 
 permissions:
@@ -53,13 +53,37 @@ jobs:
           CUM_CITY_JSON="$DIR/karnataka_citywise.json"
           CUM_SHOW_JSON="$DIR/karnataka_showwise.json"
 
-          # Append CSVs
-          [ -f "$CITY_CSV" ] && ( [ -f "$CUM_CITY_CSV" ] && tail -n +2 "$CITY_CSV" >> "$CUM_CITY_CSV" || cp "$CITY_CSV" "$CUM_CITY_CSV" )
-          [ -f "$SHOW_CSV" ] && ( [ -f "$CUM_SHOW_CSV" ] && tail -n +2 "$SHOW_CSV" >> "$CUM_SHOW_CSV" || cp "$SHOW_CSV" "$CUM_SHOW_CSV" )
+          if [ -f "$CITY_CSV" ]; then
+            if [ -f "$CUM_CITY_CSV" ]; then
+              tail -n +2 "$CITY_CSV" >> "$CUM_CITY_CSV"
+            else
+              cp "$CITY_CSV" "$CUM_CITY_CSV"
+            fi
+          fi
 
-          # Merge JSONs
-          [ -f "$CITY_JSON" ] && ( [ -f "$CUM_CITY_JSON" ] && jq -s 'add' "$CUM_CITY_JSON" "$CITY_JSON" > tmp.json && mv tmp.json "$CUM_CITY_JSON" || cp "$CITY_JSON" "$CUM_CITY_JSON" )
-          [ -f "$SHOW_JSON" ] && ( [ -f "$CUM_SHOW_JSON" ] && jq -s 'add' "$CUM_SHOW_JSON" "$SHOW_JSON" > tmp.json && mv tmp.json "$CUM_SHOW_JSON" || cp "$SHOW_JSON" "$CUM_SHOW_JSON" )
+          if [ -f "$SHOW_CSV" ]; then
+            if [ -f "$CUM_SHOW_CSV" ]; then
+              tail -n +2 "$SHOW_CSV" >> "$CUM_SHOW_CSV"
+            else
+              cp "$SHOW_CSV" "$CUM_SHOW_CSV"
+            fi
+          fi
+
+          if [ -f "$CITY_JSON" ]; then
+            if [ -f "$CUM_CITY_JSON" ]; then
+              jq -s 'add' "$CUM_CITY_JSON" "$CITY_JSON" > tmp.json && mv tmp.json "$CUM_CITY_JSON"
+            else
+              cp "$CITY_JSON" "$CUM_CITY_JSON"
+            fi
+          fi
+
+          if [ -f "$SHOW_JSON" ]; then
+            if [ -f "$CUM_SHOW_JSON" ]; then
+              jq -s 'add' "$CUM_SHOW_JSON" "$SHOW_JSON" > tmp.json && mv tmp.json "$CUM_SHOW_JSON"
+            else
+              cp "$SHOW_JSON" "$CUM_SHOW_JSON"
+            fi
+          fi
 
           git pull origin main
           git add $DIR/karnataka_*
@@ -68,3 +92,4 @@ jobs:
             git push origin main
           else
             echo "No changes to commit."
+          fi
