@@ -8,6 +8,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: fetch-karnataka-shows
+  cancel-in-progress: false   # Don't cancel, wait until the current job finishes
+
 jobs:
   fetch-and-push:
     runs-on: ubuntu-latest
@@ -25,7 +29,7 @@ jobs:
         run: npm install
 
       - name: Run fetch script
-        run: node fetchKarnataka3.js
+        run: node fetchKarnataka1.js
 
       - name: Merge outputs (append logic)
         run: |
@@ -34,23 +38,25 @@ jobs:
           # Append citywise data
           if [ -f output_karnataka/karnataka_citywise.csv ]; then
             tail -n +2 "output_karnataka/karnataka_citywise_$(date +%Y%m%d).csv" >> output_karnataka/karnataka_citywise.csv
-            rm "output_karnataka/karnataka_citywise_$(date +%Y%m%d).csv"
           else
-            mv "output_karnataka/karnataka_citywise_$(date +%Y%m%d).csv" output_karnataka/karnataka_citywise.csv
+            cp "output_karnataka/karnataka_citywise_$(date +%Y%m%d).csv" output_karnataka/karnataka_citywise.csv
           fi
-          
+
           # Append showwise data
           if [ -f output_karnataka/karnataka_showwise.csv ]; then
             tail -n +2 "output_karnataka/karnataka_showwise_$(date +%Y%m%d).csv" >> output_karnataka/karnataka_showwise.csv
-            rm "output_karnataka/karnataka_showwise_$(date +%Y%m%d).csv"
           else
-            mv "output_karnataka/karnataka_showwise_$(date +%Y%m%d).csv" output_karnataka/karnataka_showwise.csv
+            cp "output_karnataka/karnataka_showwise_$(date +%Y%m%d).csv" output_karnataka/karnataka_showwise.csv
           fi
+
+      - name: Pause for 2 minutes
+        run: sleep 120   # ensures 2-minute gap before push
 
       - name: Commit and Push
         run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "github-actions@github.com"
-          git add output_karnataka/*.csv
-          git commit -m "Update Karnataka show data (append mode)" || echo "No changes to commit"
+          git config --global user.email "actions@github.com"
+          git config --global user.name "github-actions[bot]"
+          git add output_karnataka/*
+          git commit -m "Append Karnataka show data [skip ci]" || echo "No changes to commit"
+          git pull --rebase
           git push
