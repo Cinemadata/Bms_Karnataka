@@ -1,62 +1,106 @@
-name: Fetch Karnataka Shows 4
+name: Fetch Karnataka Shows 3 (Script 2)
 
 on:
   schedule:
-    - cron: '0 * * * *'   # Runs every hour
-  workflow_dispatch:       # Manual trigger
+    - cron: '0 * * * *'  # Runs every hour at minute 0
+  workflow_dispatch:
 
 permissions:
   contents: write
 
 concurrency:
-  group: fetch-karnataka-shows
-  cancel-in-progress: false   # Don't cancel, wait until the current job finishes
+  group: karnataka-fetch-shows2
+  cancel-in-progress: false
 
 jobs:
-  fetch-and-push:
+  fetch-and-append:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
           node-version: 20
 
       - name: Install dependencies
         run: npm install
 
-      - name: Run fetch script
-        run: node fetchKarnataka4.js
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
 
-      - name: Merge outputs (append logic)
+      - name: Run Karnataka fetch script
+        run: node fetchShows2.js
+
+      - name: Commit and push output
         run: |
-          mkdir -p output_karnataka
-          
-          # Append citywise data
-          if [ -f output_karnataka/karnataka_citywise.csv ]; then
-            tail -n +2 "output_karnataka/karnataka_citywise_$(date +%Y%m%d).csv" >> output_karnataka/karnataka_citywise.csv
-          else
-            cp "output_karnataka/karnataka_citywise_$(date +%Y%m%d).csv" output_karnataka/karnataka_citywise.csv
-          fi
-
-          # Append showwise data
-          if [ -f output_karnataka/karnataka_showwise.csv ]; then
-            tail -n +2 "output_karnataka/karnataka_showwise_$(date +%Y%m%d).csv" >> output_karnataka/karnataka_showwise.csv
-          else
-            cp "output_karnataka/karnataka_showwise_$(date +%Y%m%d).csv" output_karnataka/karnataka_showwise.csv
-          fi
-
-      - name: Pause for 2 minutes
-        run: sleep 120   # ensures 2-minute gap before push
-
-      - name: Commit and Push
-        run: |
-          git config --global user.email "actions@github.com"
           git config --global user.name "github-actions[bot]"
-          git add output_karnataka/*
-          git commit -m "Append Karnataka show data [skip ci]" || echo "No changes to commit"
-          git pull --rebase
-          git push
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          DATE=$(date -u +"%Y%m%d")
+          TODAY_DIR="output_karnataka"
+          CITYWISE_CSV="$TODAY_DIR/karnataka_citywise_$DATE.csv"
+          SHOWWISE_CSV="$TODAY_DIR/karnataka_showwise_$DATE.csv"
+          CITYWISE_JSON="$TODAY_DIR/karnataka_citywise_$DATE.json"
+          SHOWWISE_JSON="$TODAY_DIR/karnataka_showwise_$DATE.json"
+
+          CUM_CITYWISE_CSV="$TODAY_DIR/karnataka_citywise.csv"
+          CUM_SHOWWISE_CSV="$TODAY_DIR/karnataka_showwise.csv"
+          CUM_CITYWISE_JSON="$TODAY_DIR/karnataka_citywise.json"
+          CUM_SHOWWISE_JSON="$TODAY_DIR/karnataka_showwise.json"
+
+          # Append citywise CSV (skip header if cumulative exists)
+          if [ -f "$CITYWISE_CSV" ]; then
+            if [ -f "$CUM_CITYWISE_CSV" ]; then
+              tail -n +2 "$CITYWISE_CSV" >> "$CUM_CITYWISE_CSV"
+            else
+              cp "$CITYWISE_CSV" "$CUM_CITYWISE_CSV"
+            fi
+          fi
+
+          # Append showwise CSV (skip header if cumulative exists)
+          if [ -f "$SHOWWISE_CSV" ]; then
+            if [ -f "$CUM_SHOWWISE_CSV" ]; then
+              tail -n +2 "$SHOWWISE_CSV" >> "$CUM_SHOWWISE_CSV"
+            else
+              cp "$SHOWWISE_CSV" "$CUM_SHOWWISE_CSV"
+            fi
+          fi
+
+          # Merge citywise JSON arrays
+          if [ -f "$CITYWISE_JSON" ]; then
+            if [ -f "$CUM_CITYWISE_JSON" ]; then
+              jq -s '.[0] + .[1]' "$CUM_CITYWISE_JSON" "$CITYWISE_JSON" > tmp.json && mv tmp.json "$CUM_CITYWISE_JSON"
+            else
+              cp "$CITYWISE_JSON" "$CUM_CITYWISE_JSON"
+            fi
+          fi
+
+          # Merge showwise JSON arrays
+          if [ -f "$SHOWWISE_JSON" ]; then
+            if [ -f "$CUM_SHOWWISE_JSON" ]; then
+              jq -s '.[0] + .[1]' "$CUM_SHOWWISE_JSON" "$SHOWWISE_JSON" > tmp.json && mv tmp.json "$CUM_SHOWWISE_JSON"
+            else
+              cp "$SHOWWISE_JSON" "$CUM_SHOWWISE_JSON"
+            fi
+          fi
+
+          # Ensure we're on latest main branch
+          git fetch origin main
+          git checkout main
+          git reset --hard origin/main
+
+          # Add updated files
+          git add $TODAY_DIR/karnataka_*
+
+          # Commit and push only if changes
+          if ! git diff --cached --quiet; then
+            git commit -m "Append Karnataka show data [fetchShows2] [skip ci]"
+            git push origin main
+          else
+            echo "No changes to commit."
+          fi
