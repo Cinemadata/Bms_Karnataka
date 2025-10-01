@@ -1,7 +1,7 @@
 [
   {
-    "City": "Dharwad",
-    "Total_Shows": 18,
+    "City": "Chikkamagalur",
+    "Total_Shows": 0,
     "Total_Seats": 0,
     "Booked_Seats": 0,
     "Collection": "0.00",
@@ -9,34 +9,43 @@
     "Occupancy": "0.00%"
   },
   {
-    "City": "Kanakapura",
+    "City": "Gadag",
+    "Total_Shows": 0,
+    "Total_Seats": 0,
+    "Booked_Seats": 0,
+    "Collection": "0.00",
+    "Max_Collection": "0.00",
+    "Occupancy": "0.00%"
+  },
+  {
+    "City": "Bijapur",
+    "Total_Shows": 6,
+    "Total_Seats": 1536,
+    "Booked_Seats": 576,
+    "Collection": "135350.00",
+    "Max_Collection": "358800.00",
+    "Occupancy": "37.50%"
+  },
+  {
+    "City": "Magadi",
     "Total_Shows": 4,
-    "Total_Seats": 0,
-    "Booked_Seats": 0,
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
+    "Total_Seats": 1024,
+    "Booked_Seats": 537,
+    "Collection": "74310.00",
+    "Max_Collection": "132960.00",
+    "Occupancy": "52.44%"
   },
   {
-    "City": "Karkala",
-    "Total_Shows": 5,
-    "Total_Seats": 0,
-    "Booked_Seats": 0,
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Mandya",
+    "City": "Mudhol",
     "Total_Shows": 8,
-    "Total_Seats": 0,
-    "Booked_Seats": 0,
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
+    "Total_Seats": 344,
+    "Booked_Seats": 144,
+    "Collection": "21600.00",
+    "Max_Collection": "45600.00",
+    "Occupancy": "41.86%"
   },
   {
-    "City": "Moodbidri",
+    "City": "Krishnarajanagara",
     "Total_Shows": 0,
     "Total_Seats": 0,
     "Booked_Seats": 0,
@@ -45,7 +54,16 @@
     "Occupancy": "0.00%"
   },
   {
-    "City": "Saligrama",
+    "City": "Baindur",
+    "Total_Shows": 5,
+    "Total_Seats": 1710,
+    "Booked_Seats": 6,
+    "Collection": "900.00",
+    "Max_Collection": "256500.00",
+    "Occupancy": "0.35%"
+  },
+  {
+    "City": "Gundlupet",
     "Total_Shows": 0,
     "Total_Seats": 0,
     "Booked_Seats": 0,
@@ -54,34 +72,16 @@
     "Occupancy": "0.00%"
   },
   {
-    "City": "Udupi",
-    "Total_Shows": 2,
-    "Total_Seats": 0,
-    "Booked_Seats": 0,
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
+    "City": "Belur",
+    "Total_Shows": 6,
+    "Total_Seats": 2148,
+    "Booked_Seats": 355,
+    "Collection": "48210.00",
+    "Max_Collection": "266400.00",
+    "Occupancy": "16.53%"
   },
   {
-    "City": "Channarayapatna",
-    "Total_Shows": 0,
-    "Total_Seats": 0,
-    "Booked_Seats": 0,
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Bagalkote",
-    "Total_Shows": 0,
-    "Total_Seats": 0,
-    "Booked_Seats": 0,
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Shahpur",
+    "City": "Bhatkal",
     "Total_Shows": 0,
     "Total_Seats": 0,
     "Booked_Seats": 0,
