@@ -78,9 +78,11 @@ jobs:
             fi
           done
 
+          # Sync with remote
           git fetch origin main
           git reset --hard origin/main
 
           git add output_karnataka/karnataka_*.*
+
           git diff --cached --quiet || git commit -m "Append Karnataka show data [fetchShows2] [skip ci]"
           git push origin main
