@@ -1,8 +1,8 @@
-name: Fetch Karnataka Shows 4(Script 2)
+name: Fetch Karnataka Shows 4 (Script 2)
 
 on:
   schedule:
-    - cron: '0 * * * *'  # Runs every hour at minute 0
+    - cron: '0 * * * *'  # hourly
   workflow_dispatch:
 
 permissions:
@@ -42,65 +42,29 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
           DATE=$(date -u +"%Y%m%d")
-          TODAY_DIR="output_karnataka"
-          CITYWISE_CSV="$TODAY_DIR/karnataka_citywise_$DATE.csv"
-          SHOWWISE_CSV="$TODAY_DIR/karnataka_showwise_$DATE.csv"
-          CITYWISE_JSON="$TODAY_DIR/karnataka_citywise_$DATE.json"
-          SHOWWISE_JSON="$TODAY_DIR/karnataka_showwise_$DATE.json"
+          DIR="output_karnataka"
+          CITY_CSV="$DIR/karnataka_citywise_$DATE.csv"
+          SHOW_CSV="$DIR/karnataka_showwise_$DATE.csv"
+          CITY_JSON="$DIR/karnataka_citywise_$DATE.json"
+          SHOW_JSON="$DIR/karnataka_showwise_$DATE.json"
 
-          CUM_CITYWISE_CSV="$TODAY_DIR/karnataka_citywise.csv"
-          CUM_SHOWWISE_CSV="$TODAY_DIR/karnataka_showwise.csv"
-          CUM_CITYWISE_JSON="$TODAY_DIR/karnataka_citywise.json"
-          CUM_SHOWWISE_JSON="$TODAY_DIR/karnataka_showwise.json"
+          CUM_CITY_CSV="$DIR/karnataka_citywise.csv"
+          CUM_SHOW_CSV="$DIR/karnataka_showwise.csv"
+          CUM_CITY_JSON="$DIR/karnataka_citywise.json"
+          CUM_SHOW_JSON="$DIR/karnataka_showwise.json"
 
-          # Append citywise CSV (skip header if cumulative exists)
-          if [ -f "$CITYWISE_CSV" ]; then
-            if [ -f "$CUM_CITYWISE_CSV" ]; then
-              tail -n +2 "$CITYWISE_CSV" >> "$CUM_CITYWISE_CSV"
-            else
-              cp "$CITYWISE_CSV" "$CUM_CITYWISE_CSV"
-            fi
-          fi
+          # Append CSVs
+          [ -f "$CITY_CSV" ] && ( [ -f "$CUM_CITY_CSV" ] && tail -n +2 "$CITY_CSV" >> "$CUM_CITY_CSV" || cp "$CITY_CSV" "$CUM_CITY_CSV" )
+          [ -f "$SHOW_CSV" ] && ( [ -f "$CUM_SHOW_CSV" ] && tail -n +2 "$SHOW_CSV" >> "$CUM_SHOW_CSV" || cp "$SHOW_CSV" "$CUM_SHOW_CSV" )
 
-          # Append showwise CSV (skip header if cumulative exists)
-          if [ -f "$SHOWWISE_CSV" ]; then
-            if [ -f "$CUM_SHOWWISE_CSV" ]; then
-              tail -n +2 "$SHOWWISE_CSV" >> "$CUM_SHOWWISE_CSV"
-            else
-              cp "$SHOWWISE_CSV" "$CUM_SHOWWISE_CSV"
-            fi
-          fi
+          # Merge JSONs
+          [ -f "$CITY_JSON" ] && ( [ -f "$CUM_CITY_JSON" ] && jq -s 'add' "$CUM_CITY_JSON" "$CITY_JSON" > tmp.json && mv tmp.json "$CUM_CITY_JSON" || cp "$CITY_JSON" "$CUM_CITY_JSON" )
+          [ -f "$SHOW_JSON" ] && ( [ -f "$CUM_SHOW_JSON" ] && jq -s 'add' "$CUM_SHOW_JSON" "$SHOW_JSON" > tmp.json && mv tmp.json "$CUM_SHOW_JSON" || cp "$SHOW_JSON" "$CUM_SHOW_JSON" )
 
-          # Merge citywise JSON arrays
-          if [ -f "$CITYWISE_JSON" ]; then
-            if [ -f "$CUM_CITYWISE_JSON" ]; then
-              jq -s '.[0] + .[1]' "$CUM_CITYWISE_JSON" "$CITYWISE_JSON" > tmp.json && mv tmp.json "$CUM_CITYWISE_JSON"
-            else
-              cp "$CITYWISE_JSON" "$CUM_CITYWISE_JSON"
-            fi
-          fi
-
-          # Merge showwise JSON arrays
-          if [ -f "$SHOWWISE_JSON" ]; then
-            if [ -f "$CUM_SHOWWISE_JSON" ]; then
-              jq -s '.[0] + .[1]' "$CUM_SHOWWISE_JSON" "$SHOWWISE_JSON" > tmp.json && mv tmp.json "$CUM_SHOWWISE_JSON"
-            else
-              cp "$SHOWWISE_JSON" "$CUM_SHOWWISE_JSON"
-            fi
-          fi
-
-          # Ensure we're on latest main branch
-          git fetch origin main
-          git checkout main
-          git reset --hard origin/main
-
-          # Add updated files
-          git add $TODAY_DIR/karnataka_*
-
-          # Commit and push only if changes
+          git pull origin main
+          git add $DIR/karnataka_*
           if ! git diff --cached --quiet; then
-            git commit -m "Append Karnataka show data [fetchShows2] [skip ci]"
+            git commit -m "Append Karnataka show data [Script 2] [skip ci]"
             git push origin main
           else
             echo "No changes to commit."
-          fi
