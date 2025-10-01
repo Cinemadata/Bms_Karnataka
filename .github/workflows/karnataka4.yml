@@ -2,12 +2,15 @@ name: Fetch Karnataka shows 4
 
 on:
   schedule:
-    # Runs at the top of every hour
-    - cron: '0 * * * *'
-  workflow_dispatch: # allows manual trigger
+    - cron: '0 * * * *'   # Runs every hour
+  workflow_dispatch:
 
 permissions:
   contents: write
+
+concurrency:
+  group: karnataka-fetch-3
+  cancel-in-progress: false
 
 jobs:
   fetch-and-push:
@@ -16,6 +19,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -34,15 +39,15 @@ jobs:
           git config user.email "github-actions@github.com"
 
           # Stage only Karnataka outputs
-          git add output_karnataka/*.csv
-          git add output_karnataka/*.json
+          git add output_karnataka/*.csv || true
+          git add output_karnataka/*.json || true
 
-          git commit -m "Update Karnataka show CSVs & JSONs [skip ci]" || echo "No changes to commit"
+          git commit -m "Append Karnataka show data [skip ci]" || echo "No changes to commit"
 
-          # Pull remote changes to avoid push rejection
-          git fetch origin main
-          git rebase origin/main || git rebase --abort
-
+          git pull --rebase origin main || git rebase --abort
           git push origin main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Cooldown before next run
+        run: sleep 300   # 5-minute enforced gap
