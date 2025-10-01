@@ -1,0 +1,92 @@
+[
+  {
+    "City": "Padubidri",
+    "Total_Shows": 10,
+    "Total_Seats": 1115,
+    "Booked_Seats": 1092,
+    "Collection": "273000.00",
+    "Max_Collection": "278750.00",
+    "Occupancy": "97.94%"
+  },
+  {
+    "City": "Puttur",
+    "Total_Shows": 14,
+    "Total_Seats": 2188,
+    "Booked_Seats": 2143,
+    "Collection": "642900.00",
+    "Max_Collection": "656400.00",
+    "Occupancy": "97.94%"
+  },
+  {
+    "City": "Bijapur",
+    "Total_Shows": 6,
+    "Total_Seats": 1536,
+    "Booked_Seats": 1028,
+    "Collection": "240600.00",
+    "Max_Collection": "358800.00",
+    "Occupancy": "66.93%"
+  },
+  {
+    "City": "Magadi",
+    "Total_Shows": 4,
+    "Total_Seats": 1024,
+    "Booked_Seats": 979,
+    "Collection": "127380.00",
+    "Max_Collection": "132960.00",
+    "Occupancy": "95.61%"
+  },
+  {
+    "City": "Mudhol",
+    "Total_Shows": 8,
+    "Total_Seats": 344,
+    "Booked_Seats": 184,
+    "Collection": "26400.00",
+    "Max_Collection": "45600.00",
+    "Occupancy": "53.49%"
+  },
+  {
+    "City": "Karwar",
+    "Total_Shows": 4,
+    "Total_Seats": 600,
+    "Booked_Seats": 596,
+    "Collection": "178800.00",
+    "Max_Collection": "180000.00",
+    "Occupancy": "99.33%"
+  },
+  {
+    "City": "Baindur",
+    "Total_Shows": 5,
+    "Total_Seats": 1710,
+    "Booked_Seats": 14,
+    "Collection": "2100.00",
+    "Max_Collection": "256500.00",
+    "Occupancy": "0.82%"
+  },
+  {
+    "City": "Raichur",
+    "Total_Shows": 14,
+    "Total_Seats": 2534,
+    "Booked_Seats": 1844,
+    "Collection": "645400.00",
+    "Max_Collection": "886900.00",
+    "Occupancy": "72.77%"
+  },
+  {
+    "City": "Bellary",
+    "Total_Shows": 12,
+    "Total_Seats": 5712,
+    "Booked_Seats": 4727,
+    "Collection": "906800.00",
+    "Max_Collection": "1080100.00",
+    "Occupancy": "82.76%"
+  },
+  {
+    "City": "Belur",
+    "Total_Shows": 6,
+    "Total_Seats": 2148,
+    "Booked_Seats": 874,
+    "Collection": "112470.00",
+    "Max_Collection": "266400.00",
+    "Occupancy": "40.69%"
+  }
+]
