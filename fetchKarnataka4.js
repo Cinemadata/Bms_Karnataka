@@ -1,16 +1,14 @@
-// ================= Node.js Script: fetchShows2.js =================
-
 import fs from "fs";
 import path from "path";
 
-// ================= Karnataka Cities (new 10 cities) ================= //
+
 const karnatakaCities = [
   { name: "Dharwad", code: "DHAW", slug: "dharwad", lat: 15.4589, lon: 75.0078 },
   { name: "Kanakapura", code: "KAKP", slug: "kanakapura", lat: 12.5797, lon: 77.4112 },
   { name: "Karkala", code: "KARK", slug: "karkala", lat: 13.2945, lon: 74.9904 },
   { name: "Mandya", code: "MND", slug: "mandya", lat: 12.5247, lon: 76.8977 },
   { name: "Moodbidri", code: "MOOD", slug: "moodbidri", lat: 13.1587, lon: 74.9989 },
-  { name: "Sirsi", code: "SRSI", slug: "sirsi", lat: 14.6200, lon: 74.8500 },  // <-- comma added here
+  { name: "Sirsi", code: "SRSI", slug: "sirsi", lat: 14.6200, lon: 74.8500 },
   { name: "Ranebennuru", code: "RANE", slug: "ranebennuru", lat: 14.6239, lon: 75.6235 },
   { name: "Udupi", code: "UDUP", slug: "udupi", lat: 13.3409, lon: 74.7421 },
   { name: "Channarayapatna", code: "CHNN", slug: "channarayapatna", lat: 12.9703, lon: 76.4976 },
@@ -18,22 +16,16 @@ const karnatakaCities = [
   { name: "Shahpur", code: "SUPH", slug: "shahpur", lat: 17.1823, lon: 75.1263 }
 ];
 
-// ================= Event Code ================= //
 const eventCode = "ET00377351";
 
-// ================= Helpers ================= //
 function getDateString(date = new Date()) {
-  return `${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, "0")}${String(
-    date.getDate()
-  ).padStart(2, "0")}`;
+  return `${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, "0")}${String(date.getDate()).padStart(2, "0")}`;
 }
 
 function saveCSV(data, filename) {
   if (!data.length) return;
   const csvHeader = Object.keys(data[0]).join(",") + "\n";
-  const csvRows = data
-    .map((r) => Object.values(r).map((v) => `"${v}"`).join(","))
-    .join("\n");
+  const csvRows = data.map((r) => Object.values(r).map((v) => `"${v}"`).join(",")).join("\n");
   const outputDir = path.join(".", "output_karnataka");
   if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir);
   fs.writeFileSync(path.join(outputDir, filename), csvHeader + csvRows);
@@ -45,15 +37,12 @@ function saveJSON(data, filename) {
   fs.writeFileSync(path.join(outputDir, filename), JSON.stringify(data, null, 2));
 }
 
-// ================= Fetch Function ================= //
 async function fetchCityStats(city, date) {
-  const ts = Date.now(); // timestamp for API
+  const ts = Date.now();
   const url = `https://in.bookmyshow.com/api/v3/mobile/showtimes/byevent?eventCode=${eventCode}&regionCode=${city.code}&dateCode=${date}&appCode=WEBV2&_=${ts}`;
-
   const headers = {
     "x-bms-id": "1.3158053074.1724928349489",
-    "user-agent": "Node.js Script",
-    "cookie": "", // add cookie if needed
+    "user-agent": "Node.js Script"
   };
 
   try {
@@ -63,17 +52,13 @@ async function fetchCityStats(city, date) {
     if (!data?.ShowDetails) return { showRows: [], citySummary: null };
 
     let showRows = [];
-    let totalShows = 0,
-      totalMaxSeats = 0,
-      totalBooked = 0,
-      totalCollection = 0,
-      totalMaxCollection = 0;
+    let totalShows = 0, totalMaxSeats = 0, totalBooked = 0, totalCollection = 0, totalMaxCollection = 0;
 
-    data.ShowDetails.forEach((detail) => {
-      detail.Venues?.forEach((venue) => {
-        venue.ShowTimes?.forEach((show) => {
+    data.ShowDetails.forEach(detail => {
+      detail.Venues?.forEach(venue => {
+        venue.ShowTimes?.forEach(show => {
           totalShows += 1;
-          show.Categories?.forEach((cat) => {
+          show.Categories?.forEach(cat => {
             const max = +cat.MaxSeats || 0;
             const avail = +cat.SeatsAvail || 0;
             const booked = max - avail;
@@ -118,7 +103,6 @@ async function fetchCityStats(city, date) {
   }
 }
 
-// ================= Run Script ================= //
 async function runKarnataka() {
   const date = getDateString();
   const allShowRows = [];
@@ -129,7 +113,7 @@ async function runKarnataka() {
     const { showRows, citySummary } = await fetchCityStats(city, date);
     allShowRows.push(...showRows);
     if (citySummary) allCitySummaries.push(citySummary);
-    await new Promise((r) => setTimeout(r, 3000)); // 3s delay
+    await new Promise((r) => setTimeout(r, 3000)); // delay between requests
   }
 
   saveCSV(allShowRows, `karnataka_showwise_${date}.csv`);
