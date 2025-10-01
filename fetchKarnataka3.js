@@ -6,16 +6,16 @@ import path from "path";
 
 // ================= Karnataka Cities (replacement 10 cities) ================= //
 const karnatakaCities = [
-  { name: "Chikkamagalur", code: "CHUR", slug: "chikkamagalur", lat: 13.3167, lon: 75.7700 },
-  { name: "Gadag", code: "GADG", slug: "gadag", lat: 15.4332, lon: 75.6343 },
+  { name: "Padubidri", code: "PUYI", slug: "padubidri", lat: 13.1408, lon: 74.7721 },
+  { name: "Puttur", code: "PTTU", slug: "puttur", lat: 12.7594, lon: 75.2422 },
   { name: "Bijapur", code: "VJPR", slug: "bijapur", lat: 16.8307, lon: 75.7100 },
   { name: "Magadi", code: "MAGA", slug: "magadi", lat: 12.9300, lon: 77.2400 },
   { name: "Mudhol", code: "MUDL", slug: "mudhol", lat: 16.2200, lon: 75.4300 },
-  { name: "Krishnarajanagara", code: "KRJT", slug: "krishnarajanagara", lat: 12.2413, lon: 76.4407 },
+  { name: "Karwar", code: "KWAR", slug: "karwar", lat: 14.8054, lon: 74.1304 },
   { name: "Baindur", code: "BAND", slug: "baindur", lat: 13.9500, lon: 74.5500 },
-  { name: "Gundlupet", code: "GUND", slug: "gundlupet", lat: 12.1067, lon: 76.1697 },
+  { name: "Raichur", code: "RAUR", slug: "raichur", lat: 16.2076, lon: 77.3439 },
+  { name: "Bellary", code: "BLRY", slug: "bellary", lat: 15.1394, lon: 76.9214 },
   { name: "Belur", code: "BELU", slug: "belur", lat: 13.1633, lon: 75.8667 },
-  { name: "Bhatkal", code: "BAKL", slug: "bhatkal", lat: 13.9693, lon: 74.5154 },
 ];
 
 // ================= Event Code ================= //
