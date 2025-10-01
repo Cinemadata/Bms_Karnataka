@@ -3,7 +3,6 @@
 import fs from "fs";
 import path from "path";
 
-
 // ================= Karnataka Cities (new 10 cities) ================= //
 const karnatakaCities = [
   { name: "Dharwad", code: "DHAW", slug: "dharwad", lat: 15.4589, lon: 75.0078 },
@@ -11,7 +10,7 @@ const karnatakaCities = [
   { name: "Karkala", code: "KARK", slug: "karkala", lat: 13.2945, lon: 74.9904 },
   { name: "Mandya", code: "MND", slug: "mandya", lat: 12.5247, lon: 76.8977 },
   { name: "Moodbidri", code: "MOOD", slug: "moodbidri", lat: 13.1587, lon: 74.9989 },
-  { name: "Sirsi", code: "SRSI", slug: "sirsi", lat: 14.6200, lon: 74.8500 }
+  { name: "Sirsi", code: "SRSI", slug: "sirsi", lat: 14.6200, lon: 74.8500 },  // <-- comma added here
   { name: "Ranebennuru", code: "RANE", slug: "ranebennuru", lat: 14.6239, lon: 75.6235 },
   { name: "Udupi", code: "UDUP", slug: "udupi", lat: 13.3409, lon: 74.7421 },
   { name: "Channarayapatna", code: "CHNN", slug: "channarayapatna", lat: 12.9703, lon: 76.4976 },
