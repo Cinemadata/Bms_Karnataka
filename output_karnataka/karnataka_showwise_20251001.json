@@ -1,447 +1,15 @@
 [
   {
-    "City": "Padubidri",
-    "Venue": "Bharath Cinemas: Padubidri",
-    "Show_Time": "09:00 AM",
-    "Category": "",
-    "Max_Seats": 67,
-    "Booked_Seats": 67,
-    "Price": "250.00",
-    "Collection": "16750.00",
-    "Max_Collection": "16750.00",
-    "Occupancy": "100.00%"
-  },
-  {
-    "City": "Padubidri",
-    "Venue": "Bharath Cinemas: Padubidri",
-    "Show_Time": "09:00 AM",
-    "Category": "",
-    "Max_Seats": 33,
-    "Booked_Seats": 33,
-    "Price": "250.00",
-    "Collection": "8250.00",
-    "Max_Collection": "8250.00",
-    "Occupancy": "100.00%"
-  },
-  {
-    "City": "Padubidri",
-    "Venue": "Bharath Cinemas: Padubidri",
-    "Show_Time": "09:00 AM",
-    "Category": "",
-    "Max_Seats": 11,
-    "Booked_Seats": 0,
-    "Price": "250.00",
-    "Collection": "0.00",
-    "Max_Collection": "2750.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Padubidri",
-    "Venue": "Bharath Cinemas: Padubidri",
-    "Show_Time": "09:30 AM",
-    "Category": "",
-    "Max_Seats": 68,
-    "Booked_Seats": 68,
-    "Price": "250.00",
-    "Collection": "17000.00",
-    "Max_Collection": "17000.00",
-    "Occupancy": "100.00%"
-  },
-  {
-    "City": "Padubidri",
-    "Venue": "Bharath Cinemas: Padubidri",
-    "Show_Time": "09:30 AM",
-    "Category": "",
-    "Max_Seats": 33,
-    "Booked_Seats": 33,
-    "Price": "250.00",
-    "Collection": "8250.00",
-    "Max_Collection": "8250.00",
-    "Occupancy": "100.00%"
-  },
-  {
-    "City": "Padubidri",
-    "Venue": "Bharath Cinemas: Padubidri",
-    "Show_Time": "09:30 AM",
-    "Category": "",
-    "Max_Seats": 11,
-    "Booked_Seats": 4,
-    "Price": "250.00",
-    "Collection": "1000.00",
-    "Max_Collection": "2750.00",
-    "Occupancy": "36.36%"
-  },
-  {
-    "City": "Padubidri",
-    "Venue": "Bharath Cinemas: Padubidri",
-    "Show_Time": "12:15 PM",
-    "Category": "",
-    "Max_Seats": 67,
-    "Booked_Seats": 67,
-    "Price": "250.00",
-    "Collection": "16750.00",
-    "Max_Collection": "16750.00",
-    "Occupancy": "100.00%"
-  },
-  {
-    "City": "Padubidri",
-    "Venue": "Bharath Cinemas: Padubidri",
-    "Show_Time": "12:15 PM",
-    "Category": "",
-    "Max_Seats": 33,
-    "Booked_Seats": 33,
-    "Price": "250.00",
-    "Collection": "8250.00",
-    "Max_Collection": "8250.00",
-    "Occupancy": "100.00%"
-  },
-  {
-    "City": "Padubidri",
-    "Venue": "Bharath Cinemas: Padubidri",
-    "Show_Time": "12:15 PM",
-    "Category": "",
-    "Max_Seats": 11,
-    "Booked_Seats": 11,
-    "Price": "250.00",
-    "Collection": "2750.00",
-    "Max_Collection": "2750.00",
-    "Occupancy": "100.00%"
-  },
-  {
-    "City": "Padubidri",
-    "Venue": "Bharath Cinemas: Padubidri",
-    "Show_Time": "12:45 PM",
-    "Category": "",
-    "Max_Seats": 68,
-    "Booked_Seats": 68,
-    "Price": "250.00",
-    "Collection": "17000.00",
-    "Max_Collection": "17000.00",
-    "Occupancy": "100.00%"
-  },
-  {
-    "City": "Padubidri",
-    "Venue": "Bharath Cinemas: Padubidri",
-    "Show_Time": "12:45 PM",
-    "Category": "",
-    "Max_Seats": 33,
-    "Booked_Seats": 33,
-    "Price": "250.00",
-    "Collection": "8250.00",
-    "Max_Collection": "8250.00",
-    "Occupancy": "100.00%"
-  },
-  {
-    "City": "Padubidri",
-    "Venue": "Bharath Cinemas: Padubidri",
-    "Show_Time": "12:45 PM",
-    "Category": "",
-    "Max_Seats": 11,
-    "Booked_Seats": 3,
-    "Price": "250.00",
-    "Collection": "750.00",
-    "Max_Collection": "2750.00",
-    "Occupancy": "27.27%"
-  },
-  {
-    "City": "Padubidri",
-    "Venue": "Bharath Cinemas: Padubidri",
-    "Show_Time": "03:30 PM",
-    "Category": "",
-    "Max_Seats": 67,
-    "Booked_Seats": 67,
-    "Price": "250.00",
-    "Collection": "16750.00",
-    "Max_Collection": "16750.00",
-    "Occupancy": "100.00%"
-  },
-  {
-    "City": "Padubidri",
-    "Venue": "Bharath Cinemas: Padubidri",
-    "Show_Time": "03:30 PM",
-    "Category": "",
-    "Max_Seats": 33,
-    "Booked_Seats": 33,
-    "Price": "250.00",
-    "Collection": "8250.00",
-    "Max_Collection": "8250.00",
-    "Occupancy": "100.00%"
-  },
-  {
-    "City": "Padubidri",
-    "Venue": "Bharath Cinemas: Padubidri",
-    "Show_Time": "03:30 PM",
-    "Category": "",
-    "Max_Seats": 11,
-    "Booked_Seats": 9,
-    "Price": "250.00",
-    "Collection": "2250.00",
-    "Max_Collection": "2750.00",
-    "Occupancy": "81.82%"
-  },
-  {
-    "City": "Padubidri",
-    "Venue": "Bharath Cinemas: Padubidri",
-    "Show_Time": "04:00 PM",
-    "Category": "",
-    "Max_Seats": 68,
-    "Booked_Seats": 68,
-    "Price": "250.00",
-    "Collection": "17000.00",
-    "Max_Collection": "17000.00",
-    "Occupancy": "100.00%"
-  },
-  {
-    "City": "Padubidri",
-    "Venue": "Bharath Cinemas: Padubidri",
-    "Show_Time": "04:00 PM",
-    "Category": "",
-    "Max_Seats": 33,
-    "Booked_Seats": 33,
-    "Price": "250.00",
-    "Collection": "8250.00",
-    "Max_Collection": "8250.00",
-    "Occupancy": "100.00%"
-  },
-  {
-    "City": "Padubidri",
-    "Venue": "Bharath Cinemas: Padubidri",
-    "Show_Time": "04:00 PM",
-    "Category": "",
-    "Max_Seats": 11,
-    "Booked_Seats": 6,
-    "Price": "250.00",
-    "Collection": "1500.00",
-    "Max_Collection": "2750.00",
-    "Occupancy": "54.55%"
-  },
-  {
-    "City": "Padubidri",
-    "Venue": "Bharath Cinemas: Padubidri",
-    "Show_Time": "06:45 PM",
-    "Category": "",
-    "Max_Seats": 67,
-    "Booked_Seats": 67,
-    "Price": "250.00",
-    "Collection": "16750.00",
-    "Max_Collection": "16750.00",
-    "Occupancy": "100.00%"
-  },
-  {
-    "City": "Padubidri",
-    "Venue": "Bharath Cinemas: Padubidri",
-    "Show_Time": "06:45 PM",
-    "Category": "",
-    "Max_Seats": 33,
-    "Booked_Seats": 32,
-    "Price": "250.00",
-    "Collection": "8000.00",
-    "Max_Collection": "8250.00",
-    "Occupancy": "96.97%"
-  },
-  {
-    "City": "Padubidri",
-    "Venue": "Bharath Cinemas: Padubidri",
-    "Show_Time": "06:45 PM",
-    "Category": "",
-    "Max_Seats": 11,
-    "Booked_Seats": 11,
-    "Price": "250.00",
-    "Collection": "2750.00",
-    "Max_Collection": "2750.00",
-    "Occupancy": "100.00%"
-  },
-  {
-    "City": "Padubidri",
-    "Venue": "Bharath Cinemas: Padubidri",
-    "Show_Time": "07:15 PM",
-    "Category": "",
-    "Max_Seats": 68,
-    "Booked_Seats": 68,
-    "Price": "250.00",
-    "Collection": "17000.00",
-    "Max_Collection": "17000.00",
-    "Occupancy": "100.00%"
-  },
-  {
-    "City": "Padubidri",
-    "Venue": "Bharath Cinemas: Padubidri",
-    "Show_Time": "07:15 PM",
-    "Category": "",
-    "Max_Seats": 33,
-    "Booked_Seats": 33,
-    "Price": "250.00",
-    "Collection": "8250.00",
-    "Max_Collection": "8250.00",
-    "Occupancy": "100.00%"
-  },
-  {
-    "City": "Padubidri",
-    "Venue": "Bharath Cinemas: Padubidri",
-    "Show_Time": "07:15 PM",
-    "Category": "",
-    "Max_Seats": 11,
-    "Booked_Seats": 7,
-    "Price": "250.00",
-    "Collection": "1750.00",
-    "Max_Collection": "2750.00",
-    "Occupancy": "63.64%"
-  },
-  {
-    "City": "Padubidri",
-    "Venue": "Bharath Cinemas: Padubidri",
-    "Show_Time": "10:00 PM",
-    "Category": "",
-    "Max_Seats": 67,
-    "Booked_Seats": 62,
-    "Price": "250.00",
-    "Collection": "15500.00",
-    "Max_Collection": "16750.00",
-    "Occupancy": "92.54%"
-  },
-  {
-    "City": "Padubidri",
-    "Venue": "Bharath Cinemas: Padubidri",
-    "Show_Time": "10:00 PM",
-    "Category": "",
-    "Max_Seats": 33,
-    "Booked_Seats": 32,
-    "Price": "250.00",
-    "Collection": "8000.00",
-    "Max_Collection": "8250.00",
-    "Occupancy": "96.97%"
-  },
-  {
-    "City": "Padubidri",
-    "Venue": "Bharath Cinemas: Padubidri",
-    "Show_Time": "10:00 PM",
-    "Category": "",
-    "Max_Seats": 11,
-    "Booked_Seats": 0,
-    "Price": "250.00",
-    "Collection": "0.00",
-    "Max_Collection": "2750.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Padubidri",
-    "Venue": "Bharath Cinemas: Padubidri",
-    "Show_Time": "10:30 PM",
-    "Category": "",
-    "Max_Seats": 68,
-    "Booked_Seats": 67,
-    "Price": "250.00",
-    "Collection": "16750.00",
-    "Max_Collection": "17000.00",
-    "Occupancy": "98.53%"
-  },
-  {
-    "City": "Padubidri",
-    "Venue": "Bharath Cinemas: Padubidri",
-    "Show_Time": "10:30 PM",
-    "Category": "",
-    "Max_Seats": 33,
-    "Booked_Seats": 33,
-    "Price": "250.00",
-    "Collection": "8250.00",
-    "Max_Collection": "8250.00",
-    "Occupancy": "100.00%"
-  },
-  {
-    "City": "Padubidri",
-    "Venue": "Bharath Cinemas: Padubidri",
-    "Show_Time": "10:30 PM",
-    "Category": "",
-    "Max_Seats": 11,
-    "Booked_Seats": 0,
-    "Price": "250.00",
-    "Collection": "0.00",
-    "Max_Collection": "2750.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Puttur",
-    "Venue": "Bharath Cinemas: Puttur",
-    "Show_Time": "07:00 PM",
-    "Category": "",
-    "Max_Seats": 102,
-    "Booked_Seats": 96,
-    "Price": "400.00",
-    "Collection": "38400.00",
-    "Max_Collection": "40800.00",
-    "Occupancy": "94.12%"
-  },
-  {
-    "City": "Puttur",
-    "Venue": "Bharath Cinemas: Puttur",
-    "Show_Time": "07:00 PM",
-    "Category": "",
-    "Max_Seats": 60,
-    "Booked_Seats": 15,
-    "Price": "400.00",
-    "Collection": "6000.00",
-    "Max_Collection": "24000.00",
-    "Occupancy": "25.00%"
-  },
-  {
-    "City": "Puttur",
-    "Venue": "Bharath Cinemas: Puttur",
-    "Show_Time": "07:00 PM",
-    "Category": "",
-    "Max_Seats": 15,
-    "Booked_Seats": 0,
-    "Price": "400.00",
-    "Collection": "0.00",
-    "Max_Collection": "6000.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Puttur",
-    "Venue": "Bharath Cinemas: Puttur",
-    "Show_Time": "10:15 PM",
-    "Category": "",
-    "Max_Seats": 102,
-    "Booked_Seats": 80,
-    "Price": "400.00",
-    "Collection": "32000.00",
-    "Max_Collection": "40800.00",
-    "Occupancy": "78.43%"
-  },
-  {
-    "City": "Puttur",
-    "Venue": "Bharath Cinemas: Puttur",
-    "Show_Time": "10:15 PM",
-    "Category": "",
-    "Max_Seats": 60,
-    "Booked_Seats": 6,
-    "Price": "400.00",
-    "Collection": "2400.00",
-    "Max_Collection": "24000.00",
-    "Occupancy": "10.00%"
-  },
-  {
-    "City": "Puttur",
-    "Venue": "Bharath Cinemas: Puttur",
-    "Show_Time": "10:15 PM",
-    "Category": "",
-    "Max_Seats": 15,
-    "Booked_Seats": 0,
-    "Price": "400.00",
-    "Collection": "0.00",
-    "Max_Collection": "6000.00",
-    "Occupancy": "0.00%"
-  },
-  {
     "City": "Bijapur",
     "Venue": "Apsara Cineplex 70 mm: Bijapur",
     "Show_Time": "12:00 PM",
     "Category": "",
     "Max_Seats": 390,
-    "Booked_Seats": 225,
+    "Booked_Seats": 239,
     "Price": "250.00",
-    "Collection": "56250.00",
+    "Collection": "59750.00",
     "Max_Collection": "97500.00",
-    "Occupancy": "57.69%"
+    "Occupancy": "61.28%"
   },
   {
     "City": "Bijapur",
@@ -461,11 +29,11 @@
     "Show_Time": "03:00 PM",
     "Category": "",
     "Max_Seats": 390,
-    "Booked_Seats": 160,
+    "Booked_Seats": 168,
     "Price": "250.00",
-    "Collection": "40000.00",
+    "Collection": "42000.00",
     "Max_Collection": "97500.00",
-    "Occupancy": "41.03%"
+    "Occupancy": "43.08%"
   },
   {
     "City": "Bijapur",
@@ -497,11 +65,11 @@
     "Show_Time": "12:00 PM",
     "Category": "",
     "Max_Seats": 126,
-    "Booked_Seats": 95,
+    "Booked_Seats": 101,
     "Price": "200.00",
-    "Collection": "19000.00",
+    "Collection": "20200.00",
     "Max_Collection": "25200.00",
-    "Occupancy": "75.40%"
+    "Occupancy": "80.16%"
   },
   {
     "City": "Bijapur",
@@ -533,11 +101,11 @@
     "Show_Time": "06:00 PM",
     "Category": "",
     "Max_Seats": 21,
-    "Booked_Seats": 15,
+    "Booked_Seats": 16,
     "Price": "250.00",
-    "Collection": "3750.00",
+    "Collection": "4000.00",
     "Max_Collection": "5250.00",
-    "Occupancy": "71.43%"
+    "Occupancy": "76.19%"
   },
   {
     "City": "Bijapur",
@@ -545,11 +113,11 @@
     "Show_Time": "06:00 PM",
     "Category": "",
     "Max_Seats": 126,
-    "Booked_Seats": 33,
+    "Booked_Seats": 36,
     "Price": "200.00",
-    "Collection": "6600.00",
+    "Collection": "7200.00",
     "Max_Collection": "25200.00",
-    "Occupancy": "26.19%"
+    "Occupancy": "28.57%"
   },
   {
     "City": "Bijapur",
@@ -593,11 +161,11 @@
     "Show_Time": "10:30 AM",
     "Category": "",
     "Max_Seats": 172,
-    "Booked_Seats": 56,
+    "Booked_Seats": 61,
     "Price": "120.00",
-    "Collection": "6720.00",
+    "Collection": "7320.00",
     "Max_Collection": "20640.00",
-    "Occupancy": "32.56%"
+    "Occupancy": "35.47%"
   },
   {
     "City": "Magadi",
@@ -605,11 +173,11 @@
     "Show_Time": "01:30 PM",
     "Category": "",
     "Max_Seats": 84,
-    "Booked_Seats": 82,
+    "Booked_Seats": 84,
     "Price": "150.00",
-    "Collection": "12300.00",
+    "Collection": "12600.00",
     "Max_Collection": "12600.00",
-    "Occupancy": "97.62%"
+    "Occupancy": "100.00%"
   },
   {
     "City": "Magadi",
@@ -617,11 +185,11 @@
     "Show_Time": "01:30 PM",
     "Category": "",
     "Max_Seats": 172,
-    "Booked_Seats": 69,
+    "Booked_Seats": 76,
     "Price": "120.00",
-    "Collection": "8280.00",
+    "Collection": "9120.00",
     "Max_Collection": "20640.00",
-    "Occupancy": "40.12%"
+    "Occupancy": "44.19%"
   },
   {
     "City": "Magadi",
@@ -629,11 +197,11 @@
     "Show_Time": "04:30 PM",
     "Category": "",
     "Max_Seats": 84,
-    "Booked_Seats": 81,
+    "Booked_Seats": 80,
     "Price": "150.00",
-    "Collection": "12150.00",
+    "Collection": "12000.00",
     "Max_Collection": "12600.00",
-    "Occupancy": "96.43%"
+    "Occupancy": "95.24%"
   },
   {
     "City": "Magadi",
@@ -653,11 +221,11 @@
     "Show_Time": "07:30 PM",
     "Category": "",
     "Max_Seats": 84,
-    "Booked_Seats": 80,
+    "Booked_Seats": 82,
     "Price": "150.00",
-    "Collection": "12000.00",
+    "Collection": "12300.00",
     "Max_Collection": "12600.00",
-    "Occupancy": "95.24%"
+    "Occupancy": "97.62%"
   },
   {
     "City": "Magadi",
@@ -665,11 +233,11 @@
     "Show_Time": "07:30 PM",
     "Category": "",
     "Max_Seats": 172,
-    "Booked_Seats": 85,
+    "Booked_Seats": 86,
     "Price": "120.00",
-    "Collection": "10200.00",
+    "Collection": "10320.00",
     "Max_Collection": "20640.00",
-    "Occupancy": "49.42%"
+    "Occupancy": "50.00%"
   },
   {
     "City": "Mudhol",
@@ -773,11 +341,11 @@
     "Show_Time": "09:30 AM",
     "Category": "",
     "Max_Seats": 71,
-    "Booked_Seats": 65,
+    "Booked_Seats": 69,
     "Price": "300.00",
-    "Collection": "19500.00",
+    "Collection": "20700.00",
     "Max_Collection": "21300.00",
-    "Occupancy": "91.55%"
+    "Occupancy": "97.18%"
   },
   {
     "City": "Karwar",
@@ -797,11 +365,11 @@
     "Show_Time": "04:00 PM",
     "Category": "",
     "Max_Seats": 71,
-    "Booked_Seats": 70,
+    "Booked_Seats": 71,
     "Price": "300.00",
-    "Collection": "21000.00",
+    "Collection": "21300.00",
     "Max_Collection": "21300.00",
-    "Occupancy": "98.59%"
+    "Occupancy": "100.00%"
   },
   {
     "City": "Karwar",
@@ -809,11 +377,11 @@
     "Show_Time": "04:00 PM",
     "Category": "",
     "Max_Seats": 79,
-    "Booked_Seats": 78,
+    "Booked_Seats": 79,
     "Price": "300.00",
-    "Collection": "23400.00",
+    "Collection": "23700.00",
     "Max_Collection": "23700.00",
-    "Occupancy": "98.73%"
+    "Occupancy": "100.00%"
   },
   {
     "City": "Karwar",
@@ -821,11 +389,11 @@
     "Show_Time": "10:30 PM",
     "Category": "",
     "Max_Seats": 71,
-    "Booked_Seats": 56,
+    "Booked_Seats": 61,
     "Price": "300.00",
-    "Collection": "16800.00",
+    "Collection": "18300.00",
     "Max_Collection": "21300.00",
-    "Occupancy": "78.87%"
+    "Occupancy": "85.92%"
   },
   {
     "City": "Karwar",
@@ -857,11 +425,11 @@
     "Show_Time": "12:15 PM",
     "Category": "",
     "Max_Seats": 342,
-    "Booked_Seats": 4,
+    "Booked_Seats": 9,
     "Price": "150.00",
-    "Collection": "600.00",
+    "Collection": "1350.00",
     "Max_Collection": "51300.00",
-    "Occupancy": "1.17%"
+    "Occupancy": "2.63%"
   },
   {
     "City": "Baindur",
@@ -905,11 +473,11 @@
     "Show_Time": "07:20 PM",
     "Category": "",
     "Max_Seats": 90,
-    "Booked_Seats": 28,
+    "Booked_Seats": 35,
     "Price": "500.00",
-    "Collection": "14000.00",
+    "Collection": "17500.00",
     "Max_Collection": "45000.00",
-    "Occupancy": "31.11%"
+    "Occupancy": "38.89%"
   },
   {
     "City": "Raichur",
@@ -917,11 +485,11 @@
     "Show_Time": "07:20 PM",
     "Category": "",
     "Max_Seats": 61,
-    "Booked_Seats": 30,
+    "Booked_Seats": 37,
     "Price": "500.00",
-    "Collection": "15000.00",
+    "Collection": "18500.00",
     "Max_Collection": "30500.00",
-    "Occupancy": "49.18%"
+    "Occupancy": "60.66%"
   },
   {
     "City": "Raichur",
@@ -941,11 +509,11 @@
     "Show_Time": "10:45 PM",
     "Category": "",
     "Max_Seats": 90,
-    "Booked_Seats": 16,
+    "Booked_Seats": 19,
     "Price": "500.00",
-    "Collection": "8000.00",
+    "Collection": "9500.00",
     "Max_Collection": "45000.00",
-    "Occupancy": "17.78%"
+    "Occupancy": "21.11%"
   },
   {
     "City": "Raichur",
@@ -953,11 +521,11 @@
     "Show_Time": "10:45 PM",
     "Category": "",
     "Max_Seats": 61,
-    "Booked_Seats": 35,
+    "Booked_Seats": 44,
     "Price": "500.00",
-    "Collection": "17500.00",
+    "Collection": "22000.00",
     "Max_Collection": "30500.00",
-    "Occupancy": "57.38%"
+    "Occupancy": "72.13%"
   },
   {
     "City": "Raichur",
@@ -973,15 +541,39 @@
   },
   {
     "City": "Bellary",
+    "Venue": "Ganga Theatre: Bellary",
+    "Show_Time": "08:15 PM",
+    "Category": "",
+    "Max_Seats": 232,
+    "Booked_Seats": 89,
+    "Price": "300.00",
+    "Collection": "26700.00",
+    "Max_Collection": "69600.00",
+    "Occupancy": "38.36%"
+  },
+  {
+    "City": "Bellary",
+    "Venue": "Ganga Theatre: Bellary",
+    "Show_Time": "08:15 PM",
+    "Category": "",
+    "Max_Seats": 280,
+    "Booked_Seats": 2,
+    "Price": "250.00",
+    "Collection": "500.00",
+    "Max_Collection": "70000.00",
+    "Occupancy": "0.71%"
+  },
+  {
+    "City": "Bellary",
     "Venue": "Natraj Theatre: Bellary",
     "Show_Time": "08:15 PM",
     "Category": "",
     "Max_Seats": 212,
-    "Booked_Seats": 211,
+    "Booked_Seats": 212,
     "Price": "300.00",
-    "Collection": "63300.00",
+    "Collection": "63600.00",
     "Max_Collection": "63600.00",
-    "Occupancy": "99.53%"
+    "Occupancy": "100.00%"
   },
   {
     "City": "Bellary",
@@ -989,11 +581,11 @@
     "Show_Time": "08:15 PM",
     "Category": "",
     "Max_Seats": 424,
-    "Booked_Seats": 232,
+    "Booked_Seats": 313,
     "Price": "250.00",
-    "Collection": "58000.00",
+    "Collection": "78250.00",
     "Max_Collection": "106000.00",
-    "Occupancy": "54.72%"
+    "Occupancy": "73.82%"
   },
   {
     "City": "Belur",
@@ -1013,11 +605,11 @@
     "Show_Time": "06:30 AM",
     "Category": "",
     "Max_Seats": 310,
-    "Booked_Seats": 31,
+    "Booked_Seats": 37,
     "Price": "120.00",
-    "Collection": "3720.00",
+    "Collection": "4440.00",
     "Max_Collection": "37200.00",
-    "Occupancy": "10.00%"
+    "Occupancy": "11.94%"
   },
   {
     "City": "Belur",
@@ -1025,11 +617,11 @@
     "Show_Time": "10:00 AM",
     "Category": "",
     "Max_Seats": 48,
-    "Booked_Seats": 41,
+    "Booked_Seats": 42,
     "Price": "150.00",
-    "Collection": "6150.00",
+    "Collection": "6300.00",
     "Max_Collection": "7200.00",
-    "Occupancy": "85.42%"
+    "Occupancy": "87.50%"
   },
   {
     "City": "Belur",
@@ -1037,11 +629,11 @@
     "Show_Time": "10:00 AM",
     "Category": "",
     "Max_Seats": 310,
-    "Booked_Seats": 38,
+    "Booked_Seats": 39,
     "Price": "120.00",
-    "Collection": "4560.00",
+    "Collection": "4680.00",
     "Max_Collection": "37200.00",
-    "Occupancy": "12.26%"
+    "Occupancy": "12.58%"
   },
   {
     "City": "Belur",
@@ -1085,11 +677,11 @@
     "Show_Time": "04:00 PM",
     "Category": "",
     "Max_Seats": 310,
-    "Booked_Seats": 42,
+    "Booked_Seats": 39,
     "Price": "120.00",
-    "Collection": "5040.00",
+    "Collection": "4680.00",
     "Max_Collection": "37200.00",
-    "Occupancy": "13.55%"
+    "Occupancy": "12.58%"
   },
   {
     "City": "Belur",
@@ -1109,11 +701,11 @@
     "Show_Time": "07:00 PM",
     "Category": "",
     "Max_Seats": 310,
-    "Booked_Seats": 104,
+    "Booked_Seats": 103,
     "Price": "120.00",
-    "Collection": "12480.00",
+    "Collection": "12360.00",
     "Max_Collection": "37200.00",
-    "Occupancy": "33.55%"
+    "Occupancy": "33.23%"
   },
   {
     "City": "Belur",
