@@ -3,55 +3,55 @@
     "City": "Padubidri",
     "Total_Shows": 10,
     "Total_Seats": 1115,
-    "Booked_Seats": 1046,
-    "Collection": "261500.00",
+    "Booked_Seats": 1048,
+    "Collection": "262000.00",
     "Max_Collection": "278750.00",
-    "Occupancy": "93.81%"
+    "Occupancy": "93.99%"
   },
   {
     "City": "Puttur",
     "Total_Shows": 2,
     "Total_Seats": 354,
-    "Booked_Seats": 114,
-    "Collection": "45600.00",
+    "Booked_Seats": 197,
+    "Collection": "78800.00",
     "Max_Collection": "141600.00",
-    "Occupancy": "32.20%"
+    "Occupancy": "55.65%"
   },
   {
     "City": "Bijapur",
     "Total_Shows": 6,
     "Total_Seats": 1536,
-    "Booked_Seats": 617,
-    "Collection": "144550.00",
+    "Booked_Seats": 670,
+    "Collection": "156900.00",
     "Max_Collection": "358800.00",
-    "Occupancy": "40.17%"
+    "Occupancy": "43.62%"
   },
   {
     "City": "Magadi",
     "Total_Shows": 4,
     "Total_Seats": 1024,
-    "Booked_Seats": 569,
-    "Collection": "78000.00",
+    "Booked_Seats": 560,
+    "Collection": "77010.00",
     "Max_Collection": "132960.00",
-    "Occupancy": "55.57%"
+    "Occupancy": "54.69%"
   },
   {
     "City": "Mudhol",
     "Total_Shows": 8,
     "Total_Seats": 344,
-    "Booked_Seats": 144,
-    "Collection": "21570.00",
+    "Booked_Seats": 149,
+    "Collection": "22170.00",
     "Max_Collection": "45600.00",
-    "Occupancy": "41.86%"
+    "Occupancy": "43.31%"
   },
   {
     "City": "Karwar",
     "Total_Shows": 3,
     "Total_Seats": 450,
-    "Booked_Seats": 402,
-    "Collection": "120600.00",
+    "Booked_Seats": 426,
+    "Collection": "127800.00",
     "Max_Collection": "135000.00",
-    "Occupancy": "89.33%"
+    "Occupancy": "94.67%"
   },
   {
     "City": "Baindur",
@@ -64,29 +64,29 @@
   },
   {
     "City": "Raichur",
-    "Total_Shows": 14,
-    "Total_Seats": 2534,
-    "Booked_Seats": 1527,
-    "Collection": "534450.00",
-    "Max_Collection": "886900.00",
-    "Occupancy": "60.26%"
+    "Total_Shows": 2,
+    "Total_Seats": 362,
+    "Booked_Seats": 109,
+    "Collection": "54500.00",
+    "Max_Collection": "181000.00",
+    "Occupancy": "30.11%"
   },
   {
     "City": "Bellary",
-    "Total_Shows": 12,
-    "Total_Seats": 5712,
-    "Booked_Seats": 3727,
-    "Collection": "726950.00",
-    "Max_Collection": "1080100.00",
-    "Occupancy": "65.25%"
+    "Total_Shows": 1,
+    "Total_Seats": 636,
+    "Booked_Seats": 443,
+    "Collection": "121300.00",
+    "Max_Collection": "169600.00",
+    "Occupancy": "69.65%"
   },
   {
     "City": "Belur",
     "Total_Shows": 6,
     "Total_Seats": 2148,
-    "Booked_Seats": 429,
-    "Collection": "57540.00",
+    "Booked_Seats": 475,
+    "Collection": "63660.00",
     "Max_Collection": "266400.00",
-    "Occupancy": "19.97%"
+    "Occupancy": "22.11%"
   }
 ]
