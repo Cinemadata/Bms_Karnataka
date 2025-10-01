@@ -48,9 +48,8 @@ function saveJSON(data, filename, date) {
 
 // ================= Fetch Function ================= //
 async function fetchCityStats(city, date) {
-  const url = `https://in.bookmyshow.com/api/movies-data/showtimes-by-event?appCode=MOBAND2&appVersion=14304&language=en&eventCode=${eventCode}&regionCode=${city.code}&subRegion=${city.code}&bmsId=1.3158053074.1724928349489&token=67x1xa33b4x422b361ba&lat=${city.lat}&lon=${city.lon}&query=&dateCode=${date}`;
-  
-  const headers = {
+  const url = `https://in.bookmyshow.com/api/movies-data/showtimes-by-event?eventCode=${eventCode}&regionCode=${regionCode}&date=${date}'
+  const headers =
     Host: "in.bookmyshow.com",
     "x-bms-id": "1.21345445.1703250084656",
     "x-region-code": city.code,
