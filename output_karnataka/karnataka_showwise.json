@@ -21082,5 +21082,89 @@
     "Collection": "0.00",
     "Max_Collection": "0.00",
     "Occupancy": "0.00%"
+  },
+  {
+    "City": "Channarayapatna",
+    "Venue": "Gayatri Theatre: Channarayapatna",
+    "Show_Time": "04:15 PM",
+    "Category": "",
+    "Max_Seats": 0,
+    "Booked_Seats": 0,
+    "Price": "121.00",
+    "Collection": "0.00",
+    "Max_Collection": "0.00",
+    "Occupancy": "0.00%"
+  },
+  {
+    "City": "Channarayapatna",
+    "Venue": "Gayatri Theatre: Channarayapatna",
+    "Show_Time": "04:15 PM",
+    "Category": "",
+    "Max_Seats": 0,
+    "Booked_Seats": 0,
+    "Price": "101.00",
+    "Collection": "0.00",
+    "Max_Collection": "0.00",
+    "Occupancy": "0.00%"
+  },
+  {
+    "City": "Channarayapatna",
+    "Venue": "Gayatri Theatre: Channarayapatna",
+    "Show_Time": "07:15 PM",
+    "Category": "",
+    "Max_Seats": 0,
+    "Booked_Seats": 0,
+    "Price": "121.00",
+    "Collection": "0.00",
+    "Max_Collection": "0.00",
+    "Occupancy": "0.00%"
+  },
+  {
+    "City": "Channarayapatna",
+    "Venue": "Gayatri Theatre: Channarayapatna",
+    "Show_Time": "07:15 PM",
+    "Category": "",
+    "Max_Seats": 0,
+    "Booked_Seats": 0,
+    "Price": "101.00",
+    "Collection": "0.00",
+    "Max_Collection": "0.00",
+    "Occupancy": "0.00%"
+  },
+  {
+    "City": "Bagalkote",
+    "Venue": "Smart Moviz: Bagalkot",
+    "Show_Time": "02:30 PM",
+    "Category": "",
+    "Max_Seats": 0,
+    "Booked_Seats": 0,
+    "Price": "160.00",
+    "Collection": "0.00",
+    "Max_Collection": "0.00",
+    "Occupancy": "0.00%"
+  },
+  {
+    "City": "Bagalkote",
+    "Venue": "Smart Moviz: Bagalkot",
+    "Show_Time": "05:30 PM",
+    "Category": "",
+    "Max_Seats": 0,
+    "Booked_Seats": 0,
+    "Price": "160.00",
+    "Collection": "0.00",
+    "Max_Collection": "0.00",
+    "Occupancy": "0.00%"
+  },
+  {
+    "City": "Bagalkote",
+    "Venue": "Smart Moviz: Bagalkot",
+    "Show_Time": "08:30 PM",
+    "Category": "",
+    "Max_Seats": 0,
+    "Booked_Seats": 0,
+    "Price": "160.00",
+    "Collection": "0.00",
+    "Max_Collection": "0.00",
+    "Occupancy": "0.00%"
   }
 ]
