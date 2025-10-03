@@ -2,42 +2,6 @@
   {
     "City": "Dharwad",
     "Venue": "INOX: Smartcity Mall, Dharwad",
-    "Show_Time": "11:15 AM",
-    "Category": "",
-    "Max_Seats": 0,
-    "Booked_Seats": 0,
-    "Price": "430.00",
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Dharwad",
-    "Venue": "INOX: Smartcity Mall, Dharwad",
-    "Show_Time": "11:15 AM",
-    "Category": "",
-    "Max_Seats": 0,
-    "Booked_Seats": 0,
-    "Price": "400.00",
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Dharwad",
-    "Venue": "INOX: Smartcity Mall, Dharwad",
-    "Show_Time": "11:15 AM",
-    "Category": "",
-    "Max_Seats": 0,
-    "Booked_Seats": 0,
-    "Price": "400.00",
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Dharwad",
-    "Venue": "INOX: Smartcity Mall, Dharwad",
     "Show_Time": "12:15 PM",
     "Category": "",
     "Max_Seats": 0,
@@ -162,7 +126,7 @@
     "Category": "",
     "Max_Seats": 0,
     "Booked_Seats": 0,
-    "Price": "350.00",
+    "Price": "400.00",
     "Collection": "0.00",
     "Max_Collection": "0.00",
     "Occupancy": "0.00%"
@@ -576,6 +540,54 @@
     "Occupancy": "0.00%"
   },
   {
+    "City": "Kanakapura",
+    "Venue": "Sri Vani 2K Digital Projector 7.1 Dolby",
+    "Show_Time": "04:30 PM",
+    "Category": "",
+    "Max_Seats": 0,
+    "Booked_Seats": 0,
+    "Price": "150.00",
+    "Collection": "0.00",
+    "Max_Collection": "0.00",
+    "Occupancy": "0.00%"
+  },
+  {
+    "City": "Kanakapura",
+    "Venue": "Sri Vani 2K Digital Projector 7.1 Dolby",
+    "Show_Time": "04:30 PM",
+    "Category": "",
+    "Max_Seats": 0,
+    "Booked_Seats": 0,
+    "Price": "120.00",
+    "Collection": "0.00",
+    "Max_Collection": "0.00",
+    "Occupancy": "0.00%"
+  },
+  {
+    "City": "Kanakapura",
+    "Venue": "Sri Vani 2K Digital Projector 7.1 Dolby",
+    "Show_Time": "07:30 PM",
+    "Category": "",
+    "Max_Seats": 0,
+    "Booked_Seats": 0,
+    "Price": "150.00",
+    "Collection": "0.00",
+    "Max_Collection": "0.00",
+    "Occupancy": "0.00%"
+  },
+  {
+    "City": "Kanakapura",
+    "Venue": "Sri Vani 2K Digital Projector 7.1 Dolby",
+    "Show_Time": "07:30 PM",
+    "Category": "",
+    "Max_Seats": 0,
+    "Booked_Seats": 0,
+    "Price": "120.00",
+    "Collection": "0.00",
+    "Max_Collection": "0.00",
+    "Occupancy": "0.00%"
+  },
+  {
     "City": "Karkala",
     "Venue": "Planet Cinema: A/C Digital (Karkala)",
     "Show_Time": "03:00 PM",
@@ -854,18 +866,6 @@
   {
     "City": "Ranebennuru",
     "Venue": "Shri Shankar Talkies: Ranebennur",
-    "Show_Time": "01:30 PM",
-    "Category": "",
-    "Max_Seats": 0,
-    "Booked_Seats": 0,
-    "Price": "150.00",
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Ranebennuru",
-    "Venue": "Shri Shankar Talkies: Ranebennur",
     "Show_Time": "05:30 PM",
     "Category": "",
     "Max_Seats": 0,
@@ -998,42 +998,6 @@
   {
     "City": "Udupi",
     "Venue": "Bharath Cinemas: City Centre Mall, Udupi",
-    "Show_Time": "11:45 AM",
-    "Category": "",
-    "Max_Seats": 0,
-    "Booked_Seats": 0,
-    "Price": "300.00",
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Udupi",
-    "Venue": "Bharath Cinemas: City Centre Mall, Udupi",
-    "Show_Time": "11:45 AM",
-    "Category": "",
-    "Max_Seats": 0,
-    "Booked_Seats": 0,
-    "Price": "300.00",
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Udupi",
-    "Venue": "Bharath Cinemas: City Centre Mall, Udupi",
-    "Show_Time": "11:45 AM",
-    "Category": "",
-    "Max_Seats": 0,
-    "Booked_Seats": 0,
-    "Price": "300.00",
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Udupi",
-    "Venue": "Bharath Cinemas: City Centre Mall, Udupi",
     "Show_Time": "12:45 PM",
     "Category": "",
     "Max_Seats": 0,
@@ -1279,30 +1243,6 @@
     "Max_Seats": 0,
     "Booked_Seats": 0,
     "Price": "300.00",
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Udupi",
-    "Venue": "Kalpana Theatre: Udupi",
-    "Show_Time": "12:45 PM",
-    "Category": "",
-    "Max_Seats": 0,
-    "Booked_Seats": 0,
-    "Price": "120.00",
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Udupi",
-    "Venue": "Kalpana Theatre: Udupi",
-    "Show_Time": "12:45 PM",
-    "Category": "",
-    "Max_Seats": 0,
-    "Booked_Seats": 0,
-    "Price": "100.00",
     "Collection": "0.00",
     "Max_Collection": "0.00",
     "Occupancy": "0.00%"
@@ -1338,7 +1278,7 @@
     "Category": "",
     "Max_Seats": 0,
     "Booked_Seats": 0,
-    "Price": "120.00",
+    "Price": "100.00",
     "Collection": "0.00",
     "Max_Collection": "0.00",
     "Occupancy": "0.00%"
@@ -1350,7 +1290,7 @@
     "Category": "",
     "Max_Seats": 0,
     "Booked_Seats": 0,
-    "Price": "100.00",
+    "Price": "120.00",
     "Collection": "0.00",
     "Max_Collection": "0.00",
     "Occupancy": "0.00%"
