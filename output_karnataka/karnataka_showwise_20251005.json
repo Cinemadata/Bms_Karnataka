@@ -2,54 +2,6 @@
   {
     "City": "Dharwad",
     "Venue": "INOX: Smartcity Mall, Dharwad",
-    "Show_Time": "10:00 AM",
-    "Category": "",
-    "Max_Seats": 0,
-    "Booked_Seats": 0,
-    "Price": "800.00",
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Dharwad",
-    "Venue": "INOX: Smartcity Mall, Dharwad",
-    "Show_Time": "10:00 AM",
-    "Category": "",
-    "Max_Seats": 0,
-    "Booked_Seats": 0,
-    "Price": "430.00",
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Dharwad",
-    "Venue": "INOX: Smartcity Mall, Dharwad",
-    "Show_Time": "10:00 AM",
-    "Category": "",
-    "Max_Seats": 0,
-    "Booked_Seats": 0,
-    "Price": "400.00",
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Dharwad",
-    "Venue": "INOX: Smartcity Mall, Dharwad",
-    "Show_Time": "10:00 AM",
-    "Category": "",
-    "Max_Seats": 0,
-    "Booked_Seats": 0,
-    "Price": "400.00",
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Dharwad",
-    "Venue": "INOX: Smartcity Mall, Dharwad",
     "Show_Time": "11:15 AM",
     "Category": "",
     "Max_Seats": 0,
@@ -691,18 +643,6 @@
     "Max_Seats": 0,
     "Booked_Seats": 0,
     "Price": "200.00",
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Karkala",
-    "Venue": "Planet Cinema: A/C Digital (Karkala)",
-    "Show_Time": "12:15 PM",
-    "Category": "",
-    "Max_Seats": 0,
-    "Booked_Seats": 0,
-    "Price": "150.00",
     "Collection": "0.00",
     "Max_Collection": "0.00",
     "Occupancy": "0.00%"
@@ -1507,18 +1447,6 @@
     "Max_Seats": 0,
     "Booked_Seats": 0,
     "Price": "101.00",
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Bagalkote",
-    "Venue": "Smart Moviz: Bagalkot",
-    "Show_Time": "11:30 AM",
-    "Category": "",
-    "Max_Seats": 0,
-    "Booked_Seats": 0,
-    "Price": "160.00",
     "Collection": "0.00",
     "Max_Collection": "0.00",
     "Occupancy": "0.00%"
