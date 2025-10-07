@@ -2,42 +2,6 @@
   {
     "City": "Dharwad",
     "Venue": "INOX: Smartcity Mall, Dharwad",
-    "Show_Time": "08:00 AM",
-    "Category": "",
-    "Max_Seats": 0,
-    "Booked_Seats": 0,
-    "Price": "200.00",
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Dharwad",
-    "Venue": "INOX: Smartcity Mall, Dharwad",
-    "Show_Time": "08:00 AM",
-    "Category": "",
-    "Max_Seats": 0,
-    "Booked_Seats": 0,
-    "Price": "180.00",
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Dharwad",
-    "Venue": "INOX: Smartcity Mall, Dharwad",
-    "Show_Time": "08:00 AM",
-    "Category": "",
-    "Max_Seats": 0,
-    "Booked_Seats": 0,
-    "Price": "160.00",
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Dharwad",
-    "Venue": "INOX: Smartcity Mall, Dharwad",
     "Show_Time": "08:30 AM",
     "Category": "",
     "Max_Seats": 0,
@@ -770,18 +734,6 @@
   {
     "City": "Kanakapura",
     "Venue": "Sri Vani 2K Digital Projector 7.1 Dolby",
-    "Show_Time": "10:30 AM",
-    "Category": "",
-    "Max_Seats": 0,
-    "Booked_Seats": 0,
-    "Price": "150.00",
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Kanakapura",
-    "Venue": "Sri Vani 2K Digital Projector 7.1 Dolby",
     "Show_Time": "01:30 PM",
     "Category": "",
     "Max_Seats": 0,
@@ -807,18 +759,6 @@
     "City": "Kanakapura",
     "Venue": "Sri Vani 2K Digital Projector 7.1 Dolby",
     "Show_Time": "07:30 PM",
-    "Category": "",
-    "Max_Seats": 0,
-    "Booked_Seats": 0,
-    "Price": "150.00",
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Karkala",
-    "Venue": "Planet Cinema: A/C Digital (Karkala)",
-    "Show_Time": "09:30 AM",
     "Category": "",
     "Max_Seats": 0,
     "Booked_Seats": 0,
@@ -1662,7 +1602,7 @@
     "Category": "",
     "Max_Seats": 0,
     "Booked_Seats": 0,
-    "Price": "100.00",
+    "Price": "120.00",
     "Collection": "0.00",
     "Max_Collection": "0.00",
     "Occupancy": "0.00%"
@@ -1674,7 +1614,7 @@
     "Category": "",
     "Max_Seats": 0,
     "Booked_Seats": 0,
-    "Price": "120.00",
+    "Price": "100.00",
     "Collection": "0.00",
     "Max_Collection": "0.00",
     "Occupancy": "0.00%"
