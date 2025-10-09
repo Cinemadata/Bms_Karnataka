@@ -30,7 +30,7 @@
     "Category": "",
     "Max_Seats": 0,
     "Booked_Seats": 0,
-    "Price": "280.00",
+    "Price": "350.00",
     "Collection": "0.00",
     "Max_Collection": "0.00",
     "Occupancy": "0.00%"
@@ -438,7 +438,7 @@
     "Category": "",
     "Max_Seats": 0,
     "Booked_Seats": 0,
-    "Price": "300.00",
+    "Price": "350.00",
     "Collection": "0.00",
     "Max_Collection": "0.00",
     "Occupancy": "0.00%"
@@ -499,18 +499,6 @@
     "Max_Seats": 0,
     "Booked_Seats": 0,
     "Price": "200.00",
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Kanakapura",
-    "Venue": "Sri Vani 2K Digital Projector 7.1 Dolby",
-    "Show_Time": "04:30 PM",
-    "Category": "",
-    "Max_Seats": 0,
-    "Booked_Seats": 0,
-    "Price": "150.00",
     "Collection": "0.00",
     "Max_Collection": "0.00",
     "Occupancy": "0.00%"
@@ -943,30 +931,6 @@
     "Max_Seats": 0,
     "Booked_Seats": 0,
     "Price": "300.00",
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Udupi",
-    "Venue": "Kalpana Theatre: Udupi",
-    "Show_Time": "03:45 PM",
-    "Category": "",
-    "Max_Seats": 0,
-    "Booked_Seats": 0,
-    "Price": "120.00",
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Udupi",
-    "Venue": "Kalpana Theatre: Udupi",
-    "Show_Time": "03:45 PM",
-    "Category": "",
-    "Max_Seats": 0,
-    "Booked_Seats": 0,
-    "Price": "100.00",
     "Collection": "0.00",
     "Max_Collection": "0.00",
     "Occupancy": "0.00%"
