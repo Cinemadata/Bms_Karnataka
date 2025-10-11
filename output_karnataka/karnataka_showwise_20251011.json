@@ -506,18 +506,6 @@
   {
     "City": "Karkala",
     "Venue": "Planet Cinema: A/C Digital (Karkala)",
-    "Show_Time": "03:00 PM",
-    "Category": "",
-    "Max_Seats": 0,
-    "Booked_Seats": 0,
-    "Price": "150.00",
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Karkala",
-    "Venue": "Planet Cinema: A/C Digital (Karkala)",
     "Show_Time": "06:00 PM",
     "Category": "",
     "Max_Seats": 0,
@@ -954,7 +942,7 @@
     "Category": "",
     "Max_Seats": 0,
     "Booked_Seats": 0,
-    "Price": "100.00",
+    "Price": "120.00",
     "Collection": "0.00",
     "Max_Collection": "0.00",
     "Occupancy": "0.00%"
@@ -966,7 +954,7 @@
     "Category": "",
     "Max_Seats": 0,
     "Booked_Seats": 0,
-    "Price": "120.00",
+    "Price": "100.00",
     "Collection": "0.00",
     "Max_Collection": "0.00",
     "Occupancy": "0.00%"
@@ -991,42 +979,6 @@
     "Max_Seats": 0,
     "Booked_Seats": 0,
     "Price": "100.00",
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Udupi",
-    "Venue": "Times Square Bharath Cinemas: Udupi",
-    "Show_Time": "01:45 PM",
-    "Category": "",
-    "Max_Seats": 0,
-    "Booked_Seats": 0,
-    "Price": "600.00",
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Udupi",
-    "Venue": "Times Square Bharath Cinemas: Udupi",
-    "Show_Time": "01:45 PM",
-    "Category": "",
-    "Max_Seats": 0,
-    "Booked_Seats": 0,
-    "Price": "300.00",
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Udupi",
-    "Venue": "Times Square Bharath Cinemas: Udupi",
-    "Show_Time": "01:45 PM",
-    "Category": "",
-    "Max_Seats": 0,
-    "Booked_Seats": 0,
-    "Price": "300.00",
     "Collection": "0.00",
     "Max_Collection": "0.00",
     "Occupancy": "0.00%"
@@ -1327,18 +1279,6 @@
     "Max_Seats": 0,
     "Booked_Seats": 0,
     "Price": "300.00",
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Bagalkote",
-    "Venue": "Smart Moviz: Bagalkot",
-    "Show_Time": "02:30 PM",
-    "Category": "",
-    "Max_Seats": 0,
-    "Booked_Seats": 0,
-    "Price": "160.00",
     "Collection": "0.00",
     "Max_Collection": "0.00",
     "Occupancy": "0.00%"
