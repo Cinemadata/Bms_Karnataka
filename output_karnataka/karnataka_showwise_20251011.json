@@ -1146,18 +1146,6 @@
     "Category": "",
     "Max_Seats": 0,
     "Booked_Seats": 0,
-    "Price": "200.00",
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Ranebennuru",
-    "Venue": "Smart Moviz (Doom AC Cinema): Ranebennur",
-    "Show_Time": "11:30 AM",
-    "Category": "",
-    "Max_Seats": 0,
-    "Booked_Seats": 0,
     "Price": "180.00",
     "Collection": "0.00",
     "Max_Collection": "0.00",
@@ -1178,6 +1166,18 @@
   {
     "City": "Ranebennuru",
     "Venue": "Smart Moviz (Doom AC Cinema): Ranebennur",
+    "Show_Time": "11:30 AM",
+    "Category": "",
+    "Max_Seats": 0,
+    "Booked_Seats": 0,
+    "Price": "200.00",
+    "Collection": "0.00",
+    "Max_Collection": "0.00",
+    "Occupancy": "0.00%"
+  },
+  {
+    "City": "Ranebennuru",
+    "Venue": "Smart Moviz (Doom AC Cinema): Ranebennur",
     "Show_Time": "02:30 PM",
     "Category": "",
     "Max_Seats": 0,
@@ -1218,6 +1218,18 @@
     "Category": "",
     "Max_Seats": 0,
     "Booked_Seats": 0,
+    "Price": "200.00",
+    "Collection": "0.00",
+    "Max_Collection": "0.00",
+    "Occupancy": "0.00%"
+  },
+  {
+    "City": "Ranebennuru",
+    "Venue": "Smart Moviz (Doom AC Cinema): Ranebennur",
+    "Show_Time": "05:30 PM",
+    "Category": "",
+    "Max_Seats": 0,
+    "Booked_Seats": 0,
     "Price": "180.00",
     "Collection": "0.00",
     "Max_Collection": "0.00",
@@ -1238,11 +1250,11 @@
   {
     "City": "Ranebennuru",
     "Venue": "Smart Moviz (Doom AC Cinema): Ranebennur",
-    "Show_Time": "05:30 PM",
+    "Show_Time": "08:30 PM",
     "Category": "",
     "Max_Seats": 0,
     "Booked_Seats": 0,
-    "Price": "200.00",
+    "Price": "150.00",
     "Collection": "0.00",
     "Max_Collection": "0.00",
     "Occupancy": "0.00%"
@@ -1267,18 +1279,6 @@
     "Max_Seats": 0,
     "Booked_Seats": 0,
     "Price": "180.00",
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Ranebennuru",
-    "Venue": "Smart Moviz (Doom AC Cinema): Ranebennur",
-    "Show_Time": "08:30 PM",
-    "Category": "",
-    "Max_Seats": 0,
-    "Booked_Seats": 0,
-    "Price": "150.00",
     "Collection": "0.00",
     "Max_Collection": "0.00",
     "Occupancy": "0.00%"
@@ -1650,7 +1650,7 @@
     "Category": "",
     "Max_Seats": 0,
     "Booked_Seats": 0,
-    "Price": "100.00",
+    "Price": "120.00",
     "Collection": "0.00",
     "Max_Collection": "0.00",
     "Occupancy": "0.00%"
@@ -1662,19 +1662,7 @@
     "Category": "",
     "Max_Seats": 0,
     "Booked_Seats": 0,
-    "Price": "120.00",
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Udupi",
-    "Venue": "Kalpana Theatre: Udupi",
-    "Show_Time": "12:45 PM",
-    "Category": "",
-    "Max_Seats": 0,
-    "Booked_Seats": 0,
-    "Price": "120.00",
+    "Price": "100.00",
     "Collection": "0.00",
     "Max_Collection": "0.00",
     "Occupancy": "0.00%"
@@ -1687,6 +1675,18 @@
     "Max_Seats": 0,
     "Booked_Seats": 0,
     "Price": "100.00",
+    "Collection": "0.00",
+    "Max_Collection": "0.00",
+    "Occupancy": "0.00%"
+  },
+  {
+    "City": "Udupi",
+    "Venue": "Kalpana Theatre: Udupi",
+    "Show_Time": "12:45 PM",
+    "Category": "",
+    "Max_Seats": 0,
+    "Booked_Seats": 0,
+    "Price": "120.00",
     "Collection": "0.00",
     "Max_Collection": "0.00",
     "Occupancy": "0.00%"
