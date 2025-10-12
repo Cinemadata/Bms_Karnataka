@@ -1,7 +1,7 @@
 [
   {
     "City": "Dharwad",
-    "Total_Shows": 2,
+    "Total_Shows": 22,
     "Total_Seats": 0,
     "Booked_Seats": 0,
     "Collection": "0.00",
@@ -64,7 +64,7 @@
   },
   {
     "City": "Udupi",
-    "Total_Shows": 2,
+    "Total_Shows": 28,
     "Total_Seats": 0,
     "Booked_Seats": 0,
     "Collection": "0.00",
