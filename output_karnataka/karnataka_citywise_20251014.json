@@ -1,7 +1,7 @@
 [
   {
     "City": "Dharwad",
-    "Total_Shows": 9,
+    "Total_Shows": 8,
     "Total_Seats": 0,
     "Booked_Seats": 0,
     "Collection": "0.00",
@@ -10,7 +10,7 @@
   },
   {
     "City": "Kanakapura",
-    "Total_Shows": 1,
+    "Total_Shows": 4,
     "Total_Seats": 0,
     "Booked_Seats": 0,
     "Collection": "0.00",
@@ -19,7 +19,7 @@
   },
   {
     "City": "Karkala",
-    "Total_Shows": 2,
+    "Total_Shows": 1,
     "Total_Seats": 0,
     "Booked_Seats": 0,
     "Collection": "0.00",
@@ -28,7 +28,7 @@
   },
   {
     "City": "Mandya",
-    "Total_Shows": 2,
+    "Total_Shows": 3,
     "Total_Seats": 0,
     "Booked_Seats": 0,
     "Collection": "0.00",
@@ -46,7 +46,7 @@
   },
   {
     "City": "Sirsi",
-    "Total_Shows": 2,
+    "Total_Shows": 1,
     "Total_Seats": 0,
     "Booked_Seats": 0,
     "Collection": "0.00",
@@ -64,7 +64,7 @@
   },
   {
     "City": "Udupi",
-    "Total_Shows": 13,
+    "Total_Shows": 12,
     "Total_Seats": 0,
     "Booked_Seats": 0,
     "Collection": "0.00",
@@ -82,16 +82,7 @@
   },
   {
     "City": "Bagalkote",
-    "Total_Shows": 2,
-    "Total_Seats": 0,
-    "Booked_Seats": 0,
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Shahpur",
-    "Total_Shows": 0,
+    "Total_Shows": 1,
     "Total_Seats": 0,
     "Booked_Seats": 0,
     "Collection": "0.00",
