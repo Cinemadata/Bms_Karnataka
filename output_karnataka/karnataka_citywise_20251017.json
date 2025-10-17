@@ -1,23 +1,5 @@
 [
   {
-    "City": "Dharwad",
-    "Total_Shows": 7,
-    "Total_Seats": 0,
-    "Booked_Seats": 0,
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
-  },
-  {
-    "City": "Kanakapura",
-    "Total_Shows": 4,
-    "Total_Seats": 0,
-    "Booked_Seats": 0,
-    "Collection": "0.00",
-    "Max_Collection": "0.00",
-    "Occupancy": "0.00%"
-  },
-  {
     "City": "Karkala",
     "Total_Shows": 1,
     "Total_Seats": 0,
@@ -55,7 +37,7 @@
   },
   {
     "City": "Ranebennuru",
-    "Total_Shows": 1,
+    "Total_Shows": 4,
     "Total_Seats": 0,
     "Booked_Seats": 0,
     "Collection": "0.00",
@@ -64,7 +46,7 @@
   },
   {
     "City": "Udupi",
-    "Total_Shows": 8,
+    "Total_Shows": 5,
     "Total_Seats": 0,
     "Booked_Seats": 0,
     "Collection": "0.00",
